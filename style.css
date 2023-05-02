@@ -38,7 +38,8 @@
 
 @font-face {
     font-family: handwriting;
-    src: url(./font/DeliciousHandrawn-Regular.ttf);
+    /* src: url(./font/composition-regular\ 2.otf); */
+    src: url(./font/JustSquash-X3MGK.ttf)
 }
 
 body {
@@ -286,7 +287,7 @@ body {
 .reply {
     width: calc(100% - 32px);
     margin-left: 32px;
-    margin-top: 16px;
+    margin-top: 8px;
     font-size: 14px;
     position: relative;
 
@@ -480,4 +481,35 @@ body {
     font-size: 24px;
     margin-bottom: 16px;
     color: var(--blue);
+}
+
+.entry-like-btn {
+    margin-right: 16px;
+    font-size: 14px;
+    color: #aaa;
+    cursor: pointer;
+    display: none;
+    transition: 250ms;
+}
+
+.entry-like-btn:hover {
+    color: #f00;
+}
+
+.active-like-btn {
+    color: #f00;
+}
+
+.create-topic-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+    color: #aaa;
+    transition: 250ms;
+}
+
+.create-topic-btn:hover {
+    color: #000;
 }

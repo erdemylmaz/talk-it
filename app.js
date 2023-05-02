@@ -16,6 +16,8 @@ let cevaplaBTNS;
 let publishEntryTextarea;
 let publishEntryBTN;
 let showRepliesBTNS;
+let likeEntryBTNs;
+let createTopicBtn;
 
 function addExtraZero(x) {
     return x < 10 ? "0" + x : x;
@@ -183,6 +185,7 @@ class App {
         }
     ];
 
+
     init = () => {
         // init navbar
         this.topics.forEach((topic, index) => {
@@ -202,6 +205,18 @@ class App {
 
             navbarList.appendChild(navbarItem);
         });
+
+        // init create topic btn
+        let createTopicDiv = document.createElement('div');
+        createTopicDiv.className = "nl-item create-topic-btn";
+
+        createTopicDiv.innerHTML = `
+            <div class="nl-item-text">+</div>
+        `;
+
+        navbarList.appendChild(createTopicDiv);
+
+        createTopicBtn = document.querySelector('.create-topic-btn');
 
         topicItems = document.querySelectorAll('.nl-item');
         topicItems.forEach((item) => {
@@ -230,6 +245,7 @@ class App {
                     <div class="toggle-replies-btn toggle-repliesBTN-${entry.entryID}" data-toggledEntryID = '${entry.entryID}'>cevaplari goster (${entry.replyCount})</div>
 
                     <div class="entry-bottom-right">
+                        <div class="entry-like-btn"><i class="fa-regular fa-heart"></i></div>
                         <div class="entry-username">${entry.username} <span class="user-degree">(${entry.userDegree})</span></div>
 
                         <div class="entry-date">${entry.publishTime} - ${entry.publishDate}</div>
@@ -269,6 +285,7 @@ class App {
                         <div class="toggle-replies-btn toggle-repliesBTN-${reply.entryID}" data-toggledEntryID = '${reply.entryID}'>cevaplari goster (${reply.replyCount})</div>
 
                         <div class="entry-bottom-right">
+                            <div class="entry-like-btn"><i class="fa-regular fa-heart"></i></div>
                             <div class="entry-username">${reply.username} <span class="user-degree">(${reply.userDegree})</span></div>
 
                             <div class="entry-date">${reply.publishTime} - ${reply.publishDate}</div>
@@ -312,7 +329,9 @@ class App {
                         </div>
         
                         <div class="entry-bottom">
+
                             <div class="entry-bottom-right">
+                                <div class="entry-like-btn"><i class="fa-regular fa-heart"></i></div>
                                 <div class="entry-username">${reply2.username} <span class="user-degree">(${reply2.userDegree})</span></div>
         
                                 <div class="entry-date">${reply2.publishTime} - ${reply2.publishDate}</div>
@@ -345,6 +364,11 @@ class App {
         showRepliesBTNS.forEach((btn) => {
             btn.addEventListener('click', this.toggleReplies);
         });
+
+        likeEntryBTNs = document.querySelectorAll('.like-entry-btn');
+        likeEntryBTNs.forEach((btn) => {
+            btn.addEventListener('click', this.likeEntry);
+        })
 
         // init container footer
         let textarea = document.createElement('div');
@@ -401,19 +425,22 @@ class App {
     }
 
     changeTopic = (e) => {
-        this.activeTopic = e.currentTarget.dataset.topicindex;
-        activeTopic = this.activeTopic;
+        if(!e.currentTarget.classList.contains('create-topic-btn')) {
+            this.activeTopic = e.currentTarget.dataset.topicindex;
+            activeTopic = this.activeTopic;
 
-        navbarList.innerHTML = `
-            <div class="navbar-hover-effect"></div>
-        `;
+            navbarList.innerHTML = `
+                <div class="navbar-hover-effect"></div>
+            `;
 
-        hoverDIV = document.querySelector('.navbar-hover-effect');
+            hoverDIV = document.querySelector('.navbar-hover-effect');
+            // hoverDIV.style.top = `${e.currentTarget.offsetTop}`;
 
-        localStorage.setItem('currentTopic', this.activeTopic);
+            localStorage.setItem('currentTopic', this.activeTopic);
 
-        topicEntriesArea.innerHTML = ``;
-        this.init();
+            topicEntriesArea.innerHTML = ``;
+            this.init();
+        }
     }
 
     publishEntry = () => {
@@ -580,6 +607,9 @@ class App {
 
         }
 
+    }
+
+    likeEntry = (e) => {
     }
 }
 
