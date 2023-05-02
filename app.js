@@ -12,6 +12,11 @@ const rmAnsweringEntryUsernameDIV = document.querySelector('.modal-entry-usernam
 const rmAnswerTextarea = document.querySelector('.rm-reply-textarea');
 const rmPublishAnswerBTN = document.querySelector('.rm-publish-reply-btn');
 
+const topicModal = document.querySelector('.create-topic-modal');
+const closeTopicModalBTN = document.querySelector('.close-ctm-btn');
+const publishTopicBTN = document.querySelector('.publish-topic-btn');
+const publishingTopicTitleInput = document.querySelector('.topic-title-input');
+
 let cevaplaBTNS;
 let publishEntryTextarea;
 let publishEntryBTN;
@@ -611,6 +616,31 @@ class App {
 
     likeEntry = (e) => {
     }
+
+    createNewTopic = (e) => {
+        let title = publishingTopicTitleInput.value;
+
+        let d = new Date();
+
+        let createDate = `${d.getDate()} ${this.months[d.getMonth()]} ${d.getFullYear()}`;
+
+        let topic = {
+            title: title,
+            entryCount: 0,
+            createDate: createDate,
+            createTime: `${addExtraZero(d.getHours())}.${addExtraZero(d.getMinutes())}`,
+            createdUsername: this.username,
+            entries: [],
+        };
+
+        this.topics.push(topic);
+
+        this.activeTopic = this.topics.length - 1;
+
+        localStorage.setItem('topics', JSON.stringify(this.topics));
+
+        location.reload();
+    }
 }
 
 const app = new App();
@@ -631,10 +661,16 @@ app.init();
 
 activeTopic = app.activeTopic;
 
+createTopicBtn.addEventListener('click', () => {
+    topicModal.style.display = "flex";
+});
+
 document.addEventListener('click', (e) => {
     if(e.target.classList.contains('reply-modal')) {
         app.isReplyModalOpen = false;
         replyModal.style.display = "none";
+    } else if (e.target.classList.contains('create-topic-modal')) {
+        topicModal.style.display = "none";
     }
 });
 
@@ -642,3 +678,9 @@ closeRMBTN.addEventListener('click', () => {
         app.isReplyModalOpen = false;
         replyModal.style.display = "none";
 });
+
+closeTopicModalBTN.addEventListener('click', () => {
+    topicModal.style.display = "none";
+})
+
+publishTopicBTN.addEventListener('click', app.createNewTopic);
