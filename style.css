@@ -15,19 +15,22 @@
     --blueHover: rgb(10, 70, 228);
     /* --blue: rgb(22, 82, 240); */
     /* --blue: #2192FF; */
-    --blue: #388FFF;
+    /* --blue: #388FFF; */
+    --blue: #1A71C2;
     --blue2: #2f5dfb;
     --lightBlue: rgb(0, 204, 255);
   
     /* orange */
-    --orange: rgb(255, 196, 0);
+    /* --orange: rgb(255, 196, 0); */
+    --orange: #F08C01;
     --darkorange: #ff7f2e;
   
     /* yellow */
     --yellow: #ffeb4d;
     --darkyellow: #feba2b;
     /* red */
-    --red: #ff4631;
+    /* --red: #ff4631; */
+    --red: #E03132;
   
     /* green */
     --pastelgreen: #1bb778;
@@ -48,6 +51,7 @@ body {
     margin: 0;
     padding: 0;
     /* background-color: var(--background); */
+    /* background-color: #232323; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -102,25 +106,47 @@ body {
     resize: none;
     border: 1px solid #aaa;
     border-radius: 4px;
-    height: 12px;
+    padding: 4px 4px;
+    /* height: 16px; */
     width: 256px;
-    font-size: 10px;
     margin-left: 120px;
     display: flex;
+    font-size: 12px;
+    padding: 6px;
 
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+.search-area:focus {
+    border-color: var(--blue);
+}
+
+.search-area::placeholder {
+    font-size: 12px;
+}
+
 .search-btn {
     margin-left: 8px;
-    color: var(--blue);
+    color: #aaa;
     font-size: 10px;
     transition: 250ms;
     cursor: pointer;
+    border-radius: 4px;
+
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .search-btn:hover {
-    transform: scale(1.4);
+    color: var(--blue);
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.search-btn:hover i {
+    transform: scale(1.3);
 }
 
 .profile {
@@ -264,7 +290,7 @@ body {
 
 .entry-username {
     margin-right: 8px;
-    color: #232323;
+    /* color: #232323; */
 }
 
 .entry-date {
@@ -368,7 +394,7 @@ body {
     border-radius: 4px;
 }
 
-.publish-entry-textarea:active {
+.publish-entry-textarea:focus {
     border-color: var(--blue);
 }
 
@@ -436,7 +462,7 @@ body {
     border-radius: 4px;
 }
 
-.rm-reply-textarea:active {
+.rm-reply-textarea:focus {
     border: 1px solid var(--blue);
 }
 
@@ -595,4 +621,35 @@ textarea {
     font-family: handwriting;
     font-size: 20px;
     color: #232323;
+    outline: none;
+}
+
+.top-bar {
+    width: 100%;
+    height: 4vh;
+
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.top-bar-item {
+    width: 96px;
+    height: 4vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.top-bar-hover {
+    display: none;
+    width: 96px;
+    height: 4vh;
+    background-color: rgba(0, 0, 0, 0.1);
+    position: absolute;
+    border-radius: 4px;
+    z-index: -100;
+    transition: 250ms ease-out;
 }

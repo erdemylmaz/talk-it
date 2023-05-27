@@ -17,6 +17,8 @@ const closeTopicModalBTN = document.querySelector('.close-ctm-btn');
 const publishTopicBTN = document.querySelector('.publish-topic-btn');
 const publishingTopicTitleInput = document.querySelector('.topic-title-input');
 
+const searchArea = document.querySelector('.search-area');
+
 let cevaplaBTNS;
 let publishEntryTextarea;
 let publishEntryBTN;
@@ -189,6 +191,8 @@ class App {
             ]
         }
     ];
+
+    searchPlaceholders = ["3D Turkiye Geneli 5", "Endemik Turkiye Geneli 4", "TYT Matematik Deneme Onerisi", "AYT Biyoloji Onerileri", "Ders Calisirken Muzik Dinlenir Mi?", "Uclu Kalem Mi Kursun Kalem Mi?", "..."];
 
 
     init = () => {
@@ -641,6 +645,14 @@ class App {
 
         location.reload();
     }
+
+    changeSearchPlaceholder = () => {
+        let randomIndex = Math.floor(Math.random() * this.searchPlaceholders.length);
+
+        let randomPlaceholder = this.searchPlaceholders[randomIndex];
+
+        searchArea.placeholder = randomPlaceholder;
+    }
 }
 
 const app = new App();
@@ -684,3 +696,7 @@ closeTopicModalBTN.addEventListener('click', () => {
 })
 
 publishTopicBTN.addEventListener('click', app.createNewTopic);
+
+app.changeSearchPlaceholder();
+setInterval(app.changeSearchPlaceholder, 60000);
+// app.changeSearchPlaceholder();
