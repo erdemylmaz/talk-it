@@ -1,0 +1,151 @@
+.tp-title {
+    margin-top: 16px;
+    font-size: 36px;
+    color: var(--blue);
+}
+
+.taban-puanlar-list {
+    border: 1px solid #aaa;
+    /* border-radius: 4px; */
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.tp-item {
+    width: 100%;
+    min-height: 4vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+}
+
+.tp-hover {
+    position: absolute;
+    width: 100%;
+    min-height: 4vh;
+}
+
+.top-side {
+    height: 4vh;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-direction: row;
+}
+
+.tp-item-index {
+    width: 24px;
+    text-align: center;
+    color: var(--red)
+}
+
+.tp-item-title {
+    width: 312px;
+}
+
+.tp-item-type {
+    width: 64px;
+}
+
+.tp-item-kont {
+    width: 64px;
+}
+
+.tp-item-tp {
+    width: 64px;
+}
+
+.tp-item-siralama {
+    width: 48px;
+}
+
+.s2 {
+    /* background-color: rgba(0,0,0, 0.1); */
+    background-color: #ddd;
+}
+
+.tp-item * {
+    margin-right: 8px;
+    text-align: center;
+}
+
+.tp-item-show-more-btn {
+    position: absolute;
+    right: 8px;
+    font-size: 12px;
+    color: #aaa;
+    cursor: pointer;
+    transition: 125ms;
+}
+
+.tp-item-show-more-btn:hover {
+    color: #000;
+}
+
+
+.tp-anlamlari {
+    width: 100%;
+    height: 4vh;
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.tp-anlamlari * {
+    margin-right: 8px;
+    text-align: center;
+}
+
+.tp-anlam-index {
+    width: 24px;
+}
+
+.tp-anlam-title {
+    width: 312px;
+}
+
+.tp-anlam-type {
+    width: 64px;
+}
+
+.tp-anlam-kont {
+    width: 64px;
+}
+
+.tp-anlam-tp {
+    width: 64px;
+}
+
+.tp-anlam-siralama {
+    width: 48px;
+}
+
+.bottom-side {
+    width: 100%;
+    height: 0vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* display: none; */
+    transition: 250ms;
+}
+
+.bottom-top, .bottom-bottom {
+    width: 100%;
+    height: 2vh;
+    display: flex;
+    justify-content: center;
+}
+
+.bt-item, .bb-item {
+    width: 96px;
+}
+
+.bt-item {
+    color: var(--blue);
+}
+
+.active {
+    color: #000;
+}

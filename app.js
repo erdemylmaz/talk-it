@@ -521,6 +521,7 @@ class App {
 
             this.changeTopic({currentTarget: {dataset: {topicindex: this.activeTopic}}});
 
+            location.reload();
         }
     }
 
@@ -700,3 +701,5 @@ publishTopicBTN.addEventListener('click', app.createNewTopic);
 app.changeSearchPlaceholder();
 setInterval(app.changeSearchPlaceholder, 60000);
 // app.changeSearchPlaceholder();
+
+HoverEffect({currentTarget: topicItems[activeTopic]});

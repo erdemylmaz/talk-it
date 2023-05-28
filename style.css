@@ -630,13 +630,15 @@ textarea {
 
     display: flex;
     align-items: center;
+    justify-content: center;
     position: relative;
 }
 
 .top-bar-item {
-    width: 96px;
+    min-width: 80px;
     height: 4vh;
     display: flex;
+    padding: 0 8px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -644,7 +646,7 @@ textarea {
 }
 
 .top-bar-hover {
-    display: none;
+    /* display: none; */
     width: 96px;
     height: 4vh;
     background-color: rgba(0, 0, 0, 0.1);
@@ -652,4 +654,17 @@ textarea {
     border-radius: 4px;
     z-index: -100;
     transition: 250ms ease-out;
+}
+
+.active-top-bar {
+    color: var(--blue);
+}
+
+.mug {
+    margin-left: 4px;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
 }

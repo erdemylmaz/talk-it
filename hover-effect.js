@@ -14,15 +14,22 @@ function HoverEffect(e) {
     hoverDIV.style.top = `${offsetTop}px`;
 };
 
-topicItems.forEach((topicItem) => {
-    topicItem.addEventListener('mouseenter', HoverEffect);
-});
+// HoverEffect({currentTarget: topicItems[activeTopic]});
+
+if(topicItems) {
+    topicItems.forEach((topicItem) => {
+        topicItem.addEventListener('mouseenter', HoverEffect);
+    });
+}
 
 // on leave
-navbar.addEventListener('mouseleave', (e) => {
-    hoverDIV.style.height = `${topicItems[activeTopic].offsetHeight}px`;
-    hoverDIV.style.top = `${topicItems[activeTopic].offsetTop}px`;
-});
+if(navbar) {
+    navbar.addEventListener('mouseleave', (e) => {
+        hoverDIV.style.height = `${topicItems[activeTopic].offsetHeight}px`;
+        hoverDIV.style.top = `${topicItems[activeTopic].offsetTop}px`;
+    });
+
+}
 
 // 
 let topbarhoverDIV = document.querySelector('.top-bar-hover');
@@ -37,9 +44,19 @@ function TopbarHoverEffect(e) {
 
     let width = target.offsetWidth;
 
+    if(target.classList.contains('bmc')) {
+        target.querySelector('i').style.color = "#634A00";
+    } else {
+        topbartopicItems[topbartopicItems.length - 1].querySelector('i').style.color = "#000";
+    }
+
+    topbarhoverDIV.style.backgroundColor = "rgba(0,0,0,0.1)";
+
     topbarhoverDIV.style.width = `${width}px`;
     topbarhoverDIV.style.left = `${offsetLeft}px`;
 };
+
+TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 
 topbartopicItems.forEach((topicItem) => {
     topicItem.addEventListener('mouseenter', (e) => {
@@ -50,5 +67,5 @@ topbartopicItems.forEach((topicItem) => {
 
 // on leave
 topbar.addEventListener('mouseleave', (e) => {
-    topbarhoverDIV.style.display = "none";
+    TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 });
