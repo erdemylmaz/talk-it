@@ -4590,6 +4590,8 @@ function ShowDetails(e) {
     }
 }
 
+
+
 showMoreBTNS.forEach((showMoreBTN) => {
     showMoreBTN.addEventListener('click', ShowDetails);
 });
