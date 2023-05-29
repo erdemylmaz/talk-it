@@ -4610,3 +4610,25 @@ changePlaceholder = () => {
 changePlaceholder();
 
 setInterval(changePlaceholder, 60000);
+
+// uni search
+const uniSearchAREA = document.querySelector('.tabanp-search');
+let rows = document.querySelectorAll('.tp-item');
+
+searchUni = () => {
+    let value = uniSearchAREA.value;
+
+    // if(value.length > 2) {
+        for(let x = 0; x < rows.length; x++) {
+            let uniTitle = rows[x].querySelector('.tp-item-title').textContent.toLowerCase();
+
+            if(uniTitle.indexOf(value) == -1) {
+                rows[x].style.display = 'none';
+            } else {
+                rows[x].style.display = 'flex';
+            }
+        }
+    // }
+}
+
+uniSearchAREA.addEventListener('keyup', searchUni);

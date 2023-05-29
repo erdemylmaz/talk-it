@@ -10,6 +10,7 @@ const resultAREA = document.querySelector('.quiz-result');
 let answerButtons;
 
 let correctCount = 0;
+let answeredCount = 0;
 
 class App {
     questions = [
@@ -268,17 +269,22 @@ class App {
         if(selectedAnswer == correctAnswer) {
             e.target.classList.add('answer-correct');
             correctCount += 1;
+            answeredCount += 1;
 
-            resultAREA.textContent = `${correctCount}/${this.questions.length}`;
+            resultAREA.textContent = `${correctCount}/${answeredCount}`;
         } else {
             e.target.classList.add('answer-wrong');
+            answeredCount += 1;
+
+            resultAREA.textContent = `${correctCount}/${answeredCount}`;
         }
+
     }
 }
 
 const app = new App();
 
-resultAREA.textContent = `0/${app.questions.length}`;
+resultAREA.textContent = `0/0`;
 app.shuffleArray();
 app.init();
 

@@ -90,6 +90,7 @@
     margin-top: 24px;
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .tp-anlamlari * {
@@ -148,4 +149,18 @@
 
 .active {
     color: #000;
+}
+
+.tabanp-search {
+    /* background-color: rgba(0, 0, 0, 0.1); */
+    background-color: #eee;
+    border: none;
+    resize: none;
+    width: 256px;
+    height: 24px;
+    position: absolute;
+    right: -8px;
+    border-radius: 4px;
+    padding: 2px 8px;
+    text-align: left;
 }
