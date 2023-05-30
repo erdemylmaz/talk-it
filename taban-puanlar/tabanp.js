@@ -4616,7 +4616,7 @@ const uniSearchAREA = document.querySelector('.tabanp-search');
 let rows = document.querySelectorAll('.tp-item');
 
 searchUni = () => {
-    let value = uniSearchAREA.value;
+    let value = uniSearchAREA.value.toLowerCase();
 
     // if(value.length > 2) {
         for(let x = 0; x < rows.length; x++) {

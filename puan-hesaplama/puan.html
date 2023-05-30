@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="./puanStyle.css">
+    <link rel="shortcut icon" href="../favicon/l5.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/6316116050.js" crossorigin="anonymous"></script>
+    <title>YKS Puan Hesaplama - talk it!</title>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-top">
+                    <span class="talk-text">talk</span> it!
+                </div>
+
+                <div class="logo-bottom">ögrenciler için sohbet forumu</div>
+            </div>
+
+            <input type="text" class="search-area" placeholder=""></input>
+            <div class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></div>
+
+            <div class="profile">
+                <i class="fa-regular fa-user"></i>
+            </div>
+        </div> 
+
+        <div class="top-bar">
+            <div class="top-bar-hover"></div>
+
+            <a href="../index.html" class="top-bar-item active-top-bar">gundem</a>
+            <div class="top-bar-item">sorular</div>
+            <div class="top-bar-item">turkiye geneli</div>
+            <div class="top-bar-item">soru-cevap</div>
+            <a href="../sayac/sayac.html" class="top-bar-item">yks sayac</a>
+            <a href="../quiz/index.html" class="top-bar-item">quiz</a>
+            <a href="../taban-puanlar/tabanp.html" class="top-bar-item">taban puanlar</a>
+            <a href="#" class="top-bar-item">puan hesaplama</a>
+            <a href="https://erdemylmaz.github.io/yks-yardimci/" class="top-bar-item">yks yardimci</a>
+            <a href="https://www.buymeacoffee.com/erdemy" class="top-bar-item bmc">buy me a coffee  <span class="mug"><i class="fa-solid fa-mug-hot"></i></span></a>
+        </div>
+
+        <div class="puan-container">
+            <div class="obp-input-area">
+                <div class="obp-text">OBP Puaniniz (0-100):</div>
+                <input class="obp-input" placeholder="" value="0">
+            </div>
+
+            <div class="tyt-container">
+                <div class="tyt-title">
+                    TYT
+                    <span class="tyt-puan"> 0,0 Puan</span>
+                    <span class="tyt-net"> 0 Net</span>
+                </div>
+
+                <div class="tyt-form">
+                    <div class="form-item">
+                        <div class="form-top">Türkçe</div>
+                        <div class="form-bottom">
+                            <div class="form-true-div form-div">
+                                <div class="form-title">Dogru</div>
+                                <input type="text" class="turkce-dogru-input form-input">
+                            </div>
+                            <div class="form-false-div form-div">
+                                <div class="form-title">Yanlis</div>
+                                <input type="text" class="turkce-yanlis-input form-input">
+                            </div>
+                            <div class="form-net-div form-div">
+                                <div class="form-title">Net</div>
+                                <input type="text" disabled class="turkce-net-input net-input form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-item">
+                        <div class="form-top">Sosyal B.</div>
+                        <div class="form-bottom">
+                            <div class="form-true-div form-div">
+                                <div class="form-title">Dogru</div>
+                                <input type="text" class="sosyal-dogru-input form-input">
+                            </div>
+                            <div class="form-false-div form-div">
+                                <div class="form-title">Yanlis</div>
+                                <input type="text" class="sosyal-yanlis-input form-input">
+                            </div>
+                            <div class="form-net-div form-div">
+                                <div class="form-title">Net</div>
+                                <input type="text" disabled class="sosyal-net-input net-input form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-item">
+                        <div class="form-top">Matematik</div>
+                        <div class="form-bottom">
+                            <div class="form-true-div form-div">
+                                <div class="form-title">Dogru</div>
+                                <input type="text" class="tyt-mat-dogru-input form-input">
+                            </div>
+                            <div class="form-false-div form-div">
+                                <div class="form-title">Yanlis</div>
+                                <input type="text" class="tyt-mat-yanlis-input form-input">
+                            </div>
+                            <div class="form-net-div form-div">
+                                <div class="form-title">Net</div>
+                                <input type="text" disabled class="tyt-mat-net-input net-input form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-item">
+                        <div class="form-top">Fen B.</div>
+                        <div class="form-bottom">
+                            <div class="form-true-div form-div">
+                                <div class="form-title">Dogru</div>
+                                <input type="text" class="tyt-fen-dogru-input form-input">
+                            </div>
+                            <div class="form-false-div form-div">
+                                <div class="form-title">Yanlis</div>
+                                <input type="text" class="tyt-fen-yanlis-input form-input">
+                            </div>
+                            <div class="form-net-div form-div">
+                                <div class="form-title">Net</div>
+                                <input type="text" disabled class="tyt-fen-net-input net-input form-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ayt-container">
+                <div class="ayt-title">
+                    AYT 
+                    <span class="ayt-puan"> 0,0 Puan</span>
+                    <span class="ayt-net"> 0 Net</span>
+                    <span class="ayt-info">AYT Puaninizin dogru hesaplanmasi icin lutfen TYT sonuclarinizi giriniz.</span>
+                </div>
+               
+                <div class="ayt-form">
+                    <div class="form-item">
+                        <div class="form-top">
+                            Matematik
+                        </div>
+                        <div class="form-bottom">
+                            <div class="form-true-div form-div">
+                                <div class="form-title">Dogru</div>
+                                <input type="text" class="ayt-mat-dogru-input form-input">
+                            </div>
+                            <div class="form-false-div form-div">
+                                <div class="form-title">Yanlis</div>
+                                <input type="text" class="ayt-mat-yanlis-input form-input">
+                            </div>
+                            <div class="form-net-div form-div">
+                                <div class="form-title">Net</div>
+                                <input type="text" disabled class="ayt-mat-net-input net-input form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-item">
+                        <div class="form-top">Fizik</div>
+                        <div class="form-bottom">
+                            <div class="form-true-div form-div">
+                                <div class="form-title">Dogru</div>
+                                <input type="text" class="ayt-fzk-dogru-input form-input">
+                            </div>
+                            <div class="form-false-div form-div">
+                                <div class="form-title">Yanlis</div>
+                                <input type="text" class="ayt-fzk-yanlis-input form-input">
+                            </div>
+                            <div class="form-net-div form-div">
+                                <div class="form-title">Net</div>
+                                <input type="text" disabled class="ayt-fzk-net-input net-input form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-item">
+                        <div class="form-top">Kimya</div>
+                        <div class="form-bottom">
+                            <div class="form-true-div form-div">
+                                <div class="form-title">Dogru</div>
+                                <input type="text" class="ayt-kmy-dogru-input form-input">
+                            </div>
+                            <div class="form-false-div form-div">
+                                <div class="form-title">Yanlis</div>
+                                <input type="text" class="ayt-kmy-yanlis-input form-input">
+                            </div>
+                            <div class="form-net-div form-div">
+                                <div class="form-title">Net</div>
+                                <input type="text" disabled class="ayt-kmy-net-input net-input form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-item">
+                        <div class="form-top">Biyoloji</div>
+                        <div class="form-bottom">
+                            <div class="form-true-div form-div">
+                                <div class="form-title">Dogru</div>
+                                <input type="text" class="ayt-byl-dogru-input form-input">
+                            </div>
+                            <div class="form-false-div form-div">
+                                <div class="form-title">Yanlis</div>
+                                <input type="text" class="ayt-byl-yanlis-input form-input">
+                            </div>
+                            <div class="form-net-div form-div">
+                                <div class="form-title">Net</div>
+                                <input type="text" disabled class="ayt-byl-net-input net-input form-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="../hover-effect.js"></script>
+<script src="./puan.js"></script>
+</body>
+</html>
