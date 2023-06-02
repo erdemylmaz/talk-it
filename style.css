@@ -187,9 +187,10 @@ body {
     border-radius: 8px;
     position: absolute;
 
-    transition: 250ms ease-in-out;
+    /* transition: 250ms ease-in-out; */
     cursor: pointer;
     z-index: -1;
+    transition: 0.5s cubic-bezier(0.75, 0, 0, 1);
 }
 
 .nl-item {
@@ -653,7 +654,8 @@ textarea {
     position: absolute;
     border-radius: 4px;
     z-index: -100;
-    transition: 250ms ease-out;
+    /* transition: 250ms ease-out; */
+    transition: 0.5s cubic-bezier(0.75, 0, 0, 1);
 }
 
 .active-top-bar {

@@ -73,8 +73,66 @@ let aytYanlis;
 let aytNet;
 let aytPuan;
 
+const graphicAREA = document.querySelector('.graphic');
+
+class TYTGraphic {
+    results = [
+        {
+            date: '30 May',
+            net: 104.42,
+        },
+        {
+            date: '27 May',
+            net: 107.75,
+        },
+        {
+            date: '25 May',
+            net: 104.5,
+        },
+        {
+            date: '23 May',
+            net: 100,
+        },
+        {
+            date: '15 May',
+            net: 82.5,
+        },
+        {
+            date: '2 May',
+            net: 99,
+        },
+    ];
+
+    initResults = () => {
+        this.results.map((result) => {
+            let div = document.createElement('div');
+            div.className = "graphic-data";
+
+            // 50 net puan 512px
+
+            let marginTop = (120 - result.net) * (512 / 50) - 8;
+
+            div.innerHTML = `
+                <div class="data-point-area">
+                    <div class="data-point" style="margin-top: ${marginTop}px"></div>
+                </div>
+
+                <div class="data-date">${result.date} <br /> (${result.net})</div> 
+            `;
+
+            graphicAREA.appendChild(div);
+        });
+    }
+}
+
+const tytGraphic = new TYTGraphic();
+
+tytGraphic.initResults();
+
 function calculatePoints() {
     let obp = obpInput.value;
+
+
 
     // TYT
     let turkceDogru = turkceDogruInput.value;
@@ -110,27 +168,32 @@ function calculatePoints() {
     let aytBylYanlis = aytBylYanlisInput.value;
     let aytBylNet = aytBylDogru - (aytBylYanlis / 4);
 
-    turkceNetInput.value = turkceNet;
-    sosyalNetInput.value = sosyalNet;
-    tytMatNetInput.value = tytMatNet;
-    tytFenNetInput.value = tytFenNet;
 
-    aytMatNetInput.value = aytMatNet;
-    aytFzkNetInput.value = aytFzkNet;
-    aytKmyNetInput.value = aytKmyNet;
-    aytBylNetInput.value = aytBylNet;
+    // if(turkceDogru + turkceYanlis < 41 && sosyalDogru + sosyalYanlis < 21 && tytMatDogru + tytMatYanlis < 41 && tytFenDogru + tytFenYanlis < 21 && aytMatDogru + aytMatYanlis < 41 && aytFzkDogru + aytFzkYanlis < 15 && aytKmyDogru + aytKmyYanlis < 14 && aytBylDogru + aytBylYanlis < 14) {
+        turkceNetInput.value = turkceNet;
+        sosyalNetInput.value = sosyalNet;
+        tytMatNetInput.value = tytMatNet;
+        tytFenNetInput.value = tytFenNet;
 
-    tytNet = turkceNet + sosyalNet + tytMatNet + tytFenNet;
-    aytNet = aytMatNet + aytFzkNet + aytKmyNet + aytBylNet;
+        aytMatNetInput.value = aytMatNet;
+        aytFzkNetInput.value = aytFzkNet;
+        aytKmyNetInput.value = aytKmyNet;
+        aytBylNetInput.value = aytBylNet;
 
-    tytPuan = (turkceNet * 3.3 + sosyalNet * 3.4 + tytMatNet * 3.3 + tytFenNet * 3.4 + obp * 0.6) + 100; 
-    aytPuan = (aytMatNet * 3 + aytFzkNet * 2.85 + aytKmyNet * 3.07 + aytBylNet * 3.07 + obp * 0.6 + (turkceNet * 1.32 + sosyalNet * 1.36 + tytMatNet * 1.32 + tytFenNet * 1.36)) + 100;
+        tytNet = turkceNet + sosyalNet + tytMatNet + tytFenNet;
+        aytNet = aytMatNet + aytFzkNet + aytKmyNet + aytBylNet;
 
-    tytNetSpan.textContent = `${tytNet} Net`;
-    tytPuanSpan.textContent = `${tytPuan.toFixed(2)} Puan`;
+        tytPuan = (turkceNet * 3.3 + sosyalNet * 3.4 + tytMatNet * 3.3 + tytFenNet * 3.4 + obp * 0.6) + 100; 
+        aytPuan = (aytMatNet * 3 + aytFzkNet * 2.85 + aytKmyNet * 3.07 + aytBylNet * 3.07 + obp * 0.6 + (turkceNet * 1.32 + sosyalNet * 1.36 + tytMatNet * 1.32 + tytFenNet * 1.36)) + 100;
 
-    aytNetSpan.textContent = `${aytNet} Net`;
-    aytPuanSpan.textContent = `${aytPuan.toFixed(2)} Puan`;
+        tytNetSpan.textContent = `${tytNet} Net`;
+        tytPuanSpan.textContent = `${tytPuan.toFixed(2)} Puan`;
+
+        aytNetSpan.textContent = `${aytNet} Net`;
+        aytPuanSpan.textContent = `${aytPuan.toFixed(2)} Puan`;
+    // } else {
+        // alert('lutfen gecerli sonuclar giriniz.');
+    // }
 }
 
 allInputs.forEach((input) => {

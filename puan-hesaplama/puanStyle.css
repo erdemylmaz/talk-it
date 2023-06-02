@@ -116,16 +116,88 @@
 }
 
 .net-input {
-    background-color: #aaa;
-    border: 1px solid #aaa;
+    background-color: #232323;
+    border: 1px solid #232323;
+    color: #fff;
 }
 
 .tyt-puan, .ayt-puan, .tyt-net, .ayt-net {
-    color: #000;
+    /* color: #000; */
+    color: #232323;
     font-size: 24px;
 }
 
 .ayt-info {
     font-size: 16px;
     color: #aaa;
+}
+
+.statistics {
+    width: 100%;
+    min-height: 100vh;
+    font-size: 48px;
+    color: #fff;
+    margin-top: 16px;
+}
+
+.statistics {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.graphic {
+    width: calc(1024px - 128px - 4px);
+    /* height: 60vh; */
+    height: 544px;
+    background-color: #232323;
+    border-radius: 8px;
+    display: flex;
+    position: relative;
+}
+
+.graphic-data {
+    width: 48px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.data-point-area {
+    width: 100%;
+    height: 512px;
+    display: flex;
+    justify-content: center;
+}
+
+.data-point {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--red);
+}
+
+.data-date {
+    width: 100%;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.graphic-info {
+    width: 32px;
+    position: absolute;
+    right: -36px;
+    text-align: center;
+    color: #232323;
+}
+
+.graphic-info-block {
+    height: calc(512px / 5);
+    font-size: 32px;
+    color: var(--blue);
+}
+
+.graphic-info-block:last-child {
+    margin-top: -24px;
 }
