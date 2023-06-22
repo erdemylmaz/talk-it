@@ -7,7 +7,7 @@ TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 // sayac
 const sayacArea = document.querySelector('.sayac');
 
-let endDate = new Date("June 17, 2023 10:15:00").getTime();
+let endDate = new Date("June 15, 2024 10:15:00").getTime();
 
 let oneDay = 1000 * 60 * 60 * 24;
 let oneHour = oneDay / 24;

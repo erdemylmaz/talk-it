@@ -164,3 +164,11 @@
     padding: 2px 8px;
     text-align: left;
 }
+
+.dark .tp-item {
+    color: #ddd;
+}
+
+.dark .s2 {
+    background-color: #131313;
+}

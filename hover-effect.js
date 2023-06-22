@@ -1,3 +1,9 @@
+let mode = 'l';
+
+if(mode == "dark") {
+    document.body.classList.add('dark');
+}
+
 let hoverDIV = document.querySelector('.navbar-hover-effect');
 const navbar = document.querySelector('.navbar');
 let topicItems = document.querySelectorAll('.nl-item');
@@ -5,7 +11,7 @@ let topicItems = document.querySelectorAll('.nl-item');
 let activeTopic = 0;
 
 function HoverEffect(e) {
-    let target = e.currentTarget
+    let target = e.currentTarget;
     let offsetTop = target.offsetTop;
 
     let height = target.offsetHeight;
@@ -13,8 +19,6 @@ function HoverEffect(e) {
     hoverDIV.style.height = `${height}px`;
     hoverDIV.style.top = `${offsetTop}px`;
 };
-
-// HoverEffect({currentTarget: topicItems[activeTopic]});
 
 if(topicItems) {
     topicItems.forEach((topicItem) => {
@@ -50,13 +54,17 @@ function TopbarHoverEffect(e) {
         topbartopicItems[topbartopicItems.length - 1].querySelector('i').style.color = "#000";
     }
 
-    topbarhoverDIV.style.backgroundColor = "rgba(0,0,0,0.1)";
+    // topbarhoverDIV.style.backgroundColor = "rgba(0,0,0,0.1)";
 
     topbarhoverDIV.style.width = `${width}px`;
     topbarhoverDIV.style.left = `${offsetLeft}px`;
 };
 
 TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
+
+setTimeout(() => {
+    TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
+}, 500);
 
 topbartopicItems.forEach((topicItem) => {
     topicItem.addEventListener('mouseenter', (e) => {
@@ -69,3 +77,8 @@ topbartopicItems.forEach((topicItem) => {
 topbar.addEventListener('mouseleave', (e) => {
     TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 });
+
+
+// setInterval(() => {
+//     HoverEffect({currentTarget: topicItems[activeTopic]});
+// }, 1000 / 2)

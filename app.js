@@ -25,6 +25,7 @@ let publishEntryBTN;
 let showRepliesBTNS;
 let likeEntryBTNs;
 let createTopicBtn;
+let deleteEntryBtns;
 
 function addExtraZero(x) {
     return x < 10 ? "0" + x : x;
@@ -243,6 +244,7 @@ class App {
             entryDIV.setAttribute('data-entryid', entry.entryID);
 
             entryDIV.innerHTML = `
+                <div class="delete-entry-btn" style="display: ${this.canDeleteEntry(entry.username, this.username)}"><i class="fa-solid fa-trash"></i></div>
                 <div class="entry-top entry-${entry.entryID}">
                     <div class="entry-pp"><i class="fa-regular fa-user"></i></div>
 
@@ -281,6 +283,7 @@ class App {
                     replyDIV.setAttribute('data-entryid', reply.entryID);
 
                     replyDIV.innerHTML = `
+                    <div class="delete-entry-btn" style="display: ${this.canDeleteEntry(reply.username, this.username)}"><i class="fa-solid fa-trash"></i></div>
                     <div class="reply-icon"></div>
 
                     <div class="entry-top">
@@ -330,6 +333,7 @@ class App {
         
                         reply2DIV.innerHTML = `
                         <div class="reply-icon"></div>
+                        <div class="delete-entry-btn" style="display: ${this.canDeleteEntry(reply2.username, this.username)}"><i class="fa-solid fa-trash"></i></div>
         
                         <div class="entry-top">
                             <div class="entry-pp"><i class="fa-regular fa-user"></i></div>
@@ -367,6 +371,7 @@ class App {
             if(entry.replyCount == 0) {
                 toggleReplyBTN.style.display = "none";
             }
+
         });
 
         showRepliesBTNS = document.querySelectorAll('.toggle-replies-btn')
@@ -377,32 +382,39 @@ class App {
         likeEntryBTNs = document.querySelectorAll('.like-entry-btn');
         likeEntryBTNs.forEach((btn) => {
             btn.addEventListener('click', this.likeEntry);
-        })
-
-        // init container footer
-        let textarea = document.createElement('div');
-        textarea.className = "publish-entry-area";
-
-        textarea.innerHTML = `
-            <textarea placeholder = '"${this.topics[this.activeTopic].title}" hakkında ne söylemek istersiniz?' class="publish-entry-textarea"></textarea>
-
-            <div class="publish-entry-btn" data-publishingtopic = '${this.activeTopic}'>
-                <i class="fa-regular fa-paper-plane"></i>
-            </div>
-        `;
-
-        topicEntriesArea.appendChild(textarea);
-
-        publishEntryTextarea = document.querySelector('.publish-entry-textarea');
-        publishEntryBTN = document.querySelector('.publish-entry-btn');
-        cevaplaBTNS = document.querySelectorAll('.entry-reply-btn');
-
-        cevaplaBTNS.forEach((btn) => {
-            btn.addEventListener('click', this.cevapla);
         });
 
-        publishEntryBTN.addEventListener('click', this.publishEntry);
+            if(this.topics[this.activeTopic].entryCount == 0) {
+                topicEntriesArea.innerHTML = `<div class="empty-text">Henüz "${this.topics[this.activeTopic].title}" basligi icin bir seyler yazilmamis.</div>`
+            }
 
+        // init container footer
+        if(!document.querySelector('.publish-entry-area')) {
+
+            let textarea = document.createElement('div');
+            textarea.className = "publish-entry-area";
+
+            textarea.innerHTML = `
+                <textarea placeholder = '"${this.topics[this.activeTopic].title}" hakkında ne söylemek istersiniz?' class="publish-entry-textarea"></textarea>
+
+                <div class="publish-entry-btn" data-publishingtopic = '${this.activeTopic}'>
+                    <i class="fa-regular fa-paper-plane"></i>
+                </div>
+            `;
+
+            topicEntriesArea.parentElement.appendChild(textarea);
+
+            publishEntryTextarea = document.querySelector('.publish-entry-textarea');
+            publishEntryBTN = document.querySelector('.publish-entry-btn');
+            cevaplaBTNS = document.querySelectorAll('.entry-reply-btn');
+
+            cevaplaBTNS.forEach((btn) => {
+                btn.addEventListener('click', this.cevapla);
+            });
+
+            publishEntryBTN.addEventListener('click', this.publishEntry);
+
+        }
     }
 
     toggleReplies = (e) => {
@@ -434,7 +446,7 @@ class App {
     }
 
     changeTopic = (e) => {
-        if(!e.currentTarget.classList.contains('create-topic-btn')) {
+        if (!e.currentTarget.classList.contains('create-topic-btn')) {
             this.activeTopic = e.currentTarget.dataset.topicindex;
             activeTopic = this.activeTopic;
 
@@ -443,13 +455,28 @@ class App {
             `;
 
             hoverDIV = document.querySelector('.navbar-hover-effect');
-            // hoverDIV.style.top = `${e.currentTarget.offsetTop}`;
 
             localStorage.setItem('currentTopic', this.activeTopic);
 
             topicEntriesArea.innerHTML = ``;
             this.init();
+
+            deleteEntryBtns = document.querySelectorAll('.delete-entry-btn');
+
+            deleteEntryBtns.forEach((btn) => {
+                btn.addEventListener('click', this.deleteEntry);
+            });
+
+            if (this.topics[this.activeTopic].entryCount == 0) {
+                topicEntriesArea.innerHTML = `<div class="empty-text">Henüz "${this.topics[this.activeTopic].title}" basligi icin bir seyler yazilmamis.</div>`;
+            }
         }
+    };
+    get changeTopic() {
+        return this._changeTopic;
+    }
+    set changeTopic(value) {
+        this._changeTopic = value;
     }
 
     publishEntry = () => {
@@ -484,6 +511,10 @@ class App {
                 replies: [],
             };
 
+            if(this.topics[this.activeTopic].entryCount == 0) {
+                topicEntriesArea.innerHTML = "";
+            }
+
             this.topics[this.activeTopic].entries.push(entry);
             this.topics[this.activeTopic].entryCount += 1;
 
@@ -497,6 +528,7 @@ class App {
             entryDIV.className = "topic-entry";
 
             entryDIV.innerHTML = `
+                <div class="delete-entry-btn" style="display: ${this.canDeleteEntry(entry.username, this.username)}"><i class="fa-solid fa-trash"></i></div>
                 <div class="entry-top entry-${entry.entryID}">
                     <div class="entry-pp"><i class="fa-regular fa-user"></i></div>
 
@@ -505,7 +537,7 @@ class App {
 
                 <div class="entry-bottom">
                     <div class="entry-reply-btn">cevapla</div>
-                    <div class="toggle-replies-btn toggle-repliesBTN-${entry.entryID}" data-toggledEntryID = '${entry.entryID}'>cevaplari goster (${entry.replyCount})</div>
+                    <div style="display: none;" class="toggle-replies-btn toggle-repliesBTN-${entry.entryID}" data-toggledEntryID = '${entry.entryID}'>cevaplari goster (${entry.replyCount})</div>
 
                     <div class="entry-bottom-right">
                         <div class="entry-username">${entry.username} <span class="user-degree">(${entry.userDegree})</span></div>
@@ -517,11 +549,25 @@ class App {
                 <div class="entry-replies hidden replies-${entry.entryID}" data-status = "hidden"></div>
             `;
 
+            let navbarDIV;
+
+            let topicDIVS = document.querySelectorAll('.nl-item');
+            
+            topicDIVS.forEach((topicDIV) => {
+                if(topicDIV.dataset.topicindex == this.activeTopic) {
+                    navbarDIV = topicDIV;
+                }
+            });
+
+            // update navbar entry count 
+            navbarDIV.querySelector('.nl-item-entryCount').textContent = this.topics[this.activeTopic].entryCount;
+
+
+
             topicEntriesArea.appendChild(entryDIV);
 
             this.changeTopic({currentTarget: {dataset: {topicindex: this.activeTopic}}});
 
-            location.reload();
         }
     }
 
@@ -654,6 +700,65 @@ class App {
 
         searchArea.placeholder = randomPlaceholder;
     }
+
+    canDeleteEntry = (entryOwner, user) => {
+        return entryOwner == user ? "flex" : "none";
+    }
+
+    deleteEntry = (e) => {
+        let topic = this.topics[this.activeTopic];
+        let entryID = e.currentTarget.parentElement.dataset.entryid;
+        let deletingEntryDIV= e.currentTarget.parentElement;
+        let isr1 = deletingEntryDIV.dataset.isr1;
+        let isr2 = deletingEntryDIV.dataset.isr2;
+
+        if(!isr1 && !isr2) {
+            topic.entries.map((entry, index) => {
+                if(entry.entryID == entryID) {
+                    // deletingEntry = entry;
+                    topic.entries.splice(index, 1);
+                    topic.entryCount -= entry.replyCount + 1;
+                    topicEntriesArea.removeChild(e.currentTarget.parentElement);
+                }
+
+            });
+        } else if(isr1) {
+            console.log(deletingEntryDIV)
+            topic.entries.map((entry) => {
+                if(entry.entryID == deletingEntryDIV.dataset.r1repliedentryid) {
+                    entry.replies.map((reply,index) => {
+                        if(reply.entryID == entryID) {
+                            entry.replies.splice(index, 1);
+                            entry.replyCount -= reply.replyCount + 1;
+                            topic.entryCount -= reply.replyCount + 1;
+                            deletingEntryDIV.parentElement.removeChild(deletingEntryDIV);
+                        }
+                    })
+                }
+            })
+        }
+
+        let navbarDIV;
+
+        let topicDIVS = document.querySelectorAll('.nl-item');
+        
+        topicDIVS.forEach((topicDIV) => {
+            if(topicDIV.dataset.topicindex == this.activeTopic) {
+                navbarDIV = topicDIV;
+            }
+        });
+
+        // update navbar entry count 
+        navbarDIV.querySelector('.nl-item-entryCount').textContent = topic.entryCount;
+
+        if(topic.entryCount == 0) {
+            navbarList.removeChild(navbarDIV);
+
+            this.topics.splice(this.activeTopic, 1);
+        }
+
+        localStorage.setItem('topics', JSON.stringify(this.topics));
+    }
 }
 
 const app = new App();
@@ -672,7 +777,12 @@ if(localStorage.getItem('currentTopic')) {
 
 app.init();
 
+deleteEntryBtns = document.querySelectorAll('.delete-entry-btn');
 activeTopic = app.activeTopic;
+
+deleteEntryBtns.forEach((deleteBtn) => {
+    deleteBtn.addEventListener('click', app.deleteEntry);
+})
 
 createTopicBtn.addEventListener('click', () => {
     topicModal.style.display = "flex";

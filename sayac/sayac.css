@@ -23,8 +23,14 @@
     flex-direction: column;
     margin: 0 4px;
 
+    /* transition: 250ms; */
     background-color: rgba(0,0,0, 0.1);
+    box-shadow: 0 0 16px rgba(0,0,0, 0.1);
     border-radius: 8px;
+}
+
+.block:hover {
+    transform: scale(1.05);
 }
 
 .block-top{
