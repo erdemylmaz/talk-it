@@ -2,15 +2,27 @@ const searchInput = document.querySelector('.search-area');
 const resultsArea = document.querySelector('.search-results');
 
 let results;
-
 let createResult;
+
+let title = document.title;
+
+let isHomepage;
+
+if(title.indexOf("-") != -1) {
+    isHomepage = false;
+} else {
+    isHomepage = true;
+}
+
+let topics = JSON.parse(localStorage.getItem('topics'));
+let activeTopic2 = localStorage.getItem('activeTopic');
 
 changeTopicBySearch = (e) => {
     let topicIndex = e.currentTarget.dataset.topicindex;
 
-    app.activeTopic = topicIndex;
+    activeTopic2 = topicIndex;
 
-    localStorage.setItem('currentTopic', app.activeTopic);
+    localStorage.setItem('currentTopic', activeTopic2);
 
     location.reload();
 }
@@ -24,7 +36,7 @@ search = () => {
 
         let firstResults = [];
 
-        app.topics.map((topic, topicIndex) => {
+        topics.map((topic, topicIndex) => {
             if(topic.title.toLowerCase().indexOf(value.toLowerCase()) != -1) {
                 firstResults.push({...topic, topicIndex: topicIndex});
             }
@@ -35,7 +47,15 @@ search = () => {
 
         firstResults.map((result, index) => {
             if(index < 5) {
-                let resultDIV = document.createElement('div');
+                let resultDIV;
+                if(isHomepage) {
+                    resultDIV = document.createElement('div');
+                } else {
+                    resultDIV = document.createElement('a');
+                    resultDIV.href = "../index.html";
+
+                }
+
                 resultDIV.className = "search-result";
                 resultDIV.setAttribute("data-topicindex", result.topicIndex);
 
