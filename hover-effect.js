@@ -60,15 +60,8 @@ function TopbarHoverEffect(e) {
     topbarhoverDIV.style.left = `${offsetLeft}px`;
 };
 
-TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
-
-setTimeout(() => {
-    TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
-}, 500);
-
 topbartopicItems.forEach((topicItem) => {
     topicItem.addEventListener('mouseenter', (e) => {
-        topbarhoverDIV.style.display = "flex";
         TopbarHoverEffect(e)
     });
 });
@@ -77,6 +70,7 @@ topbartopicItems.forEach((topicItem) => {
 topbar.addEventListener('mouseleave', (e) => {
     TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 });
+
 
 
 // setInterval(() => {

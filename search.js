@@ -69,7 +69,7 @@ search = () => {
             }
         });
 
-        if(firstResults.length == 0) {
+        if(firstResults.length == 0 && isHomepage) {
                 let resultDIV = document.createElement('div');
                 resultDIV.className = "search-result create-result";
                 resultDIV.setAttribute('data-title', value);

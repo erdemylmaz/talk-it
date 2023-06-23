@@ -1,3 +1,34 @@
+//                  DATABASE
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyBVky_n_S-8xDlKSNhbVFjbd4PN7dwrruM",
+    authDomain: "talkit-9e4f8.firebaseapp.com",
+    databaseURL: "https://talkit-9e4f8-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "talkit-9e4f8",
+    storageBucket: "talkit-9e4f8.appspot.com",
+    messagingSenderId: "325999358303",
+    appId: "1:325999358303:web:6e00171b64ed4517c946ea",
+    measurementId: "G-X81BDSHYVM"
+};
+
+// Initialize Firebase
+const dbApp = initializeApp(firebaseConfig);
+const analytics = getAnalytics(dbApp);
+
+import {getDatabase, set, get, ref, child, update, remove} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+const db = getDatabase();
+
+//                      APP
+
 const navbarList = document.querySelector('.navbar-list');
 const topicTitleDIV = document.querySelector('.topic-title'); 
 const topicEntriesArea = document.querySelector('.topic-entries');
@@ -198,7 +229,9 @@ class App {
 
     init = () => {
         // init navbar
-        this.topics.forEach((topic, index) => {
+        let sortedTopics = this.topics.sort((a, b) => b.entryCount - a.entryCount);
+
+        sortedTopics.forEach((topic, index) => {
             let navbarItem = document.createElement('div');
             navbarItem.className = `nl-item`;
             navbarItem.setAttribute('data-topicindex', index);
@@ -415,6 +448,8 @@ class App {
             publishEntryBTN.addEventListener('click', this.publishEntry);
 
         }
+
+        localStorage.setItem('topics', JSON.stringify(this.topics));
     }
 
     toggleReplies = (e) => {
@@ -472,12 +507,6 @@ class App {
             }
         }
     };
-    get changeTopic() {
-        return this._changeTopic;
-    }
-    set changeTopic(value) {
-        this._changeTopic = value;
-    }
 
     publishEntry = () => {
         let d = new Date();
@@ -515,11 +544,19 @@ class App {
                 topicEntriesArea.innerHTML = "";
             }
 
+            console.log(this.topics[this.activeTopic]);
             this.topics[this.activeTopic].entries.push(entry);
             this.topics[this.activeTopic].entryCount += 1;
 
             localStorage.setItem('topics', JSON.stringify(this.topics));
             localStorage.setItem('lastEntryID', this.lastEntryID);
+            
+            set(ref(db, "App/Topics"), this.topics)
+            .then(() => {
+                alert('Data Inserted successfully');
+            }).catch((error) => {
+                alert(error);
+            });
 
             publishEntryTextarea.value = "";
 
@@ -690,6 +727,13 @@ class App {
 
         localStorage.setItem('topics', JSON.stringify(this.topics));
 
+        // set(ref(db, "App/Topics"), this.topics)
+        // .then(() => {
+        //     alert("data removed successfully");
+        // }).catch((error) => {
+        //     alert(error);
+        // });
+
         location.reload();
     }
 
@@ -758,14 +802,17 @@ class App {
         }
 
         localStorage.setItem('topics', JSON.stringify(this.topics));
+
+        set(ref(db, "App/Topics"), this.topics)
+        .then(() => {
+            alert("data removed successfully");
+        }).catch((error) => {
+            alert(error);
+        });
     }
 }
 
 const app = new App();
-
-if(localStorage.getItem('topics')) {
-    app.topics = JSON.parse(localStorage.getItem('topics'));
-}
 
 if(localStorage.getItem('lastEntryID')) {
     app.lastEntryID = parseInt(localStorage.getItem('lastEntryID'));
@@ -775,7 +822,15 @@ if(localStorage.getItem('currentTopic')) {
     app.activeTopic = localStorage.getItem('currentTopic');
 }
 
-app.init();
+// get topics from database
+get(child(ref(db), "App/Topics"))
+.then((snapshot) => {
+    app.topics = snapshot.val();
+
+    app.init();
+}).catch((error) => {
+    alert(error);
+});
 
 deleteEntryBtns = document.querySelectorAll('.delete-entry-btn');
 activeTopic = app.activeTopic;
@@ -784,32 +839,34 @@ deleteEntryBtns.forEach((deleteBtn) => {
     deleteBtn.addEventListener('click', app.deleteEntry);
 })
 
-createTopicBtn.addEventListener('click', () => {
-    topicModal.style.display = "flex";
-});
 
-document.addEventListener('click', (e) => {
-    if(e.target.classList.contains('reply-modal')) {
-        app.isReplyModalOpen = false;
-        replyModal.style.display = "none";
-    } else if (e.target.classList.contains('create-topic-modal')) {
+setTimeout(() => {
+    createTopicBtn.addEventListener('click', () => {
+        topicModal.style.display = "flex";
+    });
+
+    document.addEventListener('click', (e) => {
+        if(e.target.classList.contains('reply-modal')) {
+            app.isReplyModalOpen = false;
+            replyModal.style.display = "none";
+        } else if (e.target.classList.contains('create-topic-modal')) {
+            topicModal.style.display = "none";
+        }
+    });
+
+    closeRMBTN.addEventListener('click', () => {
+            app.isReplyModalOpen = false;
+            replyModal.style.display = "none";
+    });
+
+    closeTopicModalBTN.addEventListener('click', () => {
         topicModal.style.display = "none";
-    }
-});
+    })
 
-closeRMBTN.addEventListener('click', () => {
-        app.isReplyModalOpen = false;
-        replyModal.style.display = "none";
-});
+    publishTopicBTN.addEventListener('click', app.createNewTopic);
 
-closeTopicModalBTN.addEventListener('click', () => {
-    topicModal.style.display = "none";
-})
-
-publishTopicBTN.addEventListener('click', app.createNewTopic);
+}, 1000);
 
 app.changeSearchPlaceholder();
 setInterval(app.changeSearchPlaceholder, 60000);
 // app.changeSearchPlaceholder();
-
-HoverEffect({currentTarget: topicItems[activeTopic]});
