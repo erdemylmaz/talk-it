@@ -6,6 +6,8 @@ const resultsArea = document.querySelector('.search-results');
 let results;
 let createResult;
 
+let topics = JSON.parse(localStorage.getItem('topics'));
+
 let title = document.title;
 
 let isHomepage;
@@ -16,7 +18,6 @@ if(title.indexOf("-") != -1) {
     isHomepage = true;
 }
 
-let topics = JSON.parse(localStorage.getItem('topics'));
 let activeTopic2 = localStorage.getItem('activeTopic');
 
 function changeTopicBySearch(e) {
@@ -39,8 +40,10 @@ function search() {
         let firstResults = [];
 
         topics.map((topic, topicIndex) => {
-            if(topic.title.toLowerCase().indexOf(value.toLowerCase()) != -1) {
-                firstResults.push({...topic, topicIndex: topicIndex});
+            if(topic) {
+                if(topic.title.toLowerCase().indexOf(value.toLowerCase()) != -1) {
+                    firstResults.push({...topic, topicIndex: topicIndex});
+                }
             }
         });
 

@@ -67,6 +67,7 @@ class App {
     username = 'erdemyilmaz';
     degree = "UNI";
     isAdmin = true;
+    hasLoggedIn = true;
 
     activeTopic = 0;
     lastEntryID = 10;
@@ -547,214 +548,238 @@ class App {
                     hoverDIV.style.top = `${offsetTop}px`;
                 }
             });
+
+            cevaplaBTNS = document.querySelectorAll('.entry-reply-btn');
+
+            cevaplaBTNS.forEach((cevaplaBTN) => {
+                cevaplaBTN.addEventListener('click', this.cevapla);
+            });
         }
     };
 
     publishEntry = () => {
-        let d = new Date();
+        if(this.hasLoggedIn) {
 
-        let day = addExtraZero(d.getDate());
-        let month = d.getMonth();
-        let year = d.getFullYear();
+            let d = new Date();
 
-        let h = addExtraZero(d.getHours());
-        let m = addExtraZero(d.getMinutes());
+            let day = addExtraZero(d.getDate());
+            let month = d.getMonth();
+            let year = d.getFullYear();
 
-        let dateText = `${day} ${this.months[month]} ${year}`;
-        let timeText = `${h}.${m}`;
+            let h = addExtraZero(d.getHours());
+            let m = addExtraZero(d.getMinutes());
 
-        let value = publishEntryTextarea.value;
+            let dateText = `${day} ${this.months[month]} ${year}`;
+            let timeText = `${h}.${m}`;
 
-        if(value != "") {
+            let value = publishEntryTextarea.value;
 
-            let entryID = this.lastEntryID + 1;
+            if(value != "") {
 
-            this.lastEntryID = this.lastEntryID += 1;
-            // publish to array
-            let entry = {
-                username: this.username,
-                userDegree: this.degree,
-                publishDate: dateText,
-                publishTime: timeText,
-                text: value,
-                replyCount: 0,
-                entryID: entryID,
-                replies: [],
-            };
+                let entryID = this.lastEntryID + 1;
 
-            if(this.topics[this.activeTopic].entryCount == 0) {
-                topicEntriesArea.innerHTML = "";
-            }
-
-            if(!this.topics[this.activeTopic].entries) {
-                this.topics[this.activeTopic].entries = [];
-            }
-
-            console.log(this.topics[this.activeTopic]);
-            this.topics[this.activeTopic].entries.push(entry);
-            this.topics[this.activeTopic].entryCount += 1;
-
-            localStorage.setItem('topics', JSON.stringify(this.topics));
-            localStorage.setItem('lastEntryID', this.lastEntryID);
-            
-            set(ref(db, "App/Topics"), this.topics)
-            .then(() => {
-                alert('Data Inserted successfully');
-            }).catch((error) => {
-                alert(error);
-            });
-
-            publishEntryTextarea.value = "";
-
-            // publish to document
-            let entryDIV = document.createElement('div');
-            entryDIV.className = "topic-entry";
-
-            entryDIV.innerHTML = `
-                <div class="delete-entry-btn" style="display: ${this.canDeleteEntry(entry.username, this.username)}"><i class="fa-solid fa-trash"></i></div>
-                <div class="entry-top entry-${entry.entryID}">
-                    <div class="entry-pp"><i class="fa-regular fa-user"></i></div>
-
-                    <div class="entry-text">${entry.text}</div>
-                </div>
-
-                <div class="entry-bottom">
-                    <div class="entry-reply-btn">cevapla</div>
-                    <div style="display: none;" class="toggle-replies-btn toggle-repliesBTN-${entry.entryID}" data-toggledEntryID = '${entry.entryID}'>cevaplari goster (${entry.replyCount})</div>
-
-                    <div class="entry-bottom-right">
-                        <div class="entry-username">${entry.username} <span class="user-degree">(${entry.userDegree})</span></div>
-
-                        <div class="entry-date">${entry.publishTime} - ${entry.publishDate}</div>
-                    </div>
-                </div>
-
-                <div class="entry-replies hidden replies-${entry.entryID}" data-status = "hidden"></div>
-            `;
-
-            let navbarDIV;
-
-            let topicDIVS = document.querySelectorAll('.nl-item');
-            
-            topicDIVS.forEach((topicDIV) => {
-                if(topicDIV.dataset.topicindex == this.activeTopic) {
-                    navbarDIV = topicDIV;
-                }
-            });
-
-            // update navbar entry count 
-            navbarDIV.querySelector('.nl-item-entryCount').textContent = this.topics[this.activeTopic].entryCount;
-
-
-
-            topicEntriesArea.appendChild(entryDIV);
-
-            this.changeTopic({currentTarget: {dataset: {topicindex: this.activeTopic}}});
-
-        }
-    }
-
-    cevapla = (e) => {
-        let answeringEntryDIV = e.currentTarget.parentElement.parentElement;
-        let topic = answeringEntryDIV.dataset.topic;
-        let entryID = answeringEntryDIV.dataset.entryid;
-        let isr1 = answeringEntryDIV.dataset.isr1;
-        let isr2 = answeringEntryDIV.dataset.isr2;
-        let r1EntryID = answeringEntryDIV.dataset.r1entryid;
-        let r1RepliedEntryId = answeringEntryDIV.dataset.r1repliedentryid;
-
-        let answeringEntryObj;
-
-        if(!isr1 && !isr2) {
-            answeringEntryObj = this.topics[topic].entries.filter((x) => {
-                return x.entryID == entryID;
-            })[0];
-        } else if (isr1 && !isr2) {
-            answeringEntryObj = this.topics[topic].entries.filter((i) => {
-                return i.entryID == r1RepliedEntryId;
-            })[0].replies.filter((x) => {
-                return x.entryID == entryID
-            })[0];
-
-        } else if (!isr1 && isr2) {
-            let r1AnsweringObj = this.topics[topic].entries[r1RepliedEntryId].replies.filter((x) => {
-                return x.entryID == r1EntryID;
-            });
-
-            answeringEntryObj = r1AnsweringObj[0].replies.filter((i) => {
-                return i.entryID == entryID
-            })[0];
-
-        }
-
-        let replyTo = answeringEntryObj.entryID;
-
-        replyModal.style.display = "flex";
-        this.isReplyModalOpen = true;
-
-        rmTopicTitleDIV.textContent = `#${this.topics[this.activeTopic].title}`;
-        rmAnsweringEntryTextDIV.textContent = `${answeringEntryObj.text}`;
-        rmAnsweringEntryDateDIV.textContent = `${answeringEntryObj.publishTime} - ${answeringEntryObj.publishDate}`;
-        rmAnsweringEntryUsernameDIV.textContent = `${answeringEntryObj.username}`
-
-        if(rmPublishAnswerBTN.value != "") {
-            rmPublishAnswerBTN.addEventListener('click', () => {
-                let text = rmAnswerTextarea.value;
-
-                let d = new Date();
-
-                let day = addExtraZero(d.getDate());
-                let month = d.getMonth();
-                let year = d.getFullYear();
-
-                let h = addExtraZero(d.getHours());
-                let m = addExtraZero(d.getMinutes());
-
-                let dateText = `${day} ${this.months[month]} ${year}`;
-                let timeText = `${h}.${m}`;
-
-                let newEntryID = this.lastEntryID + 1;
-                this.lastEntryID += 1;
-                answeringEntryObj.replyCount += 1;
-
-                if(!answeringEntryObj.replies) {
-                    answeringEntryDIV.replies = [];
-                }
-
-                this.topics[this.activeTopic].entryCount += 1;
-
+                this.lastEntryID = this.lastEntryID += 1;
+                // publish to array
                 let entry = {
                     username: this.username,
                     userDegree: this.degree,
                     publishDate: dateText,
                     publishTime: timeText,
-                    text: text,
-                    replyTo: replyTo,
+                    text: value,
                     replyCount: 0,
-                    entryID: newEntryID,
+                    entryID: entryID,
                     replies: [],
+                };
+
+                if(this.topics[this.activeTopic].entryCount == 0) {
+                    topicEntriesArea.innerHTML = "";
                 }
 
-                answeringEntryObj.replies.push(entry);
+                if(!this.topics[this.activeTopic].entries) {
+                    this.topics[this.activeTopic].entries = [];
+                }
 
-                this.isReplyModalOpen = false;
-                replyModal.style.display = "none";
-
-                console.log(entry, this.topics[this.activeTopic]);
+                this.topics[this.activeTopic].entries.push(entry);
+                this.topics[this.activeTopic].entryCount += 1;
 
                 localStorage.setItem('topics', JSON.stringify(this.topics));
-
-                set(ref(db, "App/Topics"), this.topics).then(() => {
-                    alert("Reply Successfully Published");
-                }).catch((err) => {
-                    console.log(err);
-                })
-
                 localStorage.setItem('lastEntryID', this.lastEntryID);
+                
+                set(ref(db, "App/Topics"), this.topics)
+                .then(() => {
+                    alert('Data Inserted successfully');
+                }).catch((error) => {
+                    alert(error);
+                });
 
-                location.reload();
+                publishEntryTextarea.value = "";
+
+                // publish to document
+                let entryDIV = document.createElement('div');
+                entryDIV.className = "topic-entry";
+                entryDIV.setAttribute('data-topic', this.activeTopic);
+                entryDIV.setAttribute('data-entryid', entry.entryID);
+
+                entryDIV.innerHTML = `
+                    <div class="delete-entry-btn" style="display: ${this.canDeleteEntry(entry.username, this.username)}"><i class="fa-solid fa-trash"></i></div>
+                    <div class="entry-top entry-${entry.entryID}">
+                        <div class="entry-pp"><i class="fa-regular fa-user"></i></div>
+
+                        <div class="entry-text">${entry.text}</div>
+                    </div>
+
+                    <div class="entry-bottom">
+                        <div class="entry-reply-btn">cevapla</div>
+                        <div style="display: none;" class="toggle-replies-btn toggle-repliesBTN-${entry.entryID}" data-toggledEntryID = '${entry.entryID}'>cevaplari goster (${entry.replyCount})</div>
+
+                        <div class="entry-bottom-right">
+                            <div class="entry-username">${entry.username} <span class="user-degree">(${entry.userDegree})</span></div>
+
+                            <div class="entry-date">${entry.publishTime} - ${entry.publishDate}</div>
+                        </div>
+                    </div>
+
+                    <div class="entry-replies hidden replies-${entry.entryID}" data-status = "hidden"></div>
+                `;
+
+                let navbarDIV;
+
+                let topicDIVS = document.querySelectorAll('.nl-item');
+                
+                topicDIVS.forEach((topicDIV) => {
+                    if(topicDIV.dataset.topicindex == this.activeTopic) {
+                        navbarDIV = topicDIV;
+                    }
+                });
+
+                // update navbar entry count 
+                navbarDIV.querySelector('.nl-item-entryCount').textContent = this.topics[this.activeTopic].entryCount;
+
+                topicEntriesArea.appendChild(entryDIV);
+
+                // this.changeTopic({currentTarget: {dataset: {topicindex: this.activeTopic}}});
+
+            }
+
+            cevaplaBTNS = document.querySelectorAll('.entry-reply-btn');
+
+            cevaplaBTNS.forEach((cevaplaBTN) => {
+                cevaplaBTN.addEventListener('click', this.cevapla);
             });
 
+            deleteEntryBtns = document.querySelectorAll('.delete-entry-btn');
+
+            deleteEntryBtns.forEach((deleteBTN) => {
+                deleteBTN.addEventListener('click', this.deleteEntry);
+            })
+
+        } else {
+            alert("please log in")
+        }
+    }
+
+    cevapla = (e) => {
+        if(this.hasLoggedIn) {
+            let answeringEntryDIV = e.currentTarget.parentElement.parentElement;
+            let topic = answeringEntryDIV.dataset.topic;
+            let entryID = answeringEntryDIV.dataset.entryid;
+            let isr1 = answeringEntryDIV.dataset.isr1;
+            let isr2 = answeringEntryDIV.dataset.isr2;
+            let r1EntryID = answeringEntryDIV.dataset.r1entryid;
+            let r1RepliedEntryId = answeringEntryDIV.dataset.r1repliedentryid;
+
+            let answeringEntryObj;
+
+            if(!isr1 && !isr2) {
+                answeringEntryObj = this.topics[topic].entries.filter((x) => {
+                    return x.entryID == entryID;
+                })[0];
+            } else if (isr1 && !isr2) {
+                answeringEntryObj = this.topics[topic].entries.filter((i) => {
+                    return i.entryID == r1RepliedEntryId;
+                })[0].replies.filter((x) => {
+                    return x.entryID == entryID
+                })[0];
+
+            } else if (!isr1 && isr2) {
+                let r1AnsweringObj = this.topics[topic].entries[r1RepliedEntryId].replies.filter((x) => {
+                    return x.entryID == r1EntryID;
+                });
+
+                answeringEntryObj = r1AnsweringObj[0].replies.filter((i) => {
+                    return i.entryID == entryID
+                })[0];
+
+            }
+
+            let replyTo = answeringEntryObj.entryID;
+
+            replyModal.style.display = "flex";
+            this.isReplyModalOpen = true;
+
+            rmTopicTitleDIV.textContent = `#${this.topics[this.activeTopic].title}`;
+            rmAnsweringEntryTextDIV.textContent = `${answeringEntryObj.text}`;
+            rmAnsweringEntryDateDIV.textContent = `${answeringEntryObj.publishTime} - ${answeringEntryObj.publishDate}`;
+            rmAnsweringEntryUsernameDIV.textContent = `${answeringEntryObj.username}`
+
+            if(rmPublishAnswerBTN.value != "") {
+                rmPublishAnswerBTN.addEventListener('click', () => {
+                    let text = rmAnswerTextarea.value;
+
+                    let d = new Date();
+
+                    let day = addExtraZero(d.getDate());
+                    let month = d.getMonth();
+                    let year = d.getFullYear();
+
+                    let h = addExtraZero(d.getHours());
+                    let m = addExtraZero(d.getMinutes());
+
+                    let dateText = `${day} ${this.months[month]} ${year}`;
+                    let timeText = `${h}.${m}`;
+
+                    let newEntryID = this.lastEntryID + 1;
+                    this.lastEntryID += 1;
+                    answeringEntryObj.replyCount += 1;
+
+                    if(!answeringEntryObj.replies) {
+                        answeringEntryDIV.replies = [];
+                    }
+
+                    this.topics[this.activeTopic].entryCount += 1;
+
+                    let entry = {
+                        username: this.username,
+                        userDegree: this.degree,
+                        publishDate: dateText,
+                        publishTime: timeText,
+                        text: text,
+                        replyTo: replyTo,
+                        replyCount: 0,
+                        entryID: newEntryID,
+                        replies: [],
+                    }
+
+                    answeringEntryObj.replies.push(entry);
+
+                    this.isReplyModalOpen = false;
+                    replyModal.style.display = "none";
+
+                    localStorage.setItem('topics', JSON.stringify(this.topics));
+
+                    set(ref(db, "App/Topics"), this.topics).then(() => {
+                        alert("Reply Successfully Published");
+                    }).catch((err) => {
+                        console.log(err);
+                    })
+
+                    localStorage.setItem('lastEntryID', this.lastEntryID);
+
+                    location.reload();
+                });
+            }
+        } else {
+            alert("please log in");
         }
 
     }
@@ -763,39 +788,43 @@ class App {
     }
 
     createNewTopic = (e) => {
-        let title = publishingTopicTitleInput.value;
+        if(this.hasLoggedIn) {
+            let title = publishingTopicTitleInput.value;
 
-        console.log('123');
+            let d = new Date();
 
-        let d = new Date();
+            let createDate = `${d.getDate()} ${this.months[d.getMonth()]} ${d.getFullYear()}`;
 
-        let createDate = `${d.getDate()} ${this.months[d.getMonth()]} ${d.getFullYear()}`;
+            let topic = {
+                title: title,
+                entryCount: 0,
+                createDate: createDate,
+                createTime: `${addExtraZero(d.getHours())}.${addExtraZero(d.getMinutes())}`,
+                createdUsername: this.username,
+                entries: [],
+                status: "waiting",
+            };
 
-        let topic = {
-            title: title,
-            entryCount: 0,
-            createDate: createDate,
-            createTime: `${addExtraZero(d.getHours())}.${addExtraZero(d.getMinutes())}`,
-            createdUsername: this.username,
-            entries: [],
-            status: "waiting",
-        };
+            this.topics.push(topic);
 
-        this.topics.push(topic);
+            // this.activeTopic = this.topics.length - 1;
 
-        // this.activeTopic = this.topics.length - 1;
+            localStorage.setItem('topics', JSON.stringify(this.topics));
 
-        localStorage.setItem('topics', JSON.stringify(this.topics));
+            set(ref(db, "App/Topics"), this.topics)
+            .then(() => {
+            }).catch((error) => {
+                console(error);
+            });
 
-        set(ref(db, "App/Topics"), this.topics)
-        .then(() => {
-        }).catch((error) => {
-            console(error);
-        });
+            alert("Waiting for permission");
 
-        alert("Waiting for permission");
+            topicModal.style.display = "none";
 
-        // location.reload();
+            // location.reload();
+        } else {
+            alert('please log in');
+        }
     }
 
     changeSearchPlaceholder = () => {
@@ -888,7 +917,7 @@ class App {
         });
 
         setTimeout(() => {
-            location.reload();
+            // location.reload();
         }, 1000);
     }
 }
@@ -924,13 +953,13 @@ get(child(ref(db), "App/Topics"))
         }
     });
 
+    localStorage.setItem('topics', JSON.stringify(app.topics));
+
+
     app.init();
 }).catch((error) => {
     console.log(error);
 });
-
-
-
 
 setTimeout(() => {
 
@@ -942,7 +971,12 @@ setTimeout(() => {
     })
     
     createTopicBtn.addEventListener('click', () => {
-        topicModal.style.display = "flex";
+        if(app.hasLoggedIn) {
+            topicModal.style.display = "flex";
+        } else {
+            alert("please log in");
+            topicModal.style.display = "none";
+        }
     });
 
     document.addEventListener('click', (e) => {

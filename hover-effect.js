@@ -83,7 +83,6 @@ topbar.addEventListener('mouseleave', (e) => {
     TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 });
 
-
 // setInterval(() => {
 //     HoverEffect({currentTarget: topicItems[activeTopic]});
 // }, 1000 / 2)

@@ -1,7 +1,7 @@
 // topbar
 topbaractiveTopic = 5;
-topbartopicItems[0].style.color = "#000";
-topbartopicItems[5].style.color = "var(--blue)";
+// topbartopicItems[0].style.color = "#000";
+topbartopicItems[5].style.color = "#fff";
 
 TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 
