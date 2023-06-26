@@ -65,7 +65,8 @@ function addExtraZero(x) {
 class App {
     // user
     username = 'erdemyilmaz';
-    degree = "MZN";
+    degree = "UNI";
+    isAdmin = true;
 
     activeTopic = 0;
     lastEntryID = 10;
@@ -224,29 +225,31 @@ class App {
         }
     ];
 
-    searchPlaceholders = ["3D Turkiye Geneli 5", "Endemik Turkiye Geneli 4", "TYT Matematik Deneme Onerisi", "AYT Biyoloji Onerileri", "Ders Calisirken Muzik Dinlenir Mi?", "Uclu Kalem Mi Kursun Kalem Mi?", "..."];
-
+    searchPlaceholders = [];
 
     init = () => {
         // init navbar
-        let sortedTopics = this.topics.sort((a, b) => b.entryCount - a.entryCount);
+        // let sortedTopics = this.topics.sort((a, b) => b.entryCount - a.entryCount);
 
-        sortedTopics.forEach((topic, index) => {
-            let navbarItem = document.createElement('div');
-            navbarItem.className = `nl-item`;
-            navbarItem.setAttribute('data-topicindex', index);
+        this.topics.forEach((topic, index) => {
+            if(topic.status == "active") {
+                let navbarItem = document.createElement('div');
+                navbarItem.className = `nl-item`;
+                navbarItem.setAttribute('data-topicindex', index);
 
-            if(index == this.activeTopic) {
-                navbarItem.style.color = `var(--blue)`;
+                if(index == this.activeTopic) {
+                    navbarItem.style.color = `var(--blue)`;
+                }
+
+                navbarItem.innerHTML = `
+                    <div class="nl-item-text">${topic.title}</div>
+
+                    <div class="nl-item-entryCount">${topic.entryCount}</div>
+                `;
+
+                navbarList.appendChild(navbarItem);
+
             }
-
-            navbarItem.innerHTML = `
-                <div class="nl-item-text">${topic.title}</div>
-
-                <div class="nl-item-entryCount">${topic.entryCount}</div>
-            `;
-
-            navbarList.appendChild(navbarItem);
         });
 
         // init create topic btn
@@ -270,11 +273,19 @@ class App {
         // init container
         topicTitleDIV.textContent = `#${this.topics[this.activeTopic].title}`;
 
+        if(!this.topics[this.activeTopic].entries) {
+            this.topics[this.activeTopic].entries = [];
+        }
+
         this.topics[this.activeTopic].entries.map((entry) => {
             let entryDIV = document.createElement('div');
             entryDIV.className = "topic-entry";
             entryDIV.setAttribute('data-topic', this.activeTopic);
             entryDIV.setAttribute('data-entryid', entry.entryID);
+
+            if(!entry.replies) {
+                entry.replies = [];
+            }
 
             entryDIV.innerHTML = `
                 <div class="delete-entry-btn" style="display: ${this.canDeleteEntry(entry.username, this.username)}"><i class="fa-solid fa-trash"></i></div>
@@ -304,6 +315,10 @@ class App {
             // init replies
             for(let x = 0; x < entry.replyCount; x++) {
                 let reply = entry.replies[x];
+
+                if(reply.replies == undefined) {
+                    reply.replies = [];
+                }
 
                 if(reply) {
                     let repliedEntryRepliesDIV = document.querySelector(`.replies-${reply.replyTo}`);
@@ -352,6 +367,10 @@ class App {
                     for(let i = 0; i < reply.replyCount; i++) {
 
                         let reply2 = reply.replies[i];
+
+                        if(reply2.replies == undefined) {
+                            reply2.replies = [];
+                        }
 
                         let repliedEntryRepliesDIV = document.querySelector(`.replies-${reply2.replyTo}`);
         
@@ -450,6 +469,10 @@ class App {
         }
 
         localStorage.setItem('topics', JSON.stringify(this.topics));
+
+        createTopicBtn.addEventListener('click', () => {
+            topicModal.style.display = "flex";
+        });
     }
 
     toggleReplies = (e) => {
@@ -490,11 +513,19 @@ class App {
             `;
 
             hoverDIV = document.querySelector('.navbar-hover-effect');
+            
+            get(ref(db, "App/Topics")).then((snapshot)=> {
+                this.topics = snapshot.val();
+            }).catch((err) => {
+                console.log(err);
+            })
 
             localStorage.setItem('currentTopic', this.activeTopic);
 
             topicEntriesArea.innerHTML = ``;
             this.init();
+
+            publishEntryTextarea.placeholder = `"${this.topics[this.activeTopic].title}" hakkinda ne soylemek istersiniz?`;
 
             deleteEntryBtns = document.querySelectorAll('.delete-entry-btn');
 
@@ -505,6 +536,17 @@ class App {
             if (this.topics[this.activeTopic].entryCount == 0) {
                 topicEntriesArea.innerHTML = `<div class="empty-text">Henüz "${this.topics[this.activeTopic].title}" basligi icin bir seyler yazilmamis.</div>`;
             }
+
+            let navbarItems = document.querySelectorAll('.nl-item');
+            navbarItems.forEach((navbarItem) => {
+                if(navbarItem.dataset.topicindex == activeTopic) {
+                    let offsetTop = navbarItem.offsetTop;
+                    let height = navbarItem.offsetHeight;
+
+                    hoverDIV.style.height = `${height}px`;
+                    hoverDIV.style.top = `${offsetTop}px`;
+                }
+            });
         }
     };
 
@@ -542,6 +584,10 @@ class App {
 
             if(this.topics[this.activeTopic].entryCount == 0) {
                 topicEntriesArea.innerHTML = "";
+            }
+
+            if(!this.topics[this.activeTopic].entries) {
+                this.topics[this.activeTopic].entries = [];
             }
 
             console.log(this.topics[this.activeTopic]);
@@ -671,6 +717,10 @@ class App {
                 this.lastEntryID += 1;
                 answeringEntryObj.replyCount += 1;
 
+                if(!answeringEntryObj.replies) {
+                    answeringEntryDIV.replies = [];
+                }
+
                 this.topics[this.activeTopic].entryCount += 1;
 
                 let entry = {
@@ -693,6 +743,13 @@ class App {
                 console.log(entry, this.topics[this.activeTopic]);
 
                 localStorage.setItem('topics', JSON.stringify(this.topics));
+
+                set(ref(db, "App/Topics"), this.topics).then(() => {
+                    alert("Reply Successfully Published");
+                }).catch((err) => {
+                    console.log(err);
+                })
+
                 localStorage.setItem('lastEntryID', this.lastEntryID);
 
                 location.reload();
@@ -708,6 +765,8 @@ class App {
     createNewTopic = (e) => {
         let title = publishingTopicTitleInput.value;
 
+        console.log('123');
+
         let d = new Date();
 
         let createDate = `${d.getDate()} ${this.months[d.getMonth()]} ${d.getFullYear()}`;
@@ -719,22 +778,24 @@ class App {
             createTime: `${addExtraZero(d.getHours())}.${addExtraZero(d.getMinutes())}`,
             createdUsername: this.username,
             entries: [],
+            status: "waiting",
         };
 
         this.topics.push(topic);
 
-        this.activeTopic = this.topics.length - 1;
+        // this.activeTopic = this.topics.length - 1;
 
         localStorage.setItem('topics', JSON.stringify(this.topics));
 
-        // set(ref(db, "App/Topics"), this.topics)
-        // .then(() => {
-        //     alert("data removed successfully");
-        // }).catch((error) => {
-        //     alert(error);
-        // });
+        set(ref(db, "App/Topics"), this.topics)
+        .then(() => {
+        }).catch((error) => {
+            console(error);
+        });
 
-        location.reload();
+        alert("Waiting for permission");
+
+        // location.reload();
     }
 
     changeSearchPlaceholder = () => {
@@ -746,7 +807,7 @@ class App {
     }
 
     canDeleteEntry = (entryOwner, user) => {
-        return entryOwner == user ? "flex" : "none";
+        return entryOwner == user || this.isAdmin ? "flex" : "none";
     }
 
     deleteEntry = (e) => {
@@ -767,7 +828,6 @@ class App {
 
             });
         } else if(isr1) {
-            console.log(deletingEntryDIV)
             topic.entries.map((entry) => {
                 if(entry.entryID == deletingEntryDIV.dataset.r1repliedentryid) {
                     entry.replies.map((reply,index) => {
@@ -779,6 +839,23 @@ class App {
                         }
                     })
                 }
+            })
+        } else if (isr2) {
+            topic.entries.map((entry) => {
+                entry.replies.map((reply) => {
+                    if(!reply.replies) {
+                        reply.replies = [];
+                    }
+                    
+                    reply.replies.map((reply2, index) => {
+                        if(reply2.entryID == entryID) {
+                            reply.replies.splice(index, 1);
+                            reply.replyCount -= 1;
+                            topic.entryCount -= 1;
+                            deletingEntryDIV.parentElement.removeChild(deletingEntryDIV);
+                        }
+                    });
+                })
             })
         }
 
@@ -809,10 +886,14 @@ class App {
         }).catch((error) => {
             alert(error);
         });
+
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
     }
 }
 
-const app = new App();
+export const app = new App();
 
 if(localStorage.getItem('lastEntryID')) {
     app.lastEntryID = parseInt(localStorage.getItem('lastEntryID'));
@@ -826,21 +907,40 @@ if(localStorage.getItem('currentTopic')) {
 get(child(ref(db), "App/Topics"))
 .then((snapshot) => {
     app.topics = snapshot.val();
+    
+    app.topics.forEach((topic) => {
+        if(!topic.entries) {
+            topic.entries = [];
+        }
+
+        if(!topic.status) {
+            topic.status = "active";
+        }
+
+        if(topic.status == "active") {
+            app.searchPlaceholders.push(topic.title);
+
+            app.changeSearchPlaceholder();
+        }
+    });
 
     app.init();
 }).catch((error) => {
-    alert(error);
+    console.log(error);
 });
 
-deleteEntryBtns = document.querySelectorAll('.delete-entry-btn');
-activeTopic = app.activeTopic;
 
-deleteEntryBtns.forEach((deleteBtn) => {
-    deleteBtn.addEventListener('click', app.deleteEntry);
-})
 
 
 setTimeout(() => {
+
+    deleteEntryBtns = document.querySelectorAll('.delete-entry-btn');
+    activeTopic = app.activeTopic;
+
+    deleteEntryBtns.forEach((deleteBtn) => {
+        deleteBtn.addEventListener('click', app.deleteEntry);
+    })
+    
     createTopicBtn.addEventListener('click', () => {
         topicModal.style.display = "flex";
     });
@@ -867,6 +967,5 @@ setTimeout(() => {
 
 }, 1000);
 
-app.changeSearchPlaceholder();
 setInterval(app.changeSearchPlaceholder, 60000);
 // app.changeSearchPlaceholder();

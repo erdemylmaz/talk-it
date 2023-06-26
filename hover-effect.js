@@ -10,6 +10,10 @@ let topicItems = document.querySelectorAll('.nl-item');
 
 let activeTopic = 0;
 
+if(localStorage.getItem("currentTopic")) {
+    activeTopic = localStorage.getItem('currentTopic');
+}
+
 function HoverEffect(e) {
     let target = e.currentTarget;
     let offsetTop = target.offsetTop;
@@ -29,10 +33,18 @@ if(topicItems) {
 // on leave
 if(navbar) {
     navbar.addEventListener('mouseleave', (e) => {
-        hoverDIV.style.height = `${topicItems[activeTopic].offsetHeight}px`;
-        hoverDIV.style.top = `${topicItems[activeTopic].offsetTop}px`;
-    });
+        let navbarItems = document.querySelectorAll('.nl-item');
 
+        navbarItems.forEach((navbarItem) => {
+            if(navbarItem.dataset.topicindex == activeTopic) {
+                let offsetTop = navbarItem.offsetTop;
+                let height = navbarItem.offsetHeight;
+
+                hoverDIV.style.height = `${height}px`;
+                hoverDIV.style.top = `${offsetTop}px`;
+            }
+        })
+    });
 }
 
 // 
@@ -72,7 +84,21 @@ topbar.addEventListener('mouseleave', (e) => {
 });
 
 
-
 // setInterval(() => {
 //     HoverEffect({currentTarget: topicItems[activeTopic]});
 // }, 1000 / 2)
+
+setTimeout(() => {
+    TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
+
+    let navbarItems = document.querySelectorAll('.nl-item');
+    navbarItems.forEach((navbarItem) => {
+        if(navbarItem.dataset.topicindex == activeTopic) {
+            let offsetTop = navbarItem.offsetTop;
+            let height = navbarItem.offsetHeight;
+
+            hoverDIV.style.height = `${height}px`;
+            hoverDIV.style.top = `${offsetTop}px`;
+        }
+    });
+}, 1000);

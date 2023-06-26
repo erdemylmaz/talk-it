@@ -1,3 +1,5 @@
+import {app} from "./app.js";
+
 const searchInput = document.querySelector('.search-area');
 const resultsArea = document.querySelector('.search-results');
 
@@ -17,7 +19,7 @@ if(title.indexOf("-") != -1) {
 let topics = JSON.parse(localStorage.getItem('topics'));
 let activeTopic2 = localStorage.getItem('activeTopic');
 
-changeTopicBySearch = (e) => {
+function changeTopicBySearch(e) {
     let topicIndex = e.currentTarget.dataset.topicindex;
 
     activeTopic2 = topicIndex;
@@ -27,7 +29,7 @@ changeTopicBySearch = (e) => {
     location.reload();
 }
 
-search = () => {
+function search() {
     let value = searchInput.value;
 
     if(value.length > 2) {
@@ -85,6 +87,7 @@ search = () => {
                 createResult = document.querySelector('.create-result');
 
                 createResult.addEventListener('click', () => {
+                    let publishingTopicTitleInput = document.querySelector('.topic-title-input');
                     publishingTopicTitleInput.value = value;
 
                     app.createNewTopic();
