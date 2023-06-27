@@ -1036,6 +1036,8 @@ if(localStorage.getItem('lastEntryID')) {
 
 if(localStorage.getItem('currentTopic')) {
     app.activeTopic = localStorage.getItem('currentTopic');
+} else {
+    app.activeTopic = 3;
 }
 
 // get topics from database
@@ -1072,7 +1074,7 @@ setTimeout(() => {
     deleteEntryBtns = document.querySelectorAll('.delete-entry-btn');
     activeTopic = app.activeTopic;
 
-    logo.addEventListener('click', app.initHomepage);
+    // logo.addEventListener('click', app.initHomepage);
 
     deleteEntryBtns.forEach((deleteBtn) => {
         deleteBtn.addEventListener('click', app.deleteEntry);

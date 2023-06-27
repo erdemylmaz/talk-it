@@ -33,7 +33,7 @@ function changeTopicBySearch(e) {
 function search() {
     let value = searchInput.value;
 
-    if(value.length > 2) {
+    if(value.length > 1) {
         resultsArea.style.display = "flex";
         resultsArea.innerHTML = "";
 
@@ -50,8 +50,10 @@ function search() {
         // sort by entry count
         firstResults.sort((a, b) => b.entryCount - a.entryCount);
 
+        let isAllWaiting = true;
+
         firstResults.map((result, index) => {
-            if(index < 5 && result.status == "active") {
+            if(index < 5) {
                 let resultDIV;
                 if(isHomepage) {
                     resultDIV = document.createElement('div');
@@ -61,20 +63,31 @@ function search() {
 
                 }
 
+                if(result.status == "active") {
+                    isAllWaiting = false;
+                }
+
                 resultDIV.className = "search-result";
                 resultDIV.setAttribute("data-topicindex", result.topicIndex);
+
+                if(result.status == "waiting") {
+                    resultDIV.classList.add('waiting-search-result');
+                    resultDIV.href = "#";
+                }
 
                 resultDIV.innerHTML = `
                     <div class="result-title">${result.title}</div>
                     <div class="result-entryCount">${result.entryCount} Entry</div>
                     <div class="result-date">${result.createDate}</div>
+                    <div class="result-status">${result.status == "waiting" ? "waiting for permission" : ""}</div>
                 `;
 
                 resultsArea.appendChild(resultDIV);
             }
         });
 
-        if(firstResults.length == 0 && isHomepage) {
+
+        if(firstResults.length == 0 && isHomepage || isAllWaiting) {
                 let resultDIV = document.createElement('div');
                 resultDIV.className = "search-result create-result";
                 resultDIV.setAttribute('data-title', value);
@@ -85,7 +98,7 @@ function search() {
                     <div class="result-entryCount">Create Topic!</div>
                 `;
 
-                resultsArea.appendChild(resultDIV);
+                resultsArea.prepend(resultDIV);
 
                 createResult = document.querySelector('.create-result');
 
@@ -103,7 +116,9 @@ function search() {
     results = document.querySelectorAll('.search-result');
 
     results.forEach((result) => {
-        result.addEventListener('click', changeTopicBySearch);
+        if(!result.classList.contains('waiting-search-result')) {
+            result.addEventListener('click', changeTopicBySearch);
+        }
     })
 }
 
