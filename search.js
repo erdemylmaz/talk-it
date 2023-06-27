@@ -51,7 +51,7 @@ function search() {
         firstResults.sort((a, b) => b.entryCount - a.entryCount);
 
         firstResults.map((result, index) => {
-            if(index < 5) {
+            if(index < 5 && result.status == "active") {
                 let resultDIV;
                 if(isHomepage) {
                     resultDIV = document.createElement('div');

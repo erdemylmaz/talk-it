@@ -29,6 +29,8 @@ const db = getDatabase();
 
 //                      APP
 
+const logo = document.querySelector('.logo');
+
 const navbarList = document.querySelector('.navbar-list');
 const topicTitleDIV = document.querySelector('.topic-title'); 
 const topicEntriesArea = document.querySelector('.topic-entries');
@@ -68,6 +70,8 @@ class App {
     degree = "UNI";
     isAdmin = true;
     hasLoggedIn = true;
+
+    isHomepage = false;
 
     activeTopic = 0;
     lastEntryID = 10;
@@ -506,6 +510,20 @@ class App {
 
     changeTopic = (e) => {
         if (!e.currentTarget.classList.contains('create-topic-btn')) {
+            this.isHomepage = false;
+
+            navbar.addEventListener('mouseleave', () => {
+                hoverDIV.style.display = "flex";
+            })
+
+            if(isMobile) {
+                navbar.style.display = "none";
+                container.style.display = "block";
+                topicTitleDIV.style.display = "flex";
+
+                topbartopicItems[0].classList.remove('active-top-bar');
+            }
+
             this.activeTopic = e.currentTarget.dataset.topicindex;
             activeTopic = this.activeTopic;
 
@@ -920,6 +938,94 @@ class App {
             // location.reload();
         }, 1000);
     }
+
+    showTopics = () => {
+        topicTitleDIV.style.display = "none";
+        container.style.display = "none";
+        navbar.style.display = "flex";
+
+        topbartopicItems[0].classList.add('active-top-bar');
+    }
+
+    initHomepage = () => {
+        let navbarItems = document.querySelectorAll('.nl-item');
+        hoverDIV.style.display = "none";
+
+        navbarItems.forEach((nlItem) => {
+            nlItem.style.color = "#000";
+        });
+
+        if(this.isHomepage) {
+            navbar.addEventListener('mouseleave', () => {
+                hoverDIV.style.display = "none";
+            });
+        }
+
+        navbar.addEventListener('mouseenter', (e) => {
+            hoverDIV.style.display = "flex";
+        });
+
+        let publishEntryArea = document.querySelector('.publish-entry-area');
+        publishEntryArea.style.display = "none";
+
+        let randomTopics = [];
+
+        let activeTopics = this.topics.filter((topic) => {
+            return topic.status == "active";
+        });
+
+        for(let x = 0; x < 4; x++) {
+            let randomNumber = Math.floor(Math.random() * activeTopics.length);
+
+            if(randomTopics.indexOf(activeTopics[randomNumber]) == -1) {
+                randomTopics.push(activeTopics[randomNumber]);
+            } else {
+                randomNumber = Math.floor(Math.random() * activeTopics.length);
+                if(randomTopics.indexOf(activeTopics[randomNumber]) == -1) {
+                    randomTopics.push(activeTopics[randomNumber]);
+                } else {
+                    randomNumber = Math.floor(Math.random() * activeTopics.length);
+                    if(randomTopics.indexOf(activeTopics[randomNumber]) == -1) {
+                        randomTopics.push(activeTopics[randomNumber]);
+                    }
+                }
+            }
+        }
+
+        randomTopics.map((topic) => {
+            let showingEntry = topic.entries[topic.entries.length - 1];
+
+            let containerDIV = document.createElement('div');
+            containerDIV.className = "container";
+
+            containerDIV.innerHTML = `
+                <div class="topic-title">${topic.title}</div>
+
+                <div class="topic-entry" data-topic="-" data-entryid="${showingEntry.entryID}">
+                <div class="delete-entry-btn" style="display: flex"><i class="fa-solid fa-trash"></i></div>
+                <div class="entry-top entry-${showingEntry.entryID}">
+                    <div class="entry-pp"><i class="fa-regular fa-user"></i></div>
+
+                    <div class="entry-text">${showingEntry.text}</div>
+                </div>
+
+                <div class="entry-bottom">
+                    <div class="entry-reply-btn">cevapla</div>
+                    <div class="toggle-replies-btn toggle-repliesBTN-${showingEntry.entryID}" data-toggledentryid="${showingEntry.entryID}" style="display: none;">cevaplari goster (${showingEntry.replyCount})</div>
+
+                    <div class="entry-bottom-right">
+                        <div class="entry-like-btn"><i class="fa-regular fa-heart"></i></div>
+                        <div class="entry-username">erdemyilmaz <span class="user-degree">(UNI)</span></div>
+
+                        <div class="entry-date">${showingEntry.publishTime} - ${showingEntry.publishDate}</div>
+                    </div>
+                </div>
+
+                <div class="entry-replies hidden replies-${showingEntry.entryID}" data-status="hidden"></div>
+            </div> 
+            `;
+        });
+    }
 }
 
 export const app = new App();
@@ -966,6 +1072,8 @@ setTimeout(() => {
     deleteEntryBtns = document.querySelectorAll('.delete-entry-btn');
     activeTopic = app.activeTopic;
 
+    logo.addEventListener('click', app.initHomepage);
+
     deleteEntryBtns.forEach((deleteBtn) => {
         deleteBtn.addEventListener('click', app.deleteEntry);
     })
@@ -1003,3 +1111,24 @@ setTimeout(() => {
 
 setInterval(app.changeSearchPlaceholder, 60000);
 // app.changeSearchPlaceholder();
+
+let isMobile = false;
+
+let pageWidth = document.body.offsetWidth;
+
+if(pageWidth < 1000) {
+    isMobile = true;
+}
+
+if(isMobile) {
+    topbartopicItems.forEach((tbItem, index) => {
+        if(index == 1 || index == 2 || index == 3 || index == 5 || index == 8 || index == 9) {
+            tbItem.style.display = "none";
+        }
+
+        if(index == 0) {
+            tbItem.addEventListener('click', app.showTopics);
+            tbItem.classList.remove('active-top-bar');
+        }
+    });
+}

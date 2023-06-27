@@ -43,6 +43,7 @@
     font-family: handwriting;
     /* src: url(./font/composition-regular\ 2.otf); */
     src: url(./font/JustSquash-X3MGK.ttf)
+    /* src: url(./font/Virgil.woff2); */
 }
 
 body {
@@ -842,4 +843,145 @@ a {
 
 .top-bar-hover {
     z-index: -1;
+}
+
+.show-more-btn {
+    display: none;
+}
+
+@media only screen and (max-width: 1000px) {
+    body {
+        width: 100%;
+    }
+
+    .app {
+        width: 100%;
+    }
+
+    .header {
+        width: 100%;
+    }
+
+    .logo {
+        margin-left: 4px;
+    }
+
+    .search-div {
+        width: 128px;
+        margin-left: 8px;
+    }
+
+    .search-area {
+        width: 128px;
+    }
+
+    .show-more-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        border: 1px solid #000;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .search-btn {
+        display: none;
+    }
+
+    .logo {
+        transform: scale(0.9);
+    }
+
+    .topic-title {
+        font-size: 24px;
+    }
+
+    .rm-container {
+        width: 90%;
+    }
+
+    .top-bar {
+        width: 100%;
+    }
+
+    .profile {
+        margin-right: 44px;
+    }
+
+    .app {
+        width: 100%;
+    }
+
+    .container {
+        width: 90%;
+        margin-top: 4px;
+        margin-left: 5%;
+    }
+
+    .entry-date {
+        display: none;
+    }
+
+    .topic-entry {
+        width: 100%;
+    }
+
+    .navbar {
+        display: none;
+    }
+
+    .top-bar {
+        width: 100%;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    .publish-entry-textarea {
+        width: 200px;
+        height: 96px;
+    }
+
+    .publish-entry-textarea::placeholder {
+        font-size: 20px;
+    }
+
+    .publish-entry-btn {
+        margin-top: 104px; 
+    }
+
+    .top-bar-item {
+        padding: 4px;
+    }
+
+    .topic-entries {
+        margin-left: 0;
+    }
+
+    .entry-bottom {
+        font-size: 12px;
+    }
+
+    .navbar {
+        width: 100%;
+    }
+
+    .navbar-hover-effect {
+        width: 90%;
+    }
+
+    .navbar-list {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nl-item {
+        width: 90%;
+    }
 }
