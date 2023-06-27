@@ -234,7 +234,8 @@ class App {
 
     init = () => {
         // init navbar
-        // let sortedTopics = this.topics.sort((a, b) => b.entryCount - a.entryCount);
+
+        this.topics = this.topics.sort((a, b) => b.entryCount - a.entryCount);
 
         this.topics.forEach((topic, index) => {
             if(topic.status == "active") {
@@ -592,6 +593,8 @@ class App {
 
             let value = publishEntryTextarea.value;
 
+            this.topics = this.topics.sort((a, b) => b.entryCount - a.entryCount);
+
             if(value != "") {
 
                 let entryID = this.lastEntryID + 1;
@@ -674,6 +677,27 @@ class App {
                 navbarDIV.querySelector('.nl-item-entryCount').textContent = this.topics[this.activeTopic].entryCount;
 
                 topicEntriesArea.appendChild(entryDIV);
+
+                this.topics.map((topic, index) => {
+                    topic.topicID = index;
+                });
+
+                //    UPDATE FOR NEW SORTED LIST
+                let lastTopicID = this.topics[this.activeTopic].topicID;
+
+                let newSorted = this.topics.sort((a, b) => b.entryCount - a.entryCount);
+
+                newSorted.map((topic, index) => {
+                    if(topic.topicID == lastTopicID) {
+                        localStorage.setItem('currentTopic', index);
+
+                        if(!isMobile) {
+                            setTimeout(() => {
+                                location.reload();
+                            }, 100);
+                        }
+                    }
+                });
 
                 // this.changeTopic({currentTarget: {dataset: {topicindex: this.activeTopic}}});
 
@@ -1044,6 +1068,8 @@ if(localStorage.getItem('currentTopic')) {
 get(child(ref(db), "App/Topics"))
 .then((snapshot) => {
     app.topics = snapshot.val();
+
+    app.topics = app.topics.sort((a, b) => b.entryCount - a.entryCount);
     
     app.topics.forEach((topic) => {
         if(!topic.entries) {
@@ -1062,7 +1088,6 @@ get(child(ref(db), "App/Topics"))
     });
 
     localStorage.setItem('topics', JSON.stringify(app.topics));
-
 
     app.init();
 }).catch((error) => {

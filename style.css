@@ -234,6 +234,7 @@ body {
 
 .nl-item-text {
     margin-left: 8px;
+    width: 80%;
 }
 
 .nl-item-entryCount {
