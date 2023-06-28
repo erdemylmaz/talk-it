@@ -152,7 +152,7 @@ body {
     margin-left: 16px;
     color: #aaa;
     font-size: 10px;
-    transition: 250ms;
+    transition: 500ms;
     cursor: pointer;
     border-radius: 4px;
 
@@ -169,10 +169,10 @@ body {
 }
 
 .search-btn:hover i {
-    transform: scale(1.3);
+    transform: scale(1.17);
 }
 
-.profile {
+/* .profile {
     position: absolute;
     right: 0;
     font-size: 12px;
@@ -185,13 +185,25 @@ body {
     border-radius: 4px;
     transition: 125ms;
     cursor: pointer;
+} */
+
+.profile {
+    position: absolute;
+    right: 16px;
+    cursor: pointer;
+    transition: 250ms;
+    color: #aaa;
 }
 
 .profile:hover {
+    color: var(--red);
+}
+
+/* .profile:hover {
     color: #fff;
     border-color: var(--blue);
     background-color: var(--blue);
-}
+} */
 
 .app2 {
     margin-top: 12px;
@@ -201,6 +213,8 @@ body {
     /* margin-left: 8px; */
     position: relative;
     width: 128px;
+    overflow: scroll;
+    height: 80vh;
 }
 
 .navbar-hover-effect {
@@ -862,6 +876,32 @@ a {
     left: 4px;
 }
 
+.login-div {
+    position: absolute;
+    right: 8px;
+    text-decoration: none;
+}
+
+.login-btn {
+    margin-right: 16px;
+    color: #aaa;
+    transition: 250ms;
+}
+
+.login-btn:hover {
+    color: #000;
+}
+
+.register-btn {
+    transition: 250ms;
+    color: var(--blue);
+}
+
+.register-btn:hover {
+    color: var(--darkBlue);
+}
+
+
 @media only screen and (max-width: 1000px) {
     body {
         width: 100%;
@@ -998,3 +1038,4 @@ a {
         width: 90%;
     }
 }
+

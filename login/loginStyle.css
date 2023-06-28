@@ -1,0 +1,166 @@
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container, .register-container {
+    padding: 16px;
+    border-radius: 8px;
+    width: 256px;
+    background-color: var(--background);
+    position: relative;
+}
+
+.login-header {
+    font-size: 24px;
+    color: var(--blue);
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 8px;
+    margin-top: 8px;
+}
+
+.name-div {
+    display: flex;
+}
+
+input {
+    width: 208px;
+    border: none;
+    outline: none;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 4px;
+    font-size: 10px;
+}
+
+.username-text, .password-text {
+    margin-top: 8px;
+}
+
+.firstname-input, .surname-input {
+    width: 96px;
+}
+
+.surname-text {
+    margin-left: 6px;
+}
+
+.surname-input {
+    margin-left: 6px;
+}
+
+
+.login-footer {
+    margin-top: 4px;
+    color: #ccc;
+    margin-left: 8px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.sign-up-btn, .login-btn {
+    width: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    height: 24px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: white;
+    color: var(--blue);
+    transition: 250ms;
+}
+
+.login-btn {
+    margin-left: 16px;
+}
+
+.sign-up-btn:hover, .login-btn:hover {
+    background-color: var(--blue);
+    color: #fff;
+}
+
+.footer-sign-up-btn, .footer-login-btn {
+    color: #aaa;
+    cursor: pointer;
+    transition: 250ms;
+}
+
+.footer-sign-up-btn:hover, .footer-login-btn:hover {
+    color: var(--blue);
+    filter: opacity(0.8);
+}
+
+.logo {
+    position: absolute;
+    top: 2.2vh;
+    left: 0;
+}
+
+.login-page-container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1000px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .login-page-container{
+        width: 100%;
+    } 
+}
+
+input {
+    border: 1px solid #fff;
+    background-color: #fff;
+    border-radius: 4px;
+
+    transition: 250ms;
+}
+
+input:hover {
+    background-color: #eee;
+    border-color: #eee;
+}
+
+input:focus {
+    border: 1px solid var(--blue);
+}
+
+.password-div {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password-btn {
+    margin-left: 8px;
+    cursor: pointer;
+    transition: 250ms;
+}
+
+.toggle-password-btn:hover {
+    color: var(--blue);
+}
+
+.sign-up-btn {
+    margin-left: 37px;
+}
+
+.username-availability {
+    font-size: 10px;
+    margin-left: 2px;
+}

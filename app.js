@@ -30,6 +30,8 @@ const db = getDatabase();
 //                      APP
 
 const logo = document.querySelector('.logo');
+const profileBTN = document.querySelector('.profile');
+const loginDIV = document.querySelector('.login-div');
 
 const navbarList = document.querySelector('.navbar-list');
 const topicTitleDIV = document.querySelector('.topic-title'); 
@@ -52,6 +54,9 @@ const publishingTopicTitleInput = document.querySelector('.topic-title-input');
 
 const searchArea = document.querySelector('.search-area');
 
+const loginBTN = document.querySelector('.login-btn');
+const registerBTN = document.querySelector('.register-btn');
+
 let cevaplaBTNS;
 let publishEntryTextarea;
 let publishEntryBTN;
@@ -67,9 +72,9 @@ function addExtraZero(x) {
 class App {
     // user
     username = 'erdemyilmaz';
-    degree = "UNI";
-    isAdmin = true;
-    hasLoggedIn = true;
+    degree = "12";
+    isAdmin = false;
+    hasLoggedIn = false;
 
     isHomepage = false;
 
@@ -233,6 +238,15 @@ class App {
     searchPlaceholders = [];
 
     init = () => {
+        // init header
+        if(this.hasLoggedIn == "false") {
+            profileBTN.style.display = "none";
+            loginDIV.style.display = "flex";
+        } else if(this.hasLoggedIn == "true") {
+            loginDIV.style.display = "none";
+            profileBTN.style.display = "flex";
+        }
+
         // init navbar
 
         this.topics = this.topics.sort((a, b) => b.entryCount - a.entryCount);
@@ -577,7 +591,7 @@ class App {
     };
 
     publishEntry = () => {
-        if(this.hasLoggedIn) {
+        if(this.hasLoggedIn == "true") {
 
             let d = new Date();
 
@@ -721,7 +735,7 @@ class App {
     }
 
     cevapla = (e) => {
-        if(this.hasLoggedIn) {
+        if(this.hasLoggedIn == "true") {
             let answeringEntryDIV = e.currentTarget.parentElement.parentElement;
             let topic = answeringEntryDIV.dataset.topic;
             let entryID = answeringEntryDIV.dataset.entryid;
@@ -731,6 +745,8 @@ class App {
             let r1RepliedEntryId = answeringEntryDIV.dataset.r1repliedentryid;
 
             let answeringEntryObj;
+
+            this.topics.sort((a, b) => b.entryCount - a.entryCount);
 
             if(!isr1 && !isr2) {
                 answeringEntryObj = this.topics[topic].entries.filter((x) => {
@@ -830,7 +846,7 @@ class App {
     }
 
     createNewTopic = (e) => {
-        if(this.hasLoggedIn) {
+        if(this.hasLoggedIn == "true") {
             let title = publishingTopicTitleInput.value;
 
             let d = new Date();
@@ -849,8 +865,6 @@ class App {
 
             this.topics.push(topic);
 
-            // this.activeTopic = this.topics.length - 1;
-
             localStorage.setItem('topics', JSON.stringify(this.topics));
 
             set(ref(db, "App/Topics"), this.topics)
@@ -863,7 +877,7 @@ class App {
 
             topicModal.style.display = "none";
 
-            // location.reload();
+            location.reload();
         } else {
             alert('please log in');
         }
@@ -950,6 +964,24 @@ class App {
         }
 
         localStorage.setItem('topics', JSON.stringify(this.topics));
+
+        //    UPDATE FOR NEW SORTED LIST
+        let lastTopicID = this.topics[this.activeTopic].topicID;
+
+        let newSorted = this.topics.sort((a, b) => b.entryCount - a.entryCount);
+
+        newSorted.map((topic, index) => {
+            if(topic.topicID == lastTopicID) {
+                localStorage.setItem('currentTopic', index);
+
+                if(!isMobile) {
+                    setTimeout(() => {
+                        location.reload();
+                    }, 100);
+                }
+            }
+        });
+
 
         set(ref(db, "App/Topics"), this.topics)
         .then(() => {
@@ -1064,6 +1096,24 @@ if(localStorage.getItem('currentTopic')) {
     app.activeTopic = 3;
 }
 
+if(localStorage.getItem('hasLoggedIn')) {
+    app.hasLoggedIn = localStorage.getItem('hasLoggedIn');
+}
+
+
+// get users from database
+get(child(ref(db), "App/Users"))
+.then((snapshot) => {
+    let user;
+
+    user = snapshot.val().find((u) => u.username == localStorage.getItem('loggedAccUsername'));
+
+    app.username = user.username;
+    app.isAdmin = user.isAdmin;
+}).catch((err) => {
+    console.log(err);
+})
+
 // get topics from database
 get(child(ref(db), "App/Topics"))
 .then((snapshot) => {
@@ -1091,8 +1141,9 @@ get(child(ref(db), "App/Topics"))
 
     app.init();
 }).catch((error) => {
-    console.log(error);
 });
+
+
 
 setTimeout(() => {
 
@@ -1103,7 +1154,7 @@ setTimeout(() => {
 
     deleteEntryBtns.forEach((deleteBtn) => {
         deleteBtn.addEventListener('click', app.deleteEntry);
-    })
+    });
     
     createTopicBtn.addEventListener('click', () => {
         if(app.hasLoggedIn) {
@@ -1159,3 +1210,17 @@ if(isMobile) {
         }
     });
 }
+
+loginBTN.addEventListener('click', () => {
+    localStorage.setItem('loginType', "login");
+});
+
+registerBTN.addEventListener('click', () => {
+    localStorage.setItem('loginType', "register");
+})
+
+profileBTN.addEventListener('click', () => {
+    localStorage.setItem('hasLoggedIn', "false");
+
+    location.reload();
+})
