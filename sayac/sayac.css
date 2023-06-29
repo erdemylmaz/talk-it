@@ -57,3 +57,22 @@
 .highlight {
     color: var(--red);
 }
+
+@media only screen and (max-width: 1000px) {
+    .block {
+        width: 96px;
+        height: 96px;
+    }
+
+    .block-top {
+        font-size: 36px;
+    }
+
+    .block-bottom {
+        font-size: 24px;
+    }
+
+    .sayac-title {
+        margin-left: 8px;
+    }
+}

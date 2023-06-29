@@ -205,3 +205,22 @@ allInputs.forEach((input) => {
 });
 
 obpInput.addEventListener('keyup', calculatePoints);
+
+const loginBTN = document.querySelector('.login-btn');
+const registerBTN = document.querySelector('.register-btn');
+const profileBTN = document.querySelector('.profile');
+
+let isMobile = false;
+
+if(window.innerWidth < 1000) {
+    isMobile = true;
+}
+
+if(isMobile) {
+    loginBTN.style.display = "none";
+    registerBTN.style.display = "none";
+
+    setTimeout(() => {
+        profileBTN.style.display = "none";
+    }, 1000);
+}

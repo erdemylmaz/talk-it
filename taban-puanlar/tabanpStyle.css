@@ -172,3 +172,69 @@
 .dark .s2 {
     background-color: #131313;
 }
+
+@media only screen and (max-width: 1000px) {
+    .tp-item {
+        font-size: 12px;
+    }
+
+    .bottom-side {
+        font-size: 8px;
+    }
+
+    .bottom-bottom {
+        font-size: 12px;
+    }
+
+    .tp-item-show-more-btn {
+        right: -14px;
+        font-size: 10px;
+        color: var(--blue);
+    }
+
+    .taban-puanlar-list {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: none;
+        margin-top: 8px;
+    }
+
+    .tp-item {
+        width: 95%;
+        /* border-left: 1px solid #aaa;
+        border-right: 1px solid #aaa; */
+        border: 1px solid #aaa;
+    }
+
+    .tp-title {
+        font-size: 24px;
+        margin-left: 8px;
+    }
+
+    /* .tp-item:nth-child(2) {
+        border-top: 1px solid #aaa;
+    } */
+
+    .tp-anlam-index,
+    .tp-anlam-kont,
+    .tp-anlam-siralama,
+    .tp-anlam-title,
+    .tp-anlam-tp,
+    .tp-anlam-siralama,
+    .tp-anlam-type {
+        display: none;
+    }
+
+    .tabanp-search {
+        width: 128px;
+        right: 0px;
+    }
+
+    /* .tp-item:last-child {
+        border-bottom: 1px solid #aaa;
+    } */
+
+}

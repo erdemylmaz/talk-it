@@ -25,6 +25,13 @@ import {getDatabase, set, get, ref, child, update, remove} from "https://www.gst
 
 const db = getDatabase();
 
+//              APP
+let hasLoggedIn = false;
+
+if(localStorage.getItem('hasLoggedIn') == "true") {
+    hasLoggedIn = true;
+}
+
 class Users {
     users = [];
 }
@@ -61,6 +68,8 @@ const loginBTN = document.querySelector('.login-btn');
 const registerBTN = document.querySelector('.sign-up-btn');
 
 const togglePasswordBTNS = document.querySelectorAll('.toggle-password-btn');
+
+const select = document.querySelector("select");
 
 let loginFormType = localStorage.getItem('loginType');
 
@@ -118,6 +127,7 @@ function register() {
             surname: registerSurnameInput.value,
             username: registerUsernameInput.value,
             password: registerPasswordInput.value,
+            degree: select.value,
             createHour: h,
             createMin: m,
             createDay: day,
@@ -127,7 +137,6 @@ function register() {
         }
 
         users.users.push(user);
-
         set(ref(db, "App/Users"), users.users).then(() => {
             console.log("Successfully inserted user");
         }).catch((err) => {
@@ -136,6 +145,8 @@ function register() {
 
         localStorage.setItem('hasLoggedIn', "true");
         localStorage.setItem('loggedAccUsername', registerUsernameInput.value);
+
+        location.href = "../index.html";
     } else {
         alert("Lutfen tum bosluklari doldurunuz.");
     }
@@ -187,3 +198,8 @@ togglePasswordBTNS.forEach((toggleBTN) => {
         }
     });
 })
+
+if(hasLoggedIn) {
+    registerForm.style.display = "none";
+    loginForm.style.display = "none";
+}

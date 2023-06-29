@@ -32,6 +32,7 @@ const db = getDatabase();
 const logo = document.querySelector('.logo');
 const profileBTN = document.querySelector('.profile');
 const loginDIV = document.querySelector('.login-div');
+const showMoreBtn = document.querySelector('.show-more-btn');
 
 const navbarList = document.querySelector('.navbar-list');
 const topicTitleDIV = document.querySelector('.topic-title'); 
@@ -245,6 +246,9 @@ class App {
         } else if(this.hasLoggedIn == "true") {
             loginDIV.style.display = "none";
             profileBTN.style.display = "flex";
+        } else {
+            profileBTN.style.display = "none";
+            loginDIV.style.display = "flex";
         }
 
         // init navbar
@@ -493,6 +497,12 @@ class App {
         createTopicBtn.addEventListener('click', () => {
             topicModal.style.display = "flex";
         });
+
+
+        if(isMobile) {
+            loginDIV.style.display = "none";
+            profileBTN.style.display = "none";
+        }
     }
 
     toggleReplies = (e) => {
@@ -1082,6 +1092,10 @@ class App {
             `;
         });
     }
+
+    openMobileNavbar = () => {
+
+    }
 }
 
 export const app = new App();
@@ -1110,6 +1124,7 @@ get(child(ref(db), "App/Users"))
 
     app.username = user.username;
     app.isAdmin = user.isAdmin;
+    app.degree = user.degree;
 }).catch((err) => {
     console.log(err);
 })
@@ -1140,6 +1155,7 @@ get(child(ref(db), "App/Topics"))
     localStorage.setItem('topics', JSON.stringify(app.topics));
 
     app.init();
+
 }).catch((error) => {
 });
 
@@ -1198,18 +1214,6 @@ if(pageWidth < 1000) {
     isMobile = true;
 }
 
-if(isMobile) {
-    topbartopicItems.forEach((tbItem, index) => {
-        if(index == 1 || index == 2 || index == 3 || index == 5 || index == 8 || index == 9) {
-            tbItem.style.display = "none";
-        }
-
-        if(index == 0) {
-            tbItem.addEventListener('click', app.showTopics);
-            tbItem.classList.remove('active-top-bar');
-        }
-    });
-}
 
 loginBTN.addEventListener('click', () => {
     localStorage.setItem('loginType', "login");
@@ -1224,3 +1228,64 @@ profileBTN.addEventListener('click', () => {
 
     location.reload();
 })
+
+if(isMobile) {
+    topbartopicItems.forEach((tbItem, index) => {
+        if(index == 1 || index == 2 || index == 3 || index == 5 || index == 8 || index == 9) {
+            tbItem.style.display = "none";
+        }
+
+        if(index == 0) {
+            tbItem.addEventListener('click', app.showTopics);
+            tbItem.classList.remove('active-top-bar');
+        }
+    });
+}
+
+showMoreBtn.addEventListener('click', app.openMobileNavbar);
+
+const mobileNavbar = document.querySelector('.mobile-navbar');
+const mobileNavbarContainer = document.querySelector('.mobile-navbar-container');
+const mobileLoginBTN = document.querySelector('.navbar-login-btn');
+const mobileSignUpBTN = document.querySelector('.navbar-sign-up-btn');
+const mobileLogOutBTN = document.querySelector('.navbar-log-out-btn');
+
+showMoreBtn.addEventListener('click', () => {
+    mobileNavbar.style.display = "flex";
+});
+
+mobileLoginBTN.addEventListener('click', () => {
+    localStorage.setItem('loginType', "login");
+});
+
+mobileSignUpBTN.addEventListener('click', () => {
+    localStorage.setItem('loginType', "register");
+});
+
+mobileLogOutBTN.addEventListener('click', () => {
+    localStorage.setItem('hasLoggedIn', "false");
+
+    location.reload();
+});
+
+
+if(app.hasLoggedIn == "true") {
+    mobileLoginBTN.style.display = "none";
+    mobileSignUpBTN.style.display = "none";
+    mobileLogOutBTN.style.display = "flex";
+} else {
+    mobileLoginBTN.style.display = "flex";
+    mobileSignUpBTN.style.display = "flex";
+    mobileLogOutBTN.style.display = "none";
+}
+
+document.addEventListener('click', (e) => {
+    if(e.target.classList.contains('mobile-navbar')) {
+        mobileNavbarContainer.style.animation = "reverseNavbarAnimation 500ms";
+
+        setTimeout(() => {
+            mobileNavbar.style.display = "none";
+            mobileNavbarContainer.style.animation = "navbarAnimation 500ms";
+        }, 500)
+    }
+});

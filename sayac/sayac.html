@@ -13,13 +13,13 @@
 <body>
     <div class="app">
         <div class="header">
-            <div class="logo">
+            <a href="../index.html" class="logo">
                 <div class="logo-top">
                     <span class="talk-text">talk</span> it!
                 </div>
 
                 <div class="logo-bottom">ögrenciler için sohbet forumu</div>
-            </div>
+            </a>
 
             <div class="search-div">
                 <input type="text" class="search-area" placeholder=""></input>
@@ -31,8 +31,17 @@
             <div class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></div>
 
             <div class="profile">
-                <i class="fa-regular fa-user"></i>
+                <!-- <i class="fa-regular fa-user"></i> -->
+                <!-- Log Out! -->
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
             </div>
+
+            <div class="login-div">
+                <a href="../login/login.html" class="login-btn">Log In</a>
+                <a href="../login/login.html" class="register-btn">Sign Up</a>
+            </div>
+
+            <div class="show-more-btn"><i class="fa-solid fa-bars-staggered"></i></div>
         </div> 
 
         <div class="top-bar">
@@ -81,6 +90,26 @@
             Saat <span class="highlight"> 10.00'dan sonra</span> sinav binasina giris yapmak <span class="highlight">yasaktir</span>. <p></p>
             Sinav salonuna <span class="highlight">ambalaji cikartilmis</span> su sisesiyle giris yapabilirsiniz. <p></p>
             Sinav salonuna kendi kalem kutunuz ile giris yapmaniz <span class="highlight">yasaktir</span>.
+        </div>
+    </div>
+
+    <div class="mobile-navbar">
+        <div class="mobile-navbar-container">
+            <a href="../index.html" class="mobile-navbar-item">ana sayfa</a>
+            <div class="mobile-navbar-item">sorular</div>
+            <div class="mobile-navbar-item">turkiye geneli</div>
+            <div class="mobile-navbar-item">soru-cevap</div>
+            <a href="#" class="mobile-navbar-item mobile-navbar-item-active">yks sayac</a>
+            <a href="../quiz/index.html" class="mobile-navbar-item">quiz</a>
+            <a href="../taban-puanlar/tabanp.html" class="mobile-navbar-item">taban puanlar</a>
+            <a href="../puan-hesaplama/puan.html" class="mobile-navbar-item">puan hesaplama</a>
+            <a href="https://erdemylmaz.github.io/yks-yardimci/" class="mobile-navbar-item">yks yardimci</a>
+            <a href="https://www.buymeacoffee.com/erdemy" class="mobile-navbar-item">buy me a coffee <i class="fa-solid fa-mug-hot"></i></a>
+            <div class="mobile-navbar-login-div">
+                <a href="../login/login.html" class="navbar-login-btn">Log In</a>
+                <a href="../login/login.html" class="navbar-sign-up-btn">Sign Up</a>
+                <div class="navbar-log-out-btn">Log Out</div>
+            </div>
         </div>
     </div>
 

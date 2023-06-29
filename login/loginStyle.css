@@ -42,6 +42,10 @@ input {
     font-size: 10px;
 }
 
+select {
+    width: 108px;
+}
+
 .username-text, .password-text {
     margin-top: 8px;
 }
