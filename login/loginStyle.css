@@ -168,3 +168,55 @@ input:focus {
     font-size: 10px;
     margin-left: 2px;
 }
+
+img[alt="www.000webhost.com"] {
+    width: 0;
+    height: 0;
+}
+
+.register-warning {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.warning-container {
+    width: 300px;
+    height: 128px;
+    background-color: #fff;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 32px;
+}
+
+.warning-title {
+    width: 100%;
+    font-size: 36px;
+    color: var(--blue);
+    margin-bottom: 8px;
+}
+
+.warning-text {
+    width: 100%;
+    margin-top: 8px;
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.warning-close-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 24px;
+    color: var(--red);
+    cursor: pointer;
+    font-size: 20px;
+}

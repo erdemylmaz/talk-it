@@ -29,6 +29,9 @@ const db = getDatabase();
 
 //                      APP
 
+const loginWarningModal = document.querySelector('.login-warning-modal');
+const alertModal = document.querySelector('.alert-modal');
+const alertModalText = document.querySelector('.alert-modal-text');
 const logo = document.querySelector('.logo');
 const profileBTN = document.querySelector('.profile');
 const loginDIV = document.querySelector('.login-div');
@@ -72,7 +75,9 @@ function addExtraZero(x) {
 
 class App {
     // user
-    username = 'erdemyilmaz';
+    users = [];
+
+    username = '';
     degree = "12";
     isAdmin = false;
     hasLoggedIn = false;
@@ -311,6 +316,17 @@ class App {
                 entry.replies = [];
             }
 
+            let isOwnerAdmin = false; 
+
+            this.users.map((user) => {
+                if(user.username == entry.username) {
+                    if(user.isAdmin) {
+                        isOwnerAdmin = true;
+                    }
+                }
+            });
+
+
             entryDIV.innerHTML = `
                 <div class="delete-entry-btn" style="display: ${this.canDeleteEntry(entry.username, this.username)}"><i class="fa-solid fa-trash"></i></div>
                 <div class="entry-top entry-${entry.entryID}">
@@ -325,7 +341,7 @@ class App {
 
                     <div class="entry-bottom-right">
                         <div class="entry-like-btn"><i class="fa-regular fa-heart"></i></div>
-                        <div class="entry-username">${entry.username} <span class="user-degree">(${entry.userDegree})</span></div>
+                        <div class="entry-username ${isOwnerAdmin ? "admin-username" : ""}">${entry.username} <span class="user-degree">(${entry.userDegree})</span></div>
 
                         <div class="entry-date">${entry.publishTime} - ${entry.publishDate}</div>
                     </div>
@@ -340,9 +356,23 @@ class App {
             for(let x = 0; x < entry.replyCount; x++) {
                 let reply = entry.replies[x];
 
+                if(entry.username == "Morsal") {
+                    console.log(reply);
+                }
+
                 if(reply.replies == undefined) {
                     reply.replies = [];
                 }
+
+                let isReplyOwnerAdmin = false; 
+
+                this.users.map((user) => {
+                    if(user.username == reply.username) {
+                        if(user.isAdmin) {
+                            isReplyOwnerAdmin = true;
+                        }
+                    }
+                });
 
                 if(reply) {
                     let repliedEntryRepliesDIV = document.querySelector(`.replies-${reply.replyTo}`);
@@ -370,7 +400,7 @@ class App {
 
                         <div class="entry-bottom-right">
                             <div class="entry-like-btn"><i class="fa-regular fa-heart"></i></div>
-                            <div class="entry-username">${reply.username} <span class="user-degree">(${reply.userDegree})</span></div>
+                            <div class="entry-username ${isReplyOwnerAdmin ? "admin-username" : ""}">${reply.username} <span class="user-degree">(${reply.userDegree})</span></div>
 
                             <div class="entry-date">${reply.publishTime} - ${reply.publishDate}</div>
                         </div>
@@ -382,9 +412,12 @@ class App {
                     repliedEntryRepliesDIV.appendChild(replyDIV);
 
                     let toggleReplyBTN = document.querySelector(`.toggle-repliesBTN-${reply.entryID}`);
+
             
                     if(reply.replyCount == 0) {
                         toggleReplyBTN.style.display = "none";
+                    } else if(reply.replyCount > 0) {
+                        toggleReplyBTN.style.display = "flex";
                     }
 
 
@@ -395,6 +428,16 @@ class App {
                         if(reply2.replies == undefined) {
                             reply2.replies = [];
                         }
+
+                        let isReply2OwnerAdmin = false; 
+
+                        this.users.map((user) => {
+                            if(user.username == reply2.username) {
+                                if(user.isAdmin) {
+                                    isReply2OwnerAdmin = true;
+                                }
+                            }
+                        });
 
                         let repliedEntryRepliesDIV = document.querySelector(`.replies-${reply2.replyTo}`);
         
@@ -421,7 +464,7 @@ class App {
 
                             <div class="entry-bottom-right">
                                 <div class="entry-like-btn"><i class="fa-regular fa-heart"></i></div>
-                                <div class="entry-username">${reply2.username} <span class="user-degree">(${reply2.userDegree})</span></div>
+                                <div class="entry-username ${isReply2OwnerAdmin ? "admin-username" : ""}">${reply2.username} <span class="user-degree">(${reply2.userDegree})</span></div>
         
                                 <div class="entry-date">${reply2.publishTime} - ${reply2.publishDate}</div>
                             </div>
@@ -444,8 +487,11 @@ class App {
 
             let toggleReplyBTN = document.querySelector(`.toggle-repliesBTN-${entry.entryID}`);
 
+
             if(entry.replyCount == 0) {
                 toggleReplyBTN.style.display = "none";
+            } else if(entry.replyCount > 0) {
+                toggleReplyBTN.style.display = "flex";
             }
 
         });
@@ -652,7 +698,14 @@ class App {
                 
                 set(ref(db, "App/Topics"), this.topics)
                 .then(() => {
-                    alert('Data Inserted successfully');
+                    // alert('Data Inserted successfully');
+                    alertModal.style.display = "flex";
+
+                    alertModalText.textContent = "Entry Basariyla Paylasildi.";
+                    setTimeout(() => {
+                        alertModal.style.display = "none";
+                    }, 1500);
+
                 }).catch((error) => {
                     alert(error);
                 });
@@ -718,7 +771,7 @@ class App {
                         if(!isMobile) {
                             setTimeout(() => {
                                 location.reload();
-                            }, 100);
+                            }, 1500);
                         }
                     }
                 });
@@ -740,7 +793,12 @@ class App {
             })
 
         } else {
-            alert("please log in")
+            loginWarningModal.style.display = "flex";
+
+            setTimeout(() => {
+                loginWarningModal.style.display = "none";
+            }, 1500);
+            
         }
     }
 
@@ -836,7 +894,15 @@ class App {
                     localStorage.setItem('topics', JSON.stringify(this.topics));
 
                     set(ref(db, "App/Topics"), this.topics).then(() => {
-                        alert("Reply Successfully Published");
+                        // alert("Reply Successfully Published");
+                        alertModal.style.display = "flex";
+
+                        alertModalText.textContent = "Cevap Basariyla Paylasildi.";
+                        setTimeout(() => {
+                            alertModal.style.display = "none";
+                        }, 1500);
+
+
                     }).catch((err) => {
                         console.log(err);
                     })
@@ -847,7 +913,12 @@ class App {
                 });
             }
         } else {
-            alert("please log in");
+            loginWarningModal.style.display = "flex";
+
+            setTimeout(() => {
+                loginWarningModal.style.display = "none";
+            }, 1500);
+            
         }
 
     }
@@ -873,6 +944,10 @@ class App {
                 status: "waiting",
             };
 
+            if(this.isAdmin) {
+                topic.status = "active";
+            }
+
             this.topics.push(topic);
 
             localStorage.setItem('topics', JSON.stringify(this.topics));
@@ -883,13 +958,39 @@ class App {
                 console(error);
             });
 
-            alert("Waiting for permission");
+            if(!this.isAdmin) {
+                // alert("Waiting for permission");
+                alertModal.style.display = "flex";
+
+                alertModalText.textContent = "Izin Bekleniyor.";
+                setTimeout(() => {
+                    alertModal.style.display = "none";
+
+                }, 1500);
+
+            } else {
+                alertModal.style.display = "flex";
+
+                alertModalText.textContent = "Topic Basariyla Olusturuldu.";
+                localStorage.setItem('activeTopic', 0);
+                setTimeout(() => {
+                    alertModal.style.display = "none";
+
+                }, 1500);
+            }
 
             topicModal.style.display = "none";
 
-            location.reload();
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+
         } else {
-            alert('please log in');
+            loginWarningModal.style.display = "flex";
+
+            setTimeout(() => {
+                loginWarningModal.style.display = "none";
+            }, 1500);
         }
     }
 
@@ -987,7 +1088,7 @@ class App {
                 if(!isMobile) {
                     setTimeout(() => {
                         location.reload();
-                    }, 100);
+                    }, 1500);
                 }
             }
         });
@@ -995,14 +1096,20 @@ class App {
 
         set(ref(db, "App/Topics"), this.topics)
         .then(() => {
-            alert("data removed successfully");
+            // alert("data removed successfully");
+            alertModal.style.display = "flex";
+            alertModalText.textContent = "Entry Basariyla Silindi."
+
+            setTimeout(() => {
+                alertModal.style.display = "none";
+            }, 1500);
         }).catch((error) => {
             alert(error);
         });
 
         setTimeout(() => {
-            // location.reload();
-        }, 1000);
+            location.reload();
+        }, 1500);
     }
 
     showTopics = () => {
@@ -1122,6 +1229,8 @@ get(child(ref(db), "App/Users"))
 
     user = snapshot.val().find((u) => u.username == localStorage.getItem('loggedAccUsername'));
 
+    app.users = snapshot.val();
+
     app.username = user.username;
     app.isAdmin = user.isAdmin;
     app.degree = user.degree;
@@ -1176,7 +1285,12 @@ setTimeout(() => {
         if(app.hasLoggedIn) {
             topicModal.style.display = "flex";
         } else {
-            alert("please log in");
+            loginWarningModal.style.display = "flex";
+
+            setTimeout(() => {
+                loginWarningModal.style.display = "none";
+            }, 1500);
+            
             topicModal.style.display = "none";
         }
     });
@@ -1214,7 +1328,6 @@ if(pageWidth < 1000) {
     isMobile = true;
 }
 
-
 loginBTN.addEventListener('click', () => {
     localStorage.setItem('loginType', "login");
 });
@@ -1225,9 +1338,10 @@ registerBTN.addEventListener('click', () => {
 
 profileBTN.addEventListener('click', () => {
     localStorage.setItem('hasLoggedIn', "false");
+    localStorage.setItem('loggedAccUsername', "");
 
     location.reload();
-})
+});
 
 if(isMobile) {
     topbartopicItems.forEach((tbItem, index) => {
@@ -1264,6 +1378,7 @@ mobileSignUpBTN.addEventListener('click', () => {
 
 mobileLogOutBTN.addEventListener('click', () => {
     localStorage.setItem('hasLoggedIn', "false");
+    localStorage.setItem('loggedAccUsername', "");
 
     location.reload();
 });
@@ -1289,3 +1404,17 @@ document.addEventListener('click', (e) => {
         }, 500)
     }
 });
+
+// IF ADMIN LET ADMIN CREATE TOPIC WITHOUT PERMISSION!!
+
+document.addEventListener('click', (e) => {
+    if(e.target.className == "login-warning-modal") {
+        loginWarningModal.style.display = "none";
+    }
+})
+
+document.addEventListener('click', (e) => {
+    if(e.target.className == "alert-modal") {
+        alertModal.style.display = 'none';
+    }
+})

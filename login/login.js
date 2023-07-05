@@ -26,6 +26,7 @@ import {getDatabase, set, get, ref, child, update, remove} from "https://www.gst
 const db = getDatabase();
 
 //              APP
+const warningModal = document.querySelector('.register-warning');
 let hasLoggedIn = false;
 
 if(localStorage.getItem('hasLoggedIn') == "true") {
@@ -83,6 +84,7 @@ footerLoginBtn.addEventListener('click', () => {
 footerSignUpBtn.addEventListener('click', () => {
     loginForm.style.display = "none";
     registerForm.style.display = "block";
+    warningModal.style.display = "flex";
 
     localStorage.setItem('loginType', 'register');
 });
@@ -94,6 +96,7 @@ if(loginFormType == "login") {
 } else {
     loginForm.style.display = "none";
     registerForm.style.display = "block";
+    warningModal.style.display = "flex";
     // alert("Lutfen aktif kullandiginiz sifreleri kullanmamaya ozen gosterin!");
 }
 
@@ -157,7 +160,7 @@ function checkUsername() {
     hasSameUsername = false;
 
     users.users.map((user) => {
-        if(user.username == registerUsernameInput.value) {
+        if(user.username.toLowerCase() == registerUsernameInput.value.toLowerCase()) {
             hasSameUsername = true;
         }
     });
@@ -203,3 +206,15 @@ if(hasLoggedIn) {
     registerForm.style.display = "none";
     loginForm.style.display = "none";
 }
+
+const closeModalBtn = document.querySelector('.warning-close-btn')
+
+document.addEventListener('click', (e) => {
+    if(e.target.className == "register-warning") {
+        warningModal.style.display = "none";
+    }
+})
+
+closeModalBtn.addEventListener('click', () => {
+    warningModal.style.display = "none";
+})

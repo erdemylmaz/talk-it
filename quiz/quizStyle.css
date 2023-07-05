@@ -75,3 +75,8 @@
         margin: 0;
     }
 }
+
+img[alt="www.000webhost.com"] {
+    width: 0;
+    height: 0;
+  }

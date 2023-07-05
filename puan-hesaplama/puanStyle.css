@@ -202,3 +202,8 @@
 .graphic-info-block:last-child {
     margin-top: -24px;
 }
+
+img[alt="www.000webhost.com"] {
+    width: 0;
+    height: 0;
+  }

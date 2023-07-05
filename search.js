@@ -27,7 +27,9 @@ function changeTopicBySearch(e) {
 
     localStorage.setItem('currentTopic', activeTopic2);
 
-    location.reload();
+    if(topicIndex) {
+        location.reload();
+    }
 }
 
 function search() {
@@ -51,6 +53,7 @@ function search() {
         firstResults.sort((a, b) => b.entryCount - a.entryCount);
 
         let isAllWaiting = true;
+        let hasSame = false;
 
         firstResults.map((result, index) => {
             if(index < 5) {
@@ -61,6 +64,10 @@ function search() {
                     resultDIV = document.createElement('a');
                     resultDIV.href = "../index.html";
 
+                }
+
+                if(value.toLowerCase() == result.title.toLowerCase()) {
+                    hasSame = true;
                 }
 
                 if(result.status == "active") {
@@ -86,8 +93,7 @@ function search() {
             }
         });
 
-
-        if(firstResults.length == 0 && isHomepage || isAllWaiting) {
+        if(firstResults.length == 0 && isHomepage || isAllWaiting || !hasSame) {
                 let resultDIV = document.createElement('div');
                 resultDIV.className = "search-result create-result";
                 resultDIV.setAttribute('data-title', value);
@@ -98,7 +104,11 @@ function search() {
                     <div class="result-entryCount">Create Topic!</div>
                 `;
 
-                resultsArea.prepend(resultDIV);
+                if(!hasSame) {
+                    resultsArea.appendChild(resultDIV);
+                } else {
+                    resultsArea.prepend(resultDIV);
+                }
 
                 createResult = document.querySelector('.create-result');
 

@@ -101,3 +101,14 @@ setTimeout(() => {
         }
     });
 }, 1000);
+
+let pageWidth = document.body.offsetWidth;
+
+if(pageWidth < 1000) {
+    isMobile = true;
+}
+
+if(isMobile) {
+    topbarhoverDIV.style.display = "none";
+    hoverDIV.style.display = "flex";
+}
