@@ -93,7 +93,7 @@ function search() {
             }
         });
 
-        if(firstResults.length == 0 && isHomepage || isAllWaiting || !hasSame) {
+        if(firstResults.length == 0 && isHomepage || (isAllWaiting && isHomepage) || (!hasSame && isHomepage)) {
                 let resultDIV = document.createElement('div');
                 resultDIV.className = "search-result create-result";
                 resultDIV.setAttribute('data-title', value);

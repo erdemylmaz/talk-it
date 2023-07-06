@@ -1231,6 +1231,9 @@ get(child(ref(db), "App/Users"))
 
     app.users = snapshot.val();
 
+    localStorage.setItem('loggedAccDegree', user.degree);
+    localStorage.setItem('isAdmin', user.isAdmin);
+
     app.username = user.username;
     app.isAdmin = user.isAdmin;
     app.degree = user.degree;

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="scStyle.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="shortcut icon" href="../favicon/l5.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/6316116050.js" crossorigin="anonymous"></script>
+    <title>soru-cevap - talk it!</title>
+</head>
+<body>
+    <div class="login-warning-modal">
+        <div class="login-warning-container">
+            <div class="login-warning-text">Lutfen Giris Yapin!</div>
+        </div>
+    </div>
+
+    <div class="app">
+        <div class="header">
+            <a href="../index.html" class="logo">
+                <div class="logo-top">
+                    <span class="talk-text">talk</span> it!
+                </div>
+
+                <div class="logo-bottom">ögrenciler için sohbet forumu</div>
+                <!-- <div class="logo-bottom">yeni nesil kutuphane</div> -->
+            </a>
+
+            <div class="search-div">
+                <input type="text" class="search-area" placeholder=""></input>
+
+                <div class="search-results">
+                </div>
+            </div>
+
+            <div class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></div>
+
+            <div class="profile">
+                <!-- <i class="fa-regular fa-user"></i> -->
+                <!-- Log Out! -->
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </div>
+
+            <div class="login-div">
+                <a href="../login/login.html" class="login-btn">Log In</a>
+                <a href="../login/login.html" class="register-btn">Sign Up</a>
+            </div>
+
+            <div class="show-more-btn"><i class="fa-solid fa-bars-staggered"></i></div>
+        </div> 
+
+        <div class="top-bar">
+            <div class="top-bar-hover"></div>
+
+            <a href="../index.html" class="top-bar-item">gundem</a>
+            <div class="top-bar-item">sorular</div>
+            <div class="top-bar-item">turkiye geneli</div>
+            <div class="top-bar-item active-top-bar">soru-cevap</div>
+            <a href="../sayac/sayac.html" class="top-bar-item">yks sayac</a>
+            <a href="../quiz/index.html" class="top-bar-item">quiz</a>
+            <a href="../taban-puanlar/tabanp.html" class="top-bar-item">taban puanlar</a>
+            <a href="../puan-hesaplama/puan.html" class="top-bar-item">puan hesaplama</a>
+            <a href="https://erdemylmaz.github.io/yks-yardimci/" class="top-bar-item">yks yardimci</a>
+            <a href="https://www.buymeacoffee.com/erdemy" class="top-bar-item bmc">buy me a coffee  <span class="mug"><i class="fa-solid fa-mug-hot"></i></span></a>
+        </div>
+
+        <div class="mobile-navbar">
+            <div class="mobile-navbar-container">
+                <a href="../index.html" class="mobile-navbar-item">ana sayfa</a>
+                <div class="mobile-navbar-item">sorular</div>
+                <div class="mobile-navbar-item">turkiye geneli</div>
+                <a href="#" class="mobile-navbar-item">soru-cevap</a>
+                <a href="../sayac/sayac.html" class="mobile-navbar-item">yks sayac</a>
+                <a href="../quiz/index.html" class="mobile-navbar-item mobile-navbar-item-active">quiz</a>
+                <a href="../taban-puanlar/tabanp.html" class="mobile-navbar-item">taban puanlar</a>
+                <a href="../puan-hesaplama/puan.html" class="mobile-navbar-item">puan hesaplama</a>
+                <a href="https://erdemylmaz.github.io/yks-yardimci/" class="mobile-navbar-item">yks yardimci</a>
+                <a href="https://www.buymeacoffee.com/erdemy" class="mobile-navbar-item">buy me a coffee <i class="fa-solid fa-mug-hot"></i></a>
+                <div class="mobile-navbar-login-div">
+                    <a href="../login/login.html" class="navbar-login-btn">Log In</a>
+                    <a href="../login/login.html" class="navbar-sign-up-btn">Sign Up</a>
+                    <div class="navbar-log-out-btn">Log Out</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="sc-container">
+            <div class="sc-create-soru-btn">Soru Sor</div>
+
+            <div class="sorular">
+            </div>
+
+            <div class="done-sorular">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="create-soru-modal">
+        <div class="soru-modal-container">
+            <div class="close-soru-modal-btn"><i class="fa-solid fa-xmark"></i></div>
+            <div class="soru-modal-image-area">
+                <input type="file" class="soru-image-input" accept="image/png, image/jpg, image/jpeg, image/heic">
+                <div class="dragndrop-text">Surukleyip Birakin ya da Resmi Yukleyin (.png, .jpg, .jpeg, .heic)</div>
+                <img src="" class="soru-modal-image" />
+            </div>
+
+            <div class="soru-modal-bottom">
+                <input type="text" placeholder="Soru Basliginiz" class="soru-modal-title-input" />
+
+                <select class="soru-modal-ders-select">
+
+                    <option disabled>TYT</option>
+                    <option>TYT Turkce</option>
+                    <option>TYT Tarih</option>
+                    <option>TYT Cografya</option>
+                    <option>TYT Felsefe</option>
+                    <option>TYT Din</option>
+                    <option selected>TYT Matematik</option>
+                    <option>TYT Geometri</option>
+                    <option>TYT Fizik</option>
+                    <option>TYT Kimya</option>
+                    <option>TYT Biyoloji</option>
+
+                    <option disabled>AYT</option>
+                    <option>AYT Matematik</option>
+                    <option>AYT Geometri</option>
+                    <option>AYT Fizik</option>
+                    <option>AYT Kimya</option>
+                    <option>AYT Biyoloji</option>
+                </select>
+
+                <div class="publish-soru-btn">Sor</div>
+            </div>
+        </div>
+    </div>
+    
+<script src="../hover-effect.js"></script>
+<script src="./sc.js" type="module"></script>
+<!-- search -->
+<script src="../search.js" type="module"></script>
+</body>
+</html>

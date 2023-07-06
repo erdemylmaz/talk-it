@@ -1,0 +1,284 @@
+.sc-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 32px;
+}
+
+.sc-soru {
+    width: 900px;
+    height: 8vh;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    padding: 4px 8px;
+    margin-top: 36px;
+    transition: 250ms;
+    border-radius: 8px;
+}
+
+.sc-soru:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.sc-soru:first-child {
+    margin-top: 0;
+}
+
+.done-sorular {
+    margin-top: 36px;
+}
+
+.soru-image {
+    height: 8vh;
+    border: 1px solid #000;
+    margin-top: -1px;
+    border-radius: 4px;
+    transition: 500ms;
+}
+
+.soru-image:hover {
+    transform: scale(1.5);
+}
+
+.sc-create-soru-btn {
+    width: 96px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    font-size: 20px;
+    background-color: var(--blue);
+    color: #fff;
+    cursor: pointer;
+    margin-left: calc(100% - 96px - 80px);
+    transition: 500ms;
+}
+
+.sc-create-soru-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #000;
+}
+
+.soru-container {
+    margin-left: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.soru-title {
+    font-size: 24px;
+    color: var(--blue);
+}
+
+.soru-left {
+    width: 128px;
+    text-align: center;
+}
+
+.soru-tag {
+    padding: 1px 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    text-align: center;
+    color: #fff;
+    background-color: var(--blue);
+}
+
+.soru-right {
+    display: flex;
+    color: #aaa;
+    position: absolute;
+    bottom: 0;
+    right: 8px;
+}
+
+.soru-info {
+    margin-left: 4px;
+}
+
+.soru-username {
+    margin-right: 8px;
+}
+
+.soru-status {
+    position: absolute;
+    top: 4px;
+    right: 8px;
+}
+
+.fa-hourglass-start {
+    /* color: var(--darkyellow); */
+    color: #634A00;
+    font-size: 20px;
+    /* animation: waitingAnimation linear 5000ms infinite; */
+}
+
+.fa-check {
+    color: var(--pastelgreen);
+    font-size: 20px;
+}
+
+@keyframes waitingAnimation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    12.5% {
+        transform: rotate(180deg);
+    }
+
+    25% {
+        transform: rotate(180deg);
+    }
+
+    37.5% {
+        transform: rotate(360deg);
+    }
+
+    75% {
+        transform: rotate(360deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.create-soru-modal {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999999;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.soru-modal-container {
+    width: 512px;
+    height: 512px;
+    background-color: #fff;
+    border-radius: 8px;
+    position: relative;
+}
+
+.soru-modal-image-area {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #aaa;
+}
+
+.dragndrop-text {
+    font-size: 24px;
+    margin-top: 12px;
+    color: #aaa;
+}
+
+.soru-modal-image {
+    display: none;
+    border: 1px solid #000;
+    border-radius: 4px;
+    height: 300px;
+}
+
+.soru-modal-bottom {
+    width: 490px;
+    margin-left: 11px;
+    height: 204px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 8px;
+}
+
+select {
+    width: 128px;
+}
+
+.soru-modal-title-input {
+    width: 256px;
+    height: 32px;
+    font-size: 18px;
+    color: var(--blue);
+    border: none;
+    outline: none;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    padding: 0 4px;
+    margin-bottom: 8px;
+}
+
+.publish-soru-btn {
+    width: 96px;
+    height: 36px;
+    background-color: var(--blue);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    border-radius: 4px;
+    position: absolute;
+    cursor: pointer;
+    bottom: 16px;
+    right: 24px;
+    transition: 250ms;
+}
+
+.publish-soru-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #000;
+}
+
+.close-soru-modal-btn {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    color: var(--red);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.done-soru {
+    filter: opacity(0.5);
+}
+
+.sorular {
+    margin-top: 8px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .sc-soru {
+        flex-direction: column;
+        width: 312px;
+        height: 200px;
+        border-radius: 4px;
+    }
+
+    .sorular {
+        margin-top: 24px;
+    }
+
+    .soru-left {
+        width: 100%;
+    }
+
+    .soru-container {
+        width: 100%;
+        align-items: center;
+        margin-top: 8px;
+        margin-left: 0;
+    }
+
+    .soru-image {
+        height: 96px;
+    }
+}
