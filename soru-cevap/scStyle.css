@@ -20,14 +20,15 @@
 
 .sc-soru:hover {
     background-color: rgba(0, 0, 0, 0.1);
+    transform: scale(1.1);
 }
 
 .sc-soru:first-child {
-    margin-top: 0;
+    /* margin-top: 0; */
 }
 
 .done-sorular {
-    margin-top: 36px;
+    /* margin-top: 36px; */
 }
 
 .soru-image {
@@ -39,7 +40,7 @@
 }
 
 .soru-image:hover {
-    transform: scale(1.5);
+    /* transform: scale(1.5); */
 }
 
 .sc-create-soru-btn {
@@ -53,7 +54,8 @@
     background-color: var(--blue);
     color: #fff;
     cursor: pointer;
-    margin-left: calc(100% - 96px - 80px);
+    /* margin-left: calc(100% - 96px - 80px); */
+    margin-right: 42px;
     transition: 500ms;
 }
 
@@ -156,6 +158,13 @@
     align-items: center;
     z-index: 999999999;
     background-color: rgba(0, 0, 0, 0.5);
+}
+
+.sc-container-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
 }
 
 .soru-modal-container {
@@ -281,4 +290,24 @@ select {
     .soru-image {
         height: 96px;
     }
+}
+
+.filter-settings {
+    height: 32px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: 42px;
+}
+
+.toggle-done-sorular-btn {
+    margin-left: 8px;
+    color: #aaa;
+    cursor: pointer;
+    transition: 250ms;
+}
+
+.toggle-done-sorular-btn:hover {
+    color: #000;
 }

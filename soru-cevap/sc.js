@@ -65,10 +65,15 @@ const dragNDropText = document.querySelector('.dragndrop-text');
 const scContainer = document.querySelector('.sorular');
 const doneSorular = document.querySelector('.done-sorular');
 const titleInput = document.querySelector('.soru-modal-title-input');
-const dersSelect = document.querySelector('select');
+const dersSelect = document.querySelector('.soru-modal-ders-select');
 const publishSoruBTN = document.querySelector('.publish-soru-btn');
 
 const warningModal = document.querySelector('.login-warning-modal');
+const toggleDoneSorularBTN = document.querySelector('.toggle-done-sorular-btn');
+
+let sorularDIVS;
+
+let dersFilter = document.querySelector('.ders-filter-select');
 
 function addExtraZero(x) {
     return x < 10 ? "0" + x : x;
@@ -122,11 +127,16 @@ get(ref(db, "App/Sorular"))
     });
 
     initSorular();
+
+    sorularDIVS = document.querySelectorAll('.sc-soru');
 }).catch((err) => {
     console.log(err);
 })
 
 function initSorular() {
+    let filterValue = dersFilter.value;
+
+
     sorular.map((soru) => {
         let a = document.createElement('a');
         a.className = "sc-soru"
@@ -198,6 +208,7 @@ function publishSoru() {
         status: 'waiting',
         soruID: lastSoruID + 1,
         isAdmin: localStorage.getItem('isAdmin'),
+        answers: [],
     }
 
     sorular.push(soru);
@@ -245,4 +256,39 @@ closeSoruModalBtn.addEventListener('click', () => {
     dragNDropText.style.display = "block";
     soruImagePreview.style.display = "none";
     soruImagePreview.src = "";
+});
+
+
+dersFilter.addEventListener('change', () => {
+    let filterValue = dersFilter.value;
+
+    // filter sorular
+
+    sorularDIVS.forEach((soru) => {
+        let dersTitle = soru.querySelector('.soru-tag').textContent;
+
+        console.log(dersTitle, filterValue, dersTitle.indexOf(filterValue));
+
+        if(dersTitle.indexOf(filterValue) == -1) {
+            soru.style.display = "none";
+        } else {
+            soru.style.display = "flex";
+        }
+
+        if(filterValue == "Tum Dersler") {
+            soru.style.display = "flex";
+        }
+    });
+});
+
+toggleDoneSorularBTN.addEventListener('click', (e) => {
+    if(toggleDoneSorularBTN.dataset.isactive == "false") {
+        toggleDoneSorularBTN.textContent = 'Tamamlanmis Sorulari da Goster'
+        toggleDoneSorularBTN.setAttribute('data-isactive', "true");
+        doneSorular.style.display = "none";
+    } else {
+        toggleDoneSorularBTN.textContent = 'Tamamlanmis Sorulari Gizle'
+        toggleDoneSorularBTN.setAttribute('data-isactive', "false");
+        doneSorular.style.display = "block";
+    }
 });

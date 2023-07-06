@@ -47,6 +47,7 @@ img[alt="www.000webhost.com"] {
     font-family: handwriting;
     /* src: url(./font/composition-regular\ 2.otf); */
     src: url(./font/JustSquash-X3MGK.ttf)
+    /* src: url(./font/FontsFree-Net-Proxima-Nova-Soft-W03-Regular.ttf) */
     /* src: url(./font/Virgil.woff2); */
 }
 
@@ -273,6 +274,7 @@ body {
 }
 
 .topic-title {
+    color: var(--blue);
     font-size: 36px;
 }
 
@@ -312,6 +314,7 @@ body {
     max-width: calc(100% - 64px);
     margin-left: 16px;
     margin-top: 4px;
+    font-size: 20px;
     color: #232323;
 }
 

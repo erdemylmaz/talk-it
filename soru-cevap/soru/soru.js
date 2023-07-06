@@ -22,3 +22,11 @@ topbaractiveTopic = 3;
 topbartopicItems[3].style.color = "#fff";
 
 TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
+
+//              SORU APP
+const soru = JSON.parse(localStorage.getItem('soru'));
+
+if(!soru.answers) {
+    soru.asnwers = [];
+}
+

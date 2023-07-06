@@ -1,0 +1,8 @@
+.soru-container {
+    width: 800px;
+    min-height: 50vh;
+    margin: auto;
+    margin-top: 36px;
+    background-color: red;
+    border-radius: 8px;
+}
