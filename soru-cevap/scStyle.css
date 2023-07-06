@@ -14,12 +14,13 @@
     position: relative;
     padding: 4px 8px;
     margin-top: 36px;
-    transition: 250ms;
+    transition: 500ms;
     border-radius: 8px;
 }
 
 .sc-soru:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    /* background-color: rgba(0, 0, 0, 0.1); */
+    background-color: #eee;
     transform: scale(1.1);
 }
 
@@ -29,6 +30,7 @@
 
 .done-sorular {
     /* margin-top: 36px; */
+    margin-bottom: 108px;
 }
 
 .soru-image {
@@ -212,9 +214,10 @@ select {
     width: 128px;
 }
 
-.soru-modal-title-input {
+.soru-modal-title-input, .soru-modal-desc-textarea {
     width: 256px;
     height: 32px;
+    font-family: handwritin;
     font-size: 18px;
     color: var(--blue);
     border: none;
@@ -223,6 +226,12 @@ select {
     border-radius: 8px;
     padding: 0 4px;
     margin-bottom: 8px;
+}
+
+.soru-modal-desc-textarea {
+    height: 96px;
+    border-radius: 8px;
+    color: #000;
 }
 
 .publish-soru-btn {
@@ -309,5 +318,6 @@ select {
 }
 
 .toggle-done-sorular-btn:hover {
-    color: #000;
+    /* color: #000; */
+    color: var(--blue);
 }

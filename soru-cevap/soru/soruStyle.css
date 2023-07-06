@@ -3,6 +3,352 @@
     min-height: 50vh;
     margin: auto;
     margin-top: 36px;
-    background-color: red;
     border-radius: 8px;
+}
+
+.soru-top {
+    display: flex;
+}
+
+.soru-image-area {
+    width: 400px;
+    height: 400px;
+    height: 50vh;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: rgba(0, 0, 0, 0.1); */
+    background-color: #eee;
+}
+
+.soru-image {
+    width: 400px;
+    max-height: 50vh;
+}
+
+.soru-info-area {
+    width: 400px;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+}
+
+.soru-title {
+    /* margin-left: 24px; */
+    text-align: center;
+    font-size: 36px;
+    color: var(--blue);
+}
+
+.soru-tag {
+    padding: 1px 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    text-align: center;
+    text-align: center;
+    color: #fff;
+    background-color: var(--blue);
+    width: 80px;
+    margin-top: 4px;
+}
+
+.soru-status {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.fa-hourglass-start {
+    color: #634A00;
+    font-size: 24px;
+}
+
+.soru-description {
+    margin-top: 8px;
+    width: 300px;
+    font-size: 20px;
+}
+
+.soru-footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+    color: #aaa;
+}
+
+.soru-owner-username {
+    margin-right: 8px;
+}
+
+.answer-input-area {
+    width: 800px;
+    min-height: 96px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 24px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    /* background-color: rgba(0, 0, 0, 0.1); */
+    background-color: #eee;
+    border-radius: 8px;
+    position: relative;
+}
+
+.answer-text-input {
+    width: 784px;
+    padding: 0;
+    margin: 0;
+    outline: 0;
+    margin: auto;
+    font-size: 36px;
+    border: none;
+    margin-bottom: 8px;
+    font-family: handwriting;
+    height: 48px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.answer-text-input:focus {
+    /* height: 96px; */
+}
+
+.file-input-area {
+    width: 100%;
+    height: 24px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0;
+    margin-top: 8px;
+}
+
+.file-text {
+    margin-right: 8px;
+    color: var(--blue)
+}
+
+.publish-answer-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+    transition: 250ms;
+}
+
+.publish-answer-btn:hover {
+    color: var(--blue);
+    background-color: #fff;
+}
+
+.answers {
+    width: 800px;
+    min-height: 40vh;
+    /* background-color: rgba(0, 0, 0, 0.1); */
+    /* background-color: #eee; */
+    margin: auto;
+    margin-top: 24px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.with-image-answer {
+    width: 700px;
+    margin: auto;
+    height: 256px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    margin-top: 16px;
+    border: 1px solid #aaa;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.approved-answer {
+    /* background-color: var(--pastelgreen); */
+    background-color: var(--blue);
+    color: #fff;
+}
+
+
+.answer-left {
+    height: 256px;
+}
+
+.answer-right {
+    height: 256px;
+    width: 100%;
+    position: relative;
+}
+
+.approve-answer-btn, .disapprove-answer-btn {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 4px;
+    color: #aaa;
+    top: 8px;
+    right: 0;
+    cursor: pointer;
+    transition: 250ms;
+}
+
+.disapprove-answer-btn {
+    display: none;
+}
+
+.disapprove-answer-btn:hover {
+    color: var(--red);
+}
+
+.answer-info {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    color: #aaa;
+}
+
+.answer-owner-username {
+    margin-right: 8px;
+}
+
+.answer-text {
+    width: 90%;
+    margin-left: 12px;
+    margin-top: 24px;
+    font-size: 20px;
+}
+
+.approve-answer-btn:hover {
+    /* color: var(--pastelgreen); */
+    color: #fff;
+    background-color: var(--blue);
+}
+
+.answer-like-btn {
+    margin-right: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.answer-like-btn:hover {
+    color: var(--red);
+}
+
+.answer-like-count {
+    margin-right: 8px;
+}
+
+.answer-img {
+    max-height: 256px;
+    border-radius: 8px;
+    border: 1px solid #aaa;
+}
+
+.approved-answer .answer-info {
+    color: #eee;
+}
+
+.approved-answer .approve-answer-btn {
+    display: none;
+}
+
+.approved-answer .disapprove-answer-btn {
+    /* background-color: var(--pastelgreen); */
+    color: #fff;
+    background-color: var(--blue);
+    display: flex;
+}
+
+.disapprove-answer-btn:hover {
+    background-color: #fff;
+    color: var(--red);
+}
+
+.without-image-answer {
+    position: relative;
+    height: 128px;
+}
+
+.without-image-answer .answer-info {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+}
+
+.without-image-answer .approve-answer-btn, .without-image-answer .disapprove-answer-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;;
+}
+
+.approved-answer .admin-username {
+    color: var(--darkyellow);
+    filter: opacity(1);
+}
+
+.only-image-answer {
+    flex-direction: column;
+}
+
+.only-image-answer .answer-left {
+    width: 350px;
+    height: 256px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.only-image-answer img {
+    /* width: 350px; */
+    height: 256px;
+}
+
+.only-image-answer .approve-answer-btn, .only-image-answer .disapprove-answer-btn {
+    top: 8px;
+    right: 8px;
+    /* background-color: #aaa; */
+    background-color: rgba(0, 0, 0, 0);
+    /* color: var(--blue); */
+    color: #aaa;
+}
+
+.only-image-answer .answer-info {
+    margin-right: 8px;
+    height: 16px;
+    display: flex;
+    margin-bottom: 4px;
+    justify-content: center;
+    align-items: center;
+}
+
+.only-image-answer .approve-answer-btn:hover, .only-image-answer .disapprove-answer-btn:hover {
+    background-color: var(--blue);
+    color: #fff;
+}
+
+.only-image-answer {
+    width: 350px;
+    height: 272px;
+    display: flex;
 }

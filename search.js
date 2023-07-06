@@ -18,6 +18,14 @@ if(title.indexOf("-") != -1) {
     isHomepage = true;
 }
 
+let isSoruPage = false;
+
+let url = document.URL;
+
+if(url.indexOf('soru.html') != -1) {
+    isSoruPage = true;
+}
+
 let activeTopic2 = localStorage.getItem('activeTopic');
 
 function changeTopicBySearch(e) {
@@ -64,6 +72,9 @@ function search() {
                     resultDIV = document.createElement('a');
                     resultDIV.href = "../index.html";
 
+                    if(isSoruPage) {
+                        resultDIV.href = "../../index.html";
+                    }
                 }
 
                 if(value.toLowerCase() == result.title.toLowerCase()) {
@@ -118,6 +129,12 @@ function search() {
 
                     app.createNewTopic();
                 });
+        }
+
+        if(firstResults.length == 0 && !isHomepage) {
+            resultsArea.style.border = "none";
+        } else {
+            resultsArea.style.border = "1px solid #aaa";
         }
     } else {
         resultsArea.style.display = 'none';

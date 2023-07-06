@@ -225,7 +225,8 @@ body {
 .navbar-hover-effect {
     width: 128px;
     height: 36px;
-    background-color: rgba(0, 0, 0, 0.1);
+    /* background-color: rgba(0, 0, 0, 0.1); */
+    background-color: #eee;
     border-radius: 8px;
     position: absolute;
 
@@ -699,7 +700,8 @@ textarea {
     /* display: none; */
     width: 96px;
     height: 4vh;
-    background-color: rgba(0, 0, 0, 0.1);
+    /* background-color: rgba(0, 0, 0, 0.1); */
+    background-color: #eee;
     position: absolute;
     border-radius: 4px;
     z-index: -100;
@@ -828,6 +830,7 @@ a {
     margin-left: -4px;
     display: flex;
     align-items: center;
+    border-radius: 4px;
 }
 
 .result-entryCount {
@@ -842,7 +845,8 @@ a {
 }
 
 .search-result:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    /* background-color: rgba(0, 0, 0, 0.1); */
+    background-color: #eee;
 }
 
 .result-date {

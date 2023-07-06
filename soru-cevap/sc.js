@@ -67,6 +67,7 @@ const doneSorular = document.querySelector('.done-sorular');
 const titleInput = document.querySelector('.soru-modal-title-input');
 const dersSelect = document.querySelector('.soru-modal-ders-select');
 const publishSoruBTN = document.querySelector('.publish-soru-btn');
+const soruDescTextarea = document.querySelector('.soru-modal-desc-textarea');
 
 const warningModal = document.querySelector('.login-warning-modal');
 const toggleDoneSorularBTN = document.querySelector('.toggle-done-sorular-btn');
@@ -106,7 +107,6 @@ function getImage(e) {
         reader.readAsDataURL(file);
 
     }
-
 }
 
 let sorular = [];
@@ -135,7 +135,6 @@ get(ref(db, "App/Sorular"))
 
 function initSorular() {
     let filterValue = dersFilter.value;
-
 
     sorular.map((soru) => {
         let a = document.createElement('a');
@@ -209,6 +208,7 @@ function publishSoru() {
         soruID: lastSoruID + 1,
         isAdmin: localStorage.getItem('isAdmin'),
         answers: [],
+        desc: soruDescTextarea.value,
     }
 
     sorular.push(soru);

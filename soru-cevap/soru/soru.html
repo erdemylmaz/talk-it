@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./soruStyle.css">
     <link rel="stylesheet" href="../../style.css">
     <link rel="shortcut icon" href="../../favicon/l5.png" type="image/x-icon">
+    <link rel="stylesheet" href="./soruStyle.css">
     <script src="https://kit.fontawesome.com/6316116050.js" crossorigin="anonymous"></script>
     
     <title>... - talk it!</title>
@@ -13,7 +13,7 @@
 <body>
     <div class="app">
         <div class="header">
-            <a href="../index.html" class="logo">
+            <a href="../../index.html" class="logo">
                 <div class="logo-top">
                     <span class="talk-text">talk</span> it!
                 </div>
@@ -83,10 +83,37 @@
         <div class="soru-container">
             <div class="soru-top">
                 <div class="soru-image-area">
-                    <!-- <img src="../soru3.jpeg" class="soru-image" /> -->
+                    <img src="../soru3.jpeg" class="soru-image" />
                 </div>
-                <div class="soru-info-area"></div>
+                <div class="soru-info-area">
+                    <div class="soru-title">Yardim eder misiniz?</div>
+                    <div class="soru-tag">TYT Matematik</div>
+
+                    <div class="soru-status"><i class="fa-solid fa-hourglass-start fa-spin"></i></div>
+
+                    <div class="soru-description">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, laudantium quidem. Exercitationem accusamus quam nobis minus explicabo! Ex inventore alias reprehenderit asperiores atque. Sapiente illo, deleniti dolorem eligendi consectetur distinctio.
+                    </div>
+
+                    <div class="soru-footer">
+                        <div class="soru-owner-username">erdem (12)</div>
+                        <div class="soru-date">13.12 - 6 Temmuz 2023</div>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <div class="answer-input-area">
+            <textarea type="text" class="answer-text-input" placeholder="Yanitiniz"></textarea>
+            <div class="file-input-area">
+                <span class="file-text">Fotograf Ekle: </span>
+                <input type="file" class="answer-file-input" accept=".jpg, .jpeg, .png, .heic">
+
+                <div class="publish-answer-btn"><i class="fa-solid fa-paper-plane"></i></div>
+            </div>
+        </div>
+
+        <div class="answers">
         </div>
     </div>
 
