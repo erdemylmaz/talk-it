@@ -360,7 +360,11 @@
     display: flex;
 }
 
-.fa-check {
+.soru-status .fa-check {
     color: var(--pastelgreen);
     font-size: 24px;
+}
+
+.mobile-navbar {
+    z-index: 9999999999;
 }
