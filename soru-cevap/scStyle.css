@@ -21,7 +21,12 @@
 .sc-soru:hover {
     /* background-color: rgba(0, 0, 0, 0.1); */
     background-color: #eee;
-    transform: scale(1.1);
+    /* transform: scale(1.1); */
+    padding: 12px 8px;
+}
+
+.done-soru:hover {
+    transform: scale(1);
 }
 
 .sc-soru:first-child {
@@ -42,7 +47,7 @@
 }
 
 .soru-image:hover {
-    /* transform: scale(1.5); */
+    /* transform: scale(1.2); */
 }
 
 .sc-create-soru-btn {

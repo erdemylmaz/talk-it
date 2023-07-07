@@ -113,28 +113,23 @@ let sorular = [];
 
 get(ref(db, "App/Sorular"))
 .then((snapshot) => {
+
     sorular = snapshot.val();
 
-    sorular.sort((a, b) => b.publishTime - a.publishTime);
-
-    let addingSorular = [];
-
-    sorular.map((soru, index) => {
-        if(soru.status == "done") {
-            // sorular.splice(index, 1);
-            addingSorular.push(soru);
-        }
-    });
+    if(sorular.length > 1) {
+        sorular.sort((a, b) => b.publishTime - a.publishTime);
+    } 
 
     initSorular();
 
     sorularDIVS = document.querySelectorAll('.sc-soru');
+
 }).catch((err) => {
     console.log(err);
 })
 
 function initSorular() {
-    let filterValue = dersFilter.value;
+    console.log(sorular)
 
     sorular.map((soru) => {
         let a = document.createElement('a');
@@ -142,7 +137,9 @@ function initSorular() {
         a.href = "./soru/soru.html";
         a.setAttribute('data-soruid', soru.soruID);
 
-        localStorage.setItem('soru', JSON.stringify(soru));
+        a.addEventListener('click', () => {
+            localStorage.setItem('soru', JSON.stringify(soru));
+        });
 
         if(soru.status == "done") {
             a.classList.add("done-soru");
@@ -212,6 +209,8 @@ function publishSoru() {
     }
 
     sorular.push(soru);
+
+    localStorage.setItem('lastSoruID', lastSoruID + 1);
 
     set(ref(db, "App/Sorular"), sorular)
     .then(() => {
