@@ -326,3 +326,52 @@ select {
     /* color: #000; */
     color: var(--blue);
 }
+
+@media only screen and (max-width: 1000px) {
+    .soru-modal-container {
+        width: 312px;
+    }
+
+    .soru-modal-image {
+        /* width: 312px; */
+        max-width: 256px
+    }
+
+    .soru-modal-image-area {
+        height: 256px;
+    }
+
+    .soru-modal-bottom {
+        width: 301px;
+    }
+
+    .dragndrop-text {
+        font-size: 16px;
+    }
+
+    .publish-soru-btn {
+        left: 196px;
+        bottom: -8px;
+    }
+    
+    .sc-create-soru-btn {
+        width: 64px;
+        font-size: 16px;
+    }
+    
+    .toggle-done-sorular-btn {
+        font-size: 14px;
+    } 
+
+    select {
+        width: 96px;
+    }
+}
+
+.soru-modal-title-input {
+    font-family: handwriting;
+}
+
+.soru-modal-desc-textarea {
+    font-family: handwriting;
+}
