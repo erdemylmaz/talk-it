@@ -54,24 +54,54 @@ topbartopicItems[3].style.color = "#fff";
 TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 
 //              SORU APP
+const ALERT_MODAL_TEXT = document.querySelector('.alert-modal-text');
+const ALERT_MODAL = document.querySelector('.alert-modal');
+
 const soruImageAREA = document.querySelector('.soru-image');
 const soruInfoAREA = document.querySelector('.soru-info-area');
 
-const soru = JSON.parse(localStorage.getItem('soru'));
-// let soru;
+// const soru = JSON.parse(localStorage.getItem('soru'));
+let soru;
 
-// get(ref(db, "App/INITIALIZING_SORU")).then((snapshot) => {
-//     soru = snapshot.val();
+ALERT_MODAL.style.display = "flex";
+ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyiniz...";
 
-//     if(!soru.answers) {
-//         soru.answers = [];
-//     }
+let dotCount = 0;
 
-//     initSoru();
-//     initAnswers();
-// }).catch((err) => {
-//     console.log(err);
-// });
+// change loading dot (...) count
+let interval = setInterval(() => {
+    ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyiniz";
+
+    if(dotCount < 3) {
+        dotCount++;
+    } else {
+        dotCount = 0;
+        ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyiniz";
+    }
+
+    for(let x = 0; x < dotCount; x++) {
+        ALERT_MODAL_TEXT.textContent += ".";
+    }
+}, 500);
+
+get(ref(db, "App/INITIALIZING_SORU")).then((snapshot) => {
+    soru = snapshot.val();
+
+    if(!soru.answers) {
+        soru.answers = [];
+    }
+
+    initSoru();
+    initAnswers();
+
+    clearInterval(interval);
+
+    document.title = `${soru.title} - talk it!`;
+
+    ALERT_MODAL.style.display = "none";
+}).catch((err) => {
+    console.log(err);
+});
 
 const publishAnswerBTN = document.querySelector('.publish-answer-btn');
 const answerTextarea = document.querySelector('.answer-text-input');
@@ -79,6 +109,7 @@ const answerFileInput = document.querySelector('.answer-file-input');
 const answersArea = document.querySelector('.answers');
 
 let sorular = [];
+
 
 get(ref(db,  "App/Sorular")).then((snapshot) => {
     sorular = snapshot.val();
@@ -142,7 +173,7 @@ function initSoru() {
     `;
 }
 
-initSoru();
+// initSoru();
 
 function initAnswers() {
     if(!soru.answers) {
@@ -247,7 +278,7 @@ function initAnswers() {
     });
 }
 
-initAnswers();
+// initAnswers();
 
 answerTextarea.addEventListener('click', () => {
     answerTextarea.style.height = "96px";
@@ -255,6 +286,26 @@ answerTextarea.addEventListener('click', () => {
 
 function publishAnswer() {
     if(answerTextarea.value != "" || answerFileInput.value) {
+        ALERT_MODAL.style.display = "flex";
+        ALERT_MODAL_TEXT.textContent = "Cevap Paylasiliyor";
+
+        let dotCount = 0;
+
+        // change loading dot (...) count
+        setInterval(() => {
+            ALERT_MODAL_TEXT.textContent = "Cevap Paylasiliyor";
+
+            if(dotCount < 3) {
+                dotCount++;
+            } else {
+                dotCount = 0;
+                ALERT_MODAL_TEXT.textContent = "Cevap Paylasiliyor";
+            }
+
+            for(let x = 0; x < dotCount; x++) {
+                ALERT_MODAL_TEXT.textContent += ".";
+            }
+        }, 500);
 
         let d = new Date();
 
@@ -281,7 +332,6 @@ function publishAnswer() {
             text: answerTextarea.value,
             hasImage: hasImage,
             likeCount: 0,
-            likedUsernames: [],
             hasApproved: false,
         };
 
@@ -292,7 +342,20 @@ function publishAnswer() {
         soru.cevapCount += 1;
         soru.answers.push(answer);
 
-        localStorage.setItem('soru', JSON.stringify(soru));
+        // localStorage.setItem('soru', JSON.stringify(soru));
+
+        set(ref(db, "App/INITIALIZING_SORU", soru)).then(() => {
+            // alert("SUCCESSFULLY INITIALIZED");
+            ALERT_MODAL.style.display = "none";
+            ALERT_MODAL.style.display = "flex";
+            ALERT_MODAL_TEXT.textContent = `Basariyla Paylasildi.`;
+
+            setTimeout(() => {
+                ALERT_MODAL.style.display = "none";
+            }, 1500);
+        }).catch((err) => {
+            alert(err);
+        })
 
         sorular.map((s) => {
             if(s.soruID == soru.soruID) {
@@ -303,12 +366,14 @@ function publishAnswer() {
 
         // location.reload();
 
+
         set(ref(db, "App/Sorular"), sorular)
         .then(() => {
             alert('basariyla paylasildi');
 
             location.reload();
         }).catch((err) => {
+            console.log(soru);
             console.log(err)
         })
 

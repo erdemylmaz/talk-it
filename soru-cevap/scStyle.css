@@ -375,3 +375,7 @@ select {
 .soru-modal-desc-textarea {
     font-family: handwriting;
 }
+
+a {
+    cursor: pointer;
+}

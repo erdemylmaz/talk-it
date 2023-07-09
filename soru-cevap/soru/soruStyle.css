@@ -25,6 +25,7 @@
 .soru-image {
     width: 400px;
     max-height: 50vh;
+    border-radius: 8px;
 }
 
 .soru-info-area {

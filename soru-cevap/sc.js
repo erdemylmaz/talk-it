@@ -114,6 +114,28 @@ function getImage(e) {
 
 let sorular = [];
 
+ALERT_MODAL.style.display = "flex";
+ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyiniz";
+
+let dotCount = 0;
+let hasInitted = false;
+
+// change loading dot (...) count
+let interval = setInterval(() => {
+    ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyiniz";
+
+    if(dotCount < 3) {
+        dotCount++;
+    } else {
+        dotCount = 0;
+        ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyiniz";
+    }
+
+    for(let x = 0; x < dotCount; x++) {
+        ALERT_MODAL_TEXT.textContent += ".";
+    }
+}, 500);
+
 get(ref(db, "App/Sorular"))
 .then((snapshot) => {
 
@@ -129,6 +151,10 @@ get(ref(db, "App/Sorular"))
 
     initSorular();
 
+    ALERT_MODAL.style.display = "none";
+    hasInitted = true;
+    clearInterval(interval);
+
     sorularDIVS = document.querySelectorAll('.sc-soru');
 
 }).catch((err) => {
@@ -139,16 +165,43 @@ function initSorular() {
     sorular.map((soru, index) => {
         let a = document.createElement('a');
         a.className = "sc-soru"
-        a.href = "./soru/soru.html";
+        // a.href = "./soru/soru.html";
         a.setAttribute('data-soruid', soru.soruID);
 
         a.addEventListener('click', () => {
-            localStorage.setItem('soru', JSON.stringify(soru)); // resim cok kaliteliyse olmuyor
-            // set(ref(db, "App/INITIALIZING_SORU"), soru).then(() => {
-            //     alert("success")
-            // }).catch((err) => {
-            //     alert(err);
-            // });
+            ALERT_MODAL.style.display = "flex";
+            ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyin";
+
+            let dotCount = 0;
+
+            // change loading dot (...) count
+            let int = setInterval(() => {
+                ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyin";
+
+                if(dotCount < 3) {
+                    dotCount++;
+                } else {
+                    dotCount = 0;
+                    ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyin";
+                }
+
+                for(let x = 0; x < dotCount; x++) {
+                    ALERT_MODAL_TEXT.textContent += ".";
+                }
+            }, 500);
+            
+            // setTimeout(() => {
+            //     // ALERT_MODAL.style.display = "none";
+            //     // location.reload();
+            // }, 1500);
+
+            // localStorage.setItem('soru', JSON.stringify(soru)); // resim cok kaliteliyse olmuyor
+            update(ref(db, "App/INITIALIZING_SORU"), soru).then(() => {
+                // alert("success")
+                location.href = "./soru/soru.html";
+            }).catch((err) => {
+                console.log(err);
+            });
         });
 
         if(soru.status == "done") {
@@ -233,6 +286,27 @@ function publishSoru() {
     }).catch((err) => {
         console.log(err);
     });
+
+    ALERT_MODAL.style.display = "flex";
+    ALERT_MODAL_TEXT.textContent = "Soru Paylasiliyor";
+
+    let dotCount = 0;
+
+    // change loading dot (...) count
+    setInterval(() => {
+        ALERT_MODAL_TEXT.textContent = "Soru Paylasiliyor";
+
+        if(dotCount < 3) {
+            dotCount++;
+        } else {
+            dotCount = 0;
+            ALERT_MODAL_TEXT.textContent = "Soru Paylasiliyor";
+        }
+
+        for(let x = 0; x < dotCount; x++) {
+            ALERT_MODAL_TEXT.textContent += ".";
+        }
+    }, 500);
 
     set(ref(db, "App/Sorular"), sorular)
     .then(() => {
