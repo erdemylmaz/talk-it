@@ -58,6 +58,21 @@ const soruImageAREA = document.querySelector('.soru-image');
 const soruInfoAREA = document.querySelector('.soru-info-area');
 
 const soru = JSON.parse(localStorage.getItem('soru'));
+// let soru;
+
+// get(ref(db, "App/INITIALIZING_SORU")).then((snapshot) => {
+//     soru = snapshot.val();
+
+//     if(!soru.answers) {
+//         soru.answers = [];
+//     }
+
+//     initSoru();
+//     initAnswers();
+// }).catch((err) => {
+//     console.log(err);
+// });
+
 const publishAnswerBTN = document.querySelector('.publish-answer-btn');
 const answerTextarea = document.querySelector('.answer-text-input');
 const answerFileInput = document.querySelector('.answer-file-input');
@@ -67,15 +82,12 @@ let sorular = [];
 
 get(ref(db,  "App/Sorular")).then((snapshot) => {
     sorular = snapshot.val();
+
 }).catch((err) => {
     console.log(err);
 });
 
 const soruStatusArea = document.querySelector('.soru-status') 
-
-if(!soru.answers) {
-    soru.answers = [];
-}
 
 function addExtraZero(x) {
     return x < 10 ? "0" + x : x;
@@ -133,8 +145,14 @@ function initSoru() {
 initSoru();
 
 function initAnswers() {
-    soru.answers.sort((a, b) => b.publishTime - a.publishTime);
-    soru.answers.sort((a, b) => b.likeCount - a.likeCount);
+    if(!soru.answers) {
+        soru.answers = [];
+    }
+
+    if(soru.answers.length > 1) {
+        soru.answers.sort((a, b) => b.publishTime - a.publishTime);
+        soru.answers.sort((a, b) => b.likeCount - a.likeCount);
+    }
 
     soru.answers.map((answer) => {
         let div = document.createElement('div');
@@ -229,11 +247,11 @@ function initAnswers() {
     });
 }
 
+initAnswers();
+
 answerTextarea.addEventListener('click', () => {
     answerTextarea.style.height = "96px";
 })
-
-initAnswers();
 
 function publishAnswer() {
     if(answerTextarea.value != "" || answerFileInput.value) {

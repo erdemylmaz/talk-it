@@ -55,6 +55,9 @@ topbartopicItems[3].style.color = "#fff";
 TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 
 //              SORU_CEVAP
+const ALERT_MODAL_TEXT = document.querySelector('.alert-modal-text');
+const ALERT_MODAL = document.querySelector('.alert-modal');
+
 const soruModal = document.querySelector('.create-soru-modal');
 const openSoruModalBtn = document.querySelector('.sc-create-soru-btn');
 const closeSoruModalBtn = document.querySelector('.close-soru-modal-btn');
@@ -120,6 +123,10 @@ get(ref(db, "App/Sorular"))
         sorular.sort((a, b) => b.publishTime - a.publishTime);
     } 
 
+    if(!sorular) {
+        sorular = [];
+    }
+
     initSorular();
 
     sorularDIVS = document.querySelectorAll('.sc-soru');
@@ -129,16 +136,19 @@ get(ref(db, "App/Sorular"))
 })
 
 function initSorular() {
-    console.log(sorular)
-
-    sorular.map((soru) => {
+    sorular.map((soru, index) => {
         let a = document.createElement('a');
         a.className = "sc-soru"
         a.href = "./soru/soru.html";
         a.setAttribute('data-soruid', soru.soruID);
 
         a.addEventListener('click', () => {
-            localStorage.setItem('soru', JSON.stringify(soru));
+            localStorage.setItem('soru', JSON.stringify(soru)); // resim cok kaliteliyse olmuyor
+            // set(ref(db, "App/INITIALIZING_SORU"), soru).then(() => {
+            //     alert("success")
+            // }).catch((err) => {
+            //     alert(err);
+            // });
         });
 
         if(soru.status == "done") {
@@ -179,6 +189,12 @@ function initSorular() {
 
 let lastSoruID = parseInt(localStorage.getItem('lastSoruID'));
 
+get(ref(db, "App/LAST_SORU_ID")).then((snapshot) => {
+    lastSoruID = snapshot.val();
+}).catch((err) => {
+    console.log(err);
+});
+
 function publishSoru() {
     let d = new Date();
 
@@ -210,12 +226,25 @@ function publishSoru() {
 
     sorular.push(soru);
 
-    localStorage.setItem('lastSoruID', lastSoruID + 1);
+    // localStorage.setItem('lastSoruID', lastSoruID + 1);
+
+    set(ref(db, "App/LAST_SORU_ID"), lastSoruID + 1).then(() => {
+        console.log("successfully changed LAST_SORU_ID");
+    }).catch((err) => {
+        console.log(err);
+    });
 
     set(ref(db, "App/Sorular"), sorular)
     .then(() => {
-        alert('basariyla paylasildi');
-        location.reload();
+        // alert('basariyla paylasildi');
+        ALERT_MODAL.style.display = "flex";
+        ALERT_MODAL_TEXT.textContent = "Basariyla Paylasildi";
+
+        setTimeout(() => {
+            ALERT_MODAL.style.display = "none";
+            location.reload();
+        }, 1500);
+        
     }).catch((err) => {
         console.log(err);
     })
