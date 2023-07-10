@@ -104,10 +104,12 @@ function search() {
             }
         });
 
-        if(firstResults.length == 0 && isHomepage || (isAllWaiting && isHomepage) || (!hasSame && isHomepage)) {
+        if(firstResults.length == 0 && isHomepage || (isAllWaiting && isHomepage && !hasSame) || (!hasSame && isHomepage)) {
                 let resultDIV = document.createElement('div');
                 resultDIV.className = "search-result create-result";
                 resultDIV.setAttribute('data-title', value);
+
+                console.log()
 
                 resultDIV.innerHTML = `
                     <div class="result-title">${value}</div>

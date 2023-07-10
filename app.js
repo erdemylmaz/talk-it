@@ -32,6 +32,7 @@ const db = getDatabase();
 const loginWarningModal = document.querySelector('.login-warning-modal');
 const alertModal = document.querySelector('.alert-modal');
 const alertModalText = document.querySelector('.alert-modal-text');
+const alertModalContainer = document.querySelector('.alert-modal-container');
 const logo = document.querySelector('.logo');
 const profileBTN = document.querySelector('.profile');
 const loginDIV = document.querySelector('.login-div');
@@ -700,7 +701,7 @@ class App {
                 .then(() => {
                     // alert('Data Inserted successfully');
                     alertModal.style.display = "flex";
-
+                    alertModalContainer.style.animationName = "modalAnimation";
                     alertModalText.textContent = "Entry Basariyla Paylasildi.";
                     setTimeout(() => {
                         alertModal.style.display = "none";
@@ -896,6 +897,7 @@ class App {
                     set(ref(db, "App/Topics"), this.topics).then(() => {
                         // alert("Reply Successfully Published");
                         alertModal.style.display = "flex";
+                        alertModalContainer.style.animationName = "modalAnimation";
 
                         alertModalText.textContent = "Cevap Basariyla Paylasildi.";
                         setTimeout(() => {
@@ -961,7 +963,7 @@ class App {
             if(!this.isAdmin) {
                 // alert("Waiting for permission");
                 alertModal.style.display = "flex";
-
+                alertModalContainer.style.animationName = "modalAnimation";
                 alertModalText.textContent = "Izin Bekleniyor.";
                 setTimeout(() => {
                     alertModal.style.display = "none";
@@ -970,7 +972,7 @@ class App {
 
             } else {
                 alertModal.style.display = "flex";
-
+                alertModalContainer.style.animationName = "modalAnimation";
                 alertModalText.textContent = "Topic Basariyla Olusturuldu.";
                 localStorage.setItem('activeTopic', 0);
                 setTimeout(() => {
@@ -1098,6 +1100,7 @@ class App {
         .then(() => {
             // alert("data removed successfully");
             alertModal.style.display = "flex";
+            alertModalContainer.style.animationName = "modalAnimation";
             alertModalText.textContent = "Entry Basariyla Silindi."
 
             setTimeout(() => {
@@ -1221,22 +1224,47 @@ if(localStorage.getItem('hasLoggedIn')) {
     app.hasLoggedIn = localStorage.getItem('hasLoggedIn');
 }
 
+alertModal.style.display = "flex";
+alertModalContainer.style.animationName = "x";
+alertModalText.innerHTML = `
+<svg
+width="24"
+height="24"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg"
+>
+<path
+  opacity="0.2"
+  fill-rule="evenodd"
+  clip-rule="evenodd"
+  d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+  fill="currentColor"
+/>
+<path
+  d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z"
+  fill="currentColor"
+/>
+</svg>
+`
 
 // get users from database
 get(child(ref(db), "App/Users"))
 .then((snapshot) => {
-    let user;
+    if(localStorage.getItem('hasLoogedIn') == true) {
+        let user;
 
-    user = snapshot.val().find((u) => u.username == localStorage.getItem('loggedAccUsername'));
+        user = snapshot.val().find((u) => u.username == localStorage.getItem('loggedAccUsername'));
 
-    app.users = snapshot.val();
+        app.users = snapshot.val();
 
-    localStorage.setItem('loggedAccDegree', user.degree);
-    localStorage.setItem('isAdmin', user.isAdmin);
+        localStorage.setItem('loggedAccDegree', user.degree);
+        localStorage.setItem('isAdmin', user.isAdmin);
 
-    app.username = user.username;
-    app.isAdmin = user.isAdmin;
-    app.degree = user.degree;
+        app.username = user.username;
+        app.isAdmin = user.isAdmin;
+        app.degree = user.degree;
+    }
 }).catch((err) => {
     console.log(err);
 })
@@ -1266,6 +1294,7 @@ get(child(ref(db), "App/Topics"))
 
     localStorage.setItem('topics', JSON.stringify(app.topics));
 
+    alertModal.style.display = "none";
     app.init();
 
 }).catch((error) => {

@@ -1287,3 +1287,19 @@ a {
     filter: opacity(0.4);
     cursor: not-allowed;
 }
+
+svg {
+    animation: turnAnimation 1000ms infinite linear;
+    transform: rotate(45deg);
+    color: #000;
+}
+
+@keyframes turnAnimation {
+    0% {
+        transform: rotate(45deg);
+    }
+
+    100% {
+        transform: rotate(405deg);
+    }
+}

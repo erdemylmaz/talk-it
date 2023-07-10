@@ -56,6 +56,7 @@ TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 //              SORU APP
 const ALERT_MODAL_TEXT = document.querySelector('.alert-modal-text');
 const ALERT_MODAL = document.querySelector('.alert-modal');
+const ALERT_MODAL_CONTAINER = document.querySelector('.alert-modal-container');
 
 const soruImageAREA = document.querySelector('.soru-image');
 const soruInfoAREA = document.querySelector('.soru-info-area');
@@ -64,25 +65,46 @@ const soruInfoAREA = document.querySelector('.soru-info-area');
 let soru;
 
 ALERT_MODAL.style.display = "flex";
-ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyiniz...";
+ALERT_MODAL_CONTAINER.style.animationName = "x";
+ALERT_MODAL_TEXT.innerHTML = `
+<svg
+width="24"
+height="24"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg"
+>
+<path
+  opacity="0.2"
+  fill-rule="evenodd"
+  clip-rule="evenodd"
+  d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+  fill="currentColor"
+/>
+<path
+  d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z"
+  fill="currentColor"
+/>
+</svg>
+`;
 
 let dotCount = 0;
 
 // change loading dot (...) count
-let interval = setInterval(() => {
-    ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyiniz";
+// let interval = setInterval(() => {
+//     ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyiniz";
 
-    if(dotCount < 3) {
-        dotCount++;
-    } else {
-        dotCount = 0;
-        ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyiniz";
-    }
+//     if(dotCount < 3) {
+//         dotCount++;
+//     } else {
+//         dotCount = 0;
+//         ALERT_MODAL_TEXT.textContent = "Lutfen Bekleyiniz";
+//     }
 
-    for(let x = 0; x < dotCount; x++) {
-        ALERT_MODAL_TEXT.textContent += ".";
-    }
-}, 500);
+//     for(let x = 0; x < dotCount; x++) {
+//         ALERT_MODAL_TEXT.textContent += ".";
+//     }
+// }, 500);
 
 get(ref(db, "App/INITIALIZING_SORU")).then((snapshot) => {
     soru = snapshot.val();
@@ -94,7 +116,7 @@ get(ref(db, "App/INITIALIZING_SORU")).then((snapshot) => {
     initSoru();
     initAnswers();
 
-    clearInterval(interval);
+    // clearInterval(interval);
 
     document.title = `${soru.title} - talk it!`;
 
@@ -287,6 +309,7 @@ answerTextarea.addEventListener('click', () => {
 function publishAnswer() {
     if(answerTextarea.value != "" || answerFileInput.value) {
         ALERT_MODAL.style.display = "flex";
+        ALERT_MODAL_CONTAINER.style.animationName = "x";
         ALERT_MODAL_TEXT.textContent = "Cevap Paylasiliyor";
 
         let dotCount = 0;
@@ -348,6 +371,7 @@ function publishAnswer() {
             // alert("SUCCESSFULLY INITIALIZED");
             ALERT_MODAL.style.display = "none";
             ALERT_MODAL.style.display = "flex";
+            ALERT_MODAL_CONTAINER.style.animationName = "modalAnimation";
             ALERT_MODAL_TEXT.textContent = `Basariyla Paylasildi.`;
 
             setTimeout(() => {
@@ -369,7 +393,7 @@ function publishAnswer() {
 
         set(ref(db, "App/Sorular"), sorular)
         .then(() => {
-            alert('basariyla paylasildi');
+            // alert('basariyla paylasildi');
 
             location.reload();
         }).catch((err) => {
