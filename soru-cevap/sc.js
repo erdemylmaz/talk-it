@@ -239,7 +239,7 @@ function initSorular() {
             // }, 1500);
 
             // localStorage.setItem('soru', JSON.stringify(soru)); // resim cok kaliteliyse olmuyor
-            update(ref(db, "App/INITIALIZING_SORU"), soru).then(() => {
+            set(ref(db, "App/INITIALIZING_SORU_ID"), soru.soruID).then(() => {
                 // alert("success")
                 location.href = "./soru/soru.html";
             }).catch((err) => {

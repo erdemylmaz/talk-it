@@ -652,6 +652,8 @@ class App {
 
             let d = new Date();
 
+            this.username = localStorage.getItem("loggedAccUsername");
+
             let day = addExtraZero(d.getDate());
             let month = d.getMonth();
             let year = d.getFullYear();
@@ -804,6 +806,8 @@ class App {
     }
 
     cevapla = (e) => {
+        this.username = localStorage.getItem("loggedAccUsername");
+
         if(this.hasLoggedIn == "true") {
             let answeringEntryDIV = e.currentTarget.parentElement.parentElement;
             let topic = answeringEntryDIV.dataset.topic;
@@ -1249,9 +1253,9 @@ xmlns="http://www.w3.org/2000/svg"
 `
 
 // get users from database
-get(child(ref(db), "App/Users"))
+get(ref(db, "App/Users"))
 .then((snapshot) => {
-    if(localStorage.getItem('hasLoogedIn') == true) {
+    if(localStorage.getItem('hasLoggedIn') == "true") {
         let user;
 
         user = snapshot.val().find((u) => u.username == localStorage.getItem('loggedAccUsername'));
@@ -1377,7 +1381,7 @@ profileBTN.addEventListener('click', () => {
 
 if(isMobile) {
     topbartopicItems.forEach((tbItem, index) => {
-        if(index == 1 || index == 2 || index == 3 || index == 5 || index == 8 || index == 9) {
+        if(index == 1 || index == 2 || index == 4 || index == 5 || index == 8 || index == 9) {
             tbItem.style.display = "none";
         }
 

@@ -106,24 +106,24 @@ let dotCount = 0;
 //     }
 // }, 500);
 
-get(ref(db, "App/INITIALIZING_SORU")).then((snapshot) => {
-    soru = snapshot.val();
+// get(ref(db, "App/INITIALIZING_SORU")).then((snapshot) => {
+//     soru = snapshot.val();
 
-    if(!soru.answers) {
-        soru.answers = [];
-    }
+//     if(!soru.answers) {
+//         soru.answers = [];
+//     }
 
-    initSoru();
-    initAnswers();
+//     initSoru();
+//     initAnswers();
 
-    // clearInterval(interval);
+//     // clearInterval(interval);
 
-    document.title = `${soru.title} - talk it!`;
+//     document.title = `${soru.title} - talk it!`;
 
-    ALERT_MODAL.style.display = "none";
-}).catch((err) => {
-    console.log(err);
-});
+//     ALERT_MODAL.style.display = "none";
+// }).catch((err) => {
+//     console.log(err);
+// });
 
 const publishAnswerBTN = document.querySelector('.publish-answer-btn');
 const answerTextarea = document.querySelector('.answer-text-input');
@@ -131,14 +131,40 @@ const answerFileInput = document.querySelector('.answer-file-input');
 const answersArea = document.querySelector('.answers');
 
 let sorular = [];
+let INITIALIZING_SORU_ID;
 
+get(ref(db, "App/INITIALIZING_SORU_ID")).then((snapshot) => {
+    INITIALIZING_SORU_ID = snapshot.val();
+}).catch((err) => {
+    console.log(err);
+})
 
 get(ref(db,  "App/Sorular")).then((snapshot) => {
     sorular = snapshot.val();
 
+    sorular.map((s) => {
+        if(s.soruID == parseInt(INITIALIZING_SORU_ID)) {
+            soru = s;
+
+            if(!soru.answers) {
+                soru.answers = [];
+            }
+
+        }
+    });
+
+    initSoru();
+    initAnswers();
+
+    document.title = `${soru.title} - talk it!`;
+    ALERT_MODAL.style.display = "none";
+    
+
 }).catch((err) => {
     console.log(err);
 });
+
+
 
 const soruStatusArea = document.querySelector('.soru-status') 
 
@@ -219,6 +245,7 @@ function initAnswers() {
 
         if(!answer.hasImage) {
             div.classList.add('without-image-answer');
+            div.classList.add('just-text-answer');
 
             div.innerHTML = `
             <div class="answer-text">${answer.text}</div>
@@ -307,7 +334,7 @@ answerTextarea.addEventListener('click', () => {
 })
 
 function publishAnswer() {
-    if(answerTextarea.value != "" || answerFileInput.value) {
+    if((answerTextarea.value != "" || answerFileInput.value) && localStorage.getItem('hasLoggedIn') == "true") {
         ALERT_MODAL.style.display = "flex";
         ALERT_MODAL_CONTAINER.style.animationName = "x";
         ALERT_MODAL_TEXT.textContent = "Cevap Paylasiliyor";
@@ -367,20 +394,6 @@ function publishAnswer() {
 
         // localStorage.setItem('soru', JSON.stringify(soru));
 
-        set(ref(db, "App/INITIALIZING_SORU", soru)).then(() => {
-            // alert("SUCCESSFULLY INITIALIZED");
-            ALERT_MODAL.style.display = "none";
-            ALERT_MODAL.style.display = "flex";
-            ALERT_MODAL_CONTAINER.style.animationName = "modalAnimation";
-            ALERT_MODAL_TEXT.textContent = `Basariyla Paylasildi.`;
-
-            setTimeout(() => {
-                ALERT_MODAL.style.display = "none";
-            }, 1500);
-        }).catch((err) => {
-            alert(err);
-        })
-
         sorular.map((s) => {
             if(s.soruID == soru.soruID) {
                 s.answers = soru.answers;
@@ -389,7 +402,6 @@ function publishAnswer() {
         });
 
         // location.reload();
-
 
         set(ref(db, "App/Sorular"), sorular)
         .then(() => {

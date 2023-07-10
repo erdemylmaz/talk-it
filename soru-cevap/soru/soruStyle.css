@@ -369,3 +369,95 @@
 .mobile-navbar {
     z-index: 9999999999;
 }
+
+@media only screen and (max-width: 1000px) {
+    .soru-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .soru-top {
+        flex-direction: column;
+        position: relative;
+        width: 90%;
+        margin :0;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .soru-info-area {
+        margin-top: 16px;
+        max-height: 256px;
+        width: 90%;
+    }
+
+    .answer-input-area {
+        width: 90%;
+        height: 64px;
+    }
+
+    .answer-file-input {
+        margin-right: -32px;
+    }
+
+    .answers {
+        width: 90%;
+    }
+
+    .soru-image {
+        max-width: 90%;
+        /* max-width: 90%; */
+        /* max-height: 256px; */
+    }
+
+    .soru-image-area {
+        width: 100%;
+    }
+
+    .answer-text-input {
+        width: 90%;
+        font-size: 24px;
+    }
+
+    .with-image-answer {
+        width: 90%;
+        min-height: 400px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .answer-right {
+        min-height: 96px;
+    }
+
+    .without-image-answer {
+        height: 96px;
+    }
+
+    .just-text-answer {
+        height: 96px;
+        min-height: 64px;
+        max-height: 128px;
+    }
+
+    .answer-img {
+        max-width: 90%;
+        max-height: 256px;
+    }
+
+    .answer-left {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .only-image-answer {
+        height: calc(256px + 24px);
+        min-height: calc(256px + 24px);
+        max-height: calc(256px + 24px);
+        /* max-height: 256px; */
+    }
+
+}
