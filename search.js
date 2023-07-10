@@ -1,4 +1,4 @@
-import {app} from "./app.js";
+import {app} from "./app.js"; // talkitsozluk.com/app.js
 
 const searchInput = document.querySelector('.search-area');
 const resultsArea = document.querySelector('.search-results');
@@ -39,6 +39,8 @@ function changeTopicBySearch(e) {
         location.reload();
     }
 }
+
+// let searchPlaceholders = JSON.parse(localStorage.getItem('searchPlaceholders'));
 
 function search() {
     let value = searchInput.value;
@@ -108,8 +110,6 @@ function search() {
                 let resultDIV = document.createElement('div');
                 resultDIV.className = "search-result create-result";
                 resultDIV.setAttribute('data-title', value);
-
-                console.log()
 
                 resultDIV.innerHTML = `
                     <div class="result-title">${value}</div>

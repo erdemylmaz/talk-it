@@ -4650,4 +4650,14 @@ if(isMobile) {
     setTimeout(() => {
         profileBTN.style.display = "none";
     }, 1000);
+
+
+    let topbartopicItems = document.querySelectorAll('.top-bar-item');
+
+    topbartopicItems.forEach((item, index) => {
+        if(index == 1 || index == 2 || index == 4 || index == 5 || index == 8 || index == 9) {
+            item.style.display = "none";
+        }
+
+    })
 }

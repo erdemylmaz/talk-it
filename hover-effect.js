@@ -91,6 +91,7 @@ setTimeout(() => {
     TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 
     let navbarItems = document.querySelectorAll('.nl-item');
+
     navbarItems.forEach((navbarItem) => {
         if(navbarItem.dataset.topicindex == activeTopic) {
             let offsetTop = navbarItem.offsetTop;
@@ -104,11 +105,43 @@ setTimeout(() => {
 
 let pageWidth = document.body.offsetWidth;
 
+isMobile = false;
+
 if(pageWidth < 1000) {
     isMobile = true;
 }
 
 if(isMobile) {
     topbarhoverDIV.style.display = "none";
-    hoverDIV.style.display = "flex";
+    // hoverDIV.style.display = "flex";
+
+    let mobileNavbar = document.querySelector('.mobile-navbar');
+    const showMoreBtn = document.querySelector('.show-more-btn');
+    const mobileNavbarContainer = document.querySelector('.mobile-navbar-container');
+
+    showMoreBtn.addEventListener('click', () => {
+        mobileNavbar.style.display = "flex";
+    });
+
+    document.addEventListener('click', (e) => {
+        if(e.target.className == "mobile-navbar") {
+            mobileNavbarContainer.style.animation = "reverseNavbarAnimation 500ms";
+
+            setTimeout(() => {
+                mobileNavbar.style.display = "none";
+                mobileNavbarContainer.style.animation = "navbarAnimation 500ms";
+            }, 500)
+        }
+    })
+}
+
+let loginDIV = document.querySelector('.login-div');
+let profile = document.querySelector('.profile');
+
+if(localStorage.getItem("hasLoggedIn") == "false") {
+    loginDIV.style.display = "flex";
+    profile.style.display = "none";
+} else {
+    loginDIV.style.display = "none";
+    profile.style.display = "flex";
 }

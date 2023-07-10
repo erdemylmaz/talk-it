@@ -268,7 +268,7 @@ function initSorular() {
             </div>
 
             <div class="soru-right">
-                <div class="soru-username ${soru.isAdmin ? "admin-username" : ""}">${soru.username} (${soru.userDegree})</div>
+                <div class="soru-username ${soru.isAdmin == "true" ? "admin-username" : ""}">${soru.username} (${soru.userDegree})</div>
                 <div class="soru-date">${soru.time} - ${soru.date}</div>
             </div>
 
