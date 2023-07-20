@@ -4507,61 +4507,65 @@ tp.tpList.map((item) => {
 
 tp.tpList.forEach((tpItem) => {
     tpItem.uniInfos.forEach((info, index) => {
-        info.index = index + 1;
+        // if(info.title.indexOf('%50') == -1 && info.title.toLowerCase().indexOf('ücretli') == -1) {
 
-        if(info.type.toLocaleLowerCase() == 'vakıf') {
-            info.type = "Vakif";
-        }
+            info.index = index + 1;
 
-        let div = document.createElement('div');
-        div.className = "tp-item";
+            if(info.type.toLocaleLowerCase() == 'vakıf') {
+                info.type = "Vakif";
+            }
 
-        if(index % 2) {
-            div.classList.add('s2');
-        } else {
-            div.classList.add('s1');
-        }
+            let div = document.createElement('div');
+            div.className = "tp-item";
 
-        div.innerHTML = `
-        <div class="top-side">
-            <div class="tp-item-index">${info.index}</div>
-            <div class="tp-item-title">${info.title}</div>
-            <div class="tp-item-type">${info.type}</div>
-            <div class="tp-item-kont">${info.kont}</div>
-            <div class="tp-item-tp">${info.tp}</div>
-            <div class="tp-item-siralama">${info.siralama}</div>
+            if(index % 2) {
+                div.classList.add('s2');
+            } else {
+                div.classList.add('s1');
+            }
 
-            <div class="tp-item-show-more-btn"><i class="fa-solid fa-chevron-down"></i></div>
-        </div>
+            div.innerHTML = `
+            <div class="top-side">
+                <div class="tp-item-index">${info.index}</div>
+                <div class="tp-item-title">${info.title}</div>
+                <div class="tp-item-type">${info.type}</div>
+                <div class="tp-item-kont">${info.kont}</div>
+                <div class="tp-item-tp">${info.tp}</div>
+                <div class="tp-item-siralama">${info.siralama}</div>
 
-        <div class="bottom-side">
-            <div class="bottom-top">
-                <div class="bt-item">TYT Turkce</div>
-                <div class="bt-item">TYT Sosyal</div>
-                <div class="bt-item">TYT Matematik</div>
-                <div class="bt-item">TYT Fen</div>
-
-                <div class="bt-item">AYT Matematik</div>
-                <div class="bt-item">AYT Fizik</div>
-                <div class="bt-item">AYT Kimya</div>
-                <div class="bt-item">AYT Biyoloji</div>
+                <div class="tp-item-show-more-btn"><i class="fa-solid fa-chevron-down"></i></div>
             </div>
 
-            <div class="bottom-bottom">
-                <div class="bb-item">${info.tytTR}</div>
-                <div class="bb-item">${info.tytSOS}</div>
-                <div class="bb-item">${info.tytMAT}</div>
-                <div class="bb-item">${info.tytFEN}</div>
+            <div class="bottom-side">
+                <div class="bottom-top">
+                    <div class="bt-item">TYT Turkce</div>
+                    <div class="bt-item">TYT Sosyal</div>
+                    <div class="bt-item">TYT Matematik</div>
+                    <div class="bt-item">TYT Fen</div>
 
-                <div class="bb-item">${info.aytMAT}</div>
-                <div class="bb-item">${info.aytFZK}</div>
-                <div class="bb-item">${info.aytKMY}</div>
-                <div class="bb-item">${info.aytBYL}</div>
+                    <div class="bt-item">AYT Matematik</div>
+                    <div class="bt-item">AYT Fizik</div>
+                    <div class="bt-item">AYT Kimya</div>
+                    <div class="bt-item">AYT Biyoloji</div>
+                </div>
+
+                <div class="bottom-bottom">
+                    <div class="bb-item">${info.tytTR}</div>
+                    <div class="bb-item">${info.tytSOS}</div>
+                    <div class="bb-item">${info.tytMAT}</div>
+                    <div class="bb-item">${info.tytFEN}</div>
+
+                    <div class="bb-item">${info.aytMAT}</div>
+                    <div class="bb-item">${info.aytFZK}</div>
+                    <div class="bb-item">${info.aytKMY}</div>
+                    <div class="bb-item">${info.aytBYL}</div>
+                </div>
             </div>
-        </div>
-        `;
+            `;
 
-        tpListAREA.appendChild(div);
+            tpListAREA.appendChild(div);
+
+        // }
     });
 });
 
@@ -4589,8 +4593,6 @@ function ShowDetails(e) {
  
     }
 }
-
-
 
 showMoreBTNS.forEach((showMoreBTN) => {
     showMoreBTN.addEventListener('click', ShowDetails);
@@ -4661,3 +4663,91 @@ if(isMobile) {
 
     })
 }
+
+const btn = document.querySelector('.toggle-my-preferables');
+const toggleBursBtn = document.querySelector('.toggle-burs');
+
+let showingMy = false;
+
+btn.addEventListener('click', (e) => {
+    if(!e.target.classList.contains('showing')) {
+        let rows = document.querySelectorAll('.tp-item');
+
+        for(let x = 0; x < 12; x++) {
+            rows[x].style.display = "none";
+        }
+
+        e.target.textContent = "Tümünü Göster"
+
+        e.target.classList.add('showing');
+        showingMy = true;
+    } else {
+        let rows = document.querySelectorAll('.tp-item');
+
+        for(let x = 0; x < 12; x++) {
+            rows[x].style.display = "flex";
+        }
+
+        e.target.textContent = "Benim Seçebildiklerimi Göster"
+
+        e.target.classList.remove('showing');
+        showingMy = false;
+    }
+})
+
+toggleBursBtn.addEventListener("click", (e) => {
+    if(e.target.classList.contains('showing-all')) {
+        let rows = document.querySelectorAll('.tp-item');
+
+        rows.forEach((row, index) => {
+            let rowsTitle = row.querySelector('.tp-item-title').textContent.toLowerCase();
+
+            if(rowsTitle.indexOf('ücretli') != -1) {
+                row.style.display = "none";
+            } 
+
+            if(showingMy && (index < 12)) {
+                row.style.display = 'none';
+            } 
+        })
+
+        e.target.textContent = "%50 Burslulari Gizle"
+
+        e.target.classList.add('showing-50');
+        e.target.classList.remove('showing-all');
+    } else if(e.target.classList.contains('showing-50')) {
+        let rows = document.querySelectorAll('.tp-item');
+
+        rows.forEach((row, index) => {
+            let rowsTitle = row.querySelector('.tp-item-title').textContent.toLowerCase();
+
+            if(rowsTitle.indexOf('ücretli') != -1 || rowsTitle.indexOf('%50') != -1) {
+                row.style.display = "none";
+            } 
+
+            if(showingMy && (index < 12)) {
+                row.style.display = 'none';
+            } 
+        })
+
+        e.target.textContent = "Tumunu Goster"
+
+        e.target.classList.remove('showing-50');
+        e.target.classList.add('showing-burssuz');
+    } else if(e.target.classList.contains('showing-burssuz')) {
+        let rows = document.querySelectorAll('.tp-item');
+
+        rows.forEach((row, index) => {
+            row.style.display = "flex";
+
+            if(showingMy && (index < 12)) {
+                row.style.display = 'none';
+            }
+        });
+
+        e.target.textContent = "Burssuzlari Gizle"
+
+        e.target.classList.remove('showing-burssuz');
+        e.target.classList.add('showing-all');
+    }
+});
