@@ -4688,7 +4688,7 @@ btn.addEventListener('click', (e) => {
             rows[x].style.display = "flex";
         }
 
-        e.target.textContent = "Benim Seçebildiklerimi Göster"
+        e.target.textContent = "Benim Seçebildiklerim"
 
         e.target.classList.remove('showing');
         showingMy = false;
