@@ -236,6 +236,10 @@
     /* .tp-item:last-child {
         border-bottom: 1px solid #aaa;
     } */
+    .bottom-side {
+        font-size: 6px;
+    }
+
 
 }
 
@@ -261,10 +265,7 @@ justify-content: center;
 align-items: center;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 10px;
-}
-
-.bottom-side {
-    font-size: 6px;
+    margin-bottom: 4px;
 }
 
 .showing {
@@ -286,6 +287,7 @@ background-color: var(--red);
     cursor: pointer;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 10px;
+    margin-bottom: 4px;
 }
 
 .showing-50 {
