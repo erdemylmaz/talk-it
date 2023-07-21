@@ -13,7 +13,6 @@
 
 .tp-item {
     width: 100%;
-    min-height: 4vh;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -23,11 +22,22 @@
 .tp-hover {
     position: absolute;
     width: 100%;
-    min-height: 4vh;
+    min-height: 8vh;
+}
+
+.siralama {
+    margin: 6px 0;
+    font-weight: 1000;
+    color: var(--blue);
+}
+
+.siralama-old {
+    color: #000;
+    font-weight: normal;
 }
 
 .top-side {
-    height: 4vh;
+    height: 10vh;
     display: flex;
     width: 100%;
     align-items: center;
@@ -239,7 +249,6 @@
     .bottom-side {
         font-size: 6px;
     }
-
 
 }
 
