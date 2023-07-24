@@ -1,3 +1,32 @@
+//                  DATABASE 
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyBVky_n_S-8xDlKSNhbVFjbd4PN7dwrruM",
+    authDomain: "talkit-9e4f8.firebaseapp.com",
+    databaseURL: "https://talkit-9e4f8-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "talkit-9e4f8",
+    storageBucket: "talkit-9e4f8.appspot.com",
+    messagingSenderId: "325999358303",
+    appId: "1:325999358303:web:6e00171b64ed4517c946ea",
+    measurementId: "G-X81BDSHYVM"
+};
+
+// Initialize Firebase
+const dbApp = initializeApp(firebaseConfig);
+const analytics = getAnalytics(dbApp);
+
+import {getDatabase, set, get, ref, child, update, remove} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+const db = getDatabase();
+
 // update top bar
 topbaractiveTopic = 6;
 // topbartopicItems[0].style.color = "#000";
@@ -6,6 +35,9 @@ topbartopicItems[6].style.color = "#fff";
 TopbarHoverEffect({currentTarget: topbartopicItems[topbaractiveTopic]});
 
 const tpListAREA = document.querySelector('.taban-puanlar-list');
+let addTercihListesiBTNs = null;
+let removeBTNS = null;
+let username = localStorage.getItem('loggedAccUsername');
 
 class TabanPuanlar {
     tpList = [
@@ -4455,9 +4487,259 @@ class TabanPuanlar {
             ],
         }
     ];
+
+    mySiralama = 4727;
+
+    tlINDEXS = [];
+
+    addToTL = (e) => {
+        let uniINDEX = e.currentTarget.previousElementSibling.textContent - 1;
+        let uniROW = e.currentTarget.parentElement.parentElement;
+
+        uniROW.setAttribute('data-tl', true);
+
+        this.tlINDEXS.push(uniINDEX);
+
+        // localStorage.setItem('tlINDEXS', JSON.stringify(this.tlINDEXS));
+
+        set(ref(db, "App/tercihListesiIndexs"), this.tlINDEXS).then(() => {
+
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        e.currentTarget.className = "remove-from-list-btn";
+        e.currentTarget.textContent = "𝕏";
+
+        removeBTNS = document.querySelectorAll('.remove-from-list-btn');
+
+        removeBTNS.forEach((btn) => {
+            btn.addEventListener('click', this.removeFromTL);
+        });
+    }
+
+    removeFromTL = (e) => {
+        let uniINDEX = e.currentTarget.previousElementSibling.textContent - 1;
+
+
+        this.tlINDEXS.map((x, index) => {
+            if(x == uniINDEX) {
+                this.tlINDEXS.splice(index, 1);
+            }
+        })
+
+        // localStorage.setItem('tlINDEXS', JSON.stringify(this.tlINDEXS));
+
+        set(ref(db, "App/tercihListesiIndexs"), this.tlINDEXS).then(() => {
+
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        e.currentTarget.className = "add-to-list-btn";
+        e.currentTarget.innerHTML = '<i class="fa-solid fa-plus"></i>';
+
+        let addTercihListesiBTNs = document.querySelectorAll('.add-to-list-btn');
+
+        addTercihListesiBTNs.forEach((btn) => {
+            btn.addEventListener('click', this.addToTL);
+        });
+    }
+
 }
 
 const tp = new TabanPuanlar();
+
+get(ref(db, "App/tercihListesiIndexs")).then((snapshot) => {
+    tp.tlINDEXS = snapshot.val();
+
+    tp.tpList.map((item) => {
+    let titles = [];
+    item.uniInfos.map((info, index) => {
+        titles.push(info.title);
+
+        if(info.siralama && info.siralama_2021 && info.siralama_2020 && info.siralama_2019) {
+            let siralama = JSON.parse(JSON.stringify(info.siralama).replace('.', ''));
+            let siralama2021 = JSON.parse(JSON.stringify(info.siralama_2021).replace('.', ''));
+            let siralama2020 = JSON.parse(JSON.stringify(info.siralama_2020).replace('.', ''));
+            let siralama2019 = JSON.parse(JSON.stringify(info.siralama_2019).replace('.', ''));
+
+            let percentages = [];
+            let avrPercentage = null;
+            let expectingSiralama = null;
+
+            percentages.push((siralama - siralama2021) * 100 / siralama2021);
+            percentages.push((siralama2021 - siralama2020) * 100 / siralama2020);
+            percentages.push((siralama2020 - siralama2019) * 100 / siralama2019);
+
+            percentages.map((p, index) => {
+                if(index == 0) {
+                    avrPercentage += p * 37;
+                } else if (index == 1) {
+                    avrPercentage += p * 33;
+                } else if (index == 2) {
+                    avrPercentage += p * 30;
+                }
+            });
+
+            avrPercentage = avrPercentage / 100;
+
+            siralama = parseInt(siralama);
+
+            expectingSiralama = siralama + (siralama * avrPercentage) / 100;
+
+            info.expectingSiralama = Math.floor(expectingSiralama);
+        }
+
+        titles.map((title, index) => {
+
+        let letters = [];
+
+        for(let i = 0; i < title.length; i++) {
+            letters.push(title[i]);
+        }
+
+        letters.map((letter, index) => {
+            if(letter == "İ") {
+                letters[index] = "I";
+            }
+
+            if(letter == "Ğ") {
+                letters[index] = "G";
+            }
+
+            if(letter == "Ş") {
+                letters[index] = "S";
+            }
+
+            if(letter == "ş") {
+                letters[index] == "s";
+            }
+
+            if(letter == "-") {
+                letters.splice(index + 1, 0, " ");
+            }
+        });
+
+        let newTitle = letters.join('');
+
+        info.title = newTitle;
+
+        });
+    });
+});
+
+tp.tpList.forEach((tpItem) => {
+    tpItem.uniInfos.forEach((info, index) => {
+        // if(info.title.indexOf('%50') == -1 && info.title.toLowerCase().indexOf('ücretli') == -1) {
+
+            info.index = index + 1;
+
+            if(info.type.toLocaleLowerCase() == 'vakıf') {
+                info.type = "Vakif";
+            }
+
+            tp.tlINDEXS.map((x) => {
+                if(x == index) {
+                    info.inTL = true;
+                }
+            });
+
+            let div = document.createElement('div');
+            div.className = "tp-item";
+
+            if(index % 2) {
+                div.classList.add('s2');
+            } else {
+                div.classList.add('s1');
+            }
+
+            div.setAttribute('data-tl', info.inTL);
+
+            div.innerHTML = `
+            <div class="top-side">
+                <div class="tp-item-index">${info.index}</div>
+                ${ !info.inTL ? '<div class="add-to-list-btn"><i class="fa-solid fa-plus"></i></div>' : "<div class='remove-from-list-btn'>𝕏</div>"}
+                <div class="tp-item-title">${info.title}</div>
+                <div class="tp-item-type">${info.type}</div>
+                <div class="tp-item-kont">${info.kont}</div>
+                <div class="tp-item-tp">${info.tp}</div>
+                <div class="tp-item-siralama">
+                    <div class="siralama siralama-expecting">${info.expectingSiralama || '—'}</div> 
+                    <div class="siralama">${info.siralama}</div> 
+                    <div class="siralama siralama-old">${info.siralama_2021}</div> 
+                    <div class="siralama siralama-old">${info.siralama_2020}</div> 
+                    <div class="siralama siralama-old">${info.siralama_2019}</div> 
+                </div>
+
+                <div class="tp-item-show-more-btn"><i class="fa-solid fa-chevron-down"></i></div>
+            </div>
+
+            <div class="bottom-side">
+                <div class="bottom-top">
+                    <div class="bt-item">TYT Turkce</div>
+                    <div class="bt-item">TYT Sosyal</div>
+                    <div class="bt-item">TYT Matematik</div>
+                    <div class="bt-item">TYT Fen</div>
+
+                    <div class="bt-item">AYT Matematik</div>
+                    <div class="bt-item">AYT Fizik</div>
+                    <div class="bt-item">AYT Kimya</div>
+                    <div class="bt-item">AYT Biyoloji</div>
+                </div>
+
+                <div class="bottom-bottom">
+                    <div class="bb-item">${info.tytTR}</div>
+                    <div class="bb-item">${info.tytSOS}</div>
+                    <div class="bb-item">${info.tytMAT}</div>
+                    <div class="bb-item">${info.tytFEN}</div>
+
+                    <div class="bb-item">${info.aytMAT}</div>
+                    <div class="bb-item">${info.aytFZK}</div>
+                    <div class="bb-item">${info.aytKMY}</div>
+                    <div class="bb-item">${info.aytBYL}</div>
+                </div>
+            </div>
+            `;
+
+            info.siralama = JSON.parse(JSON.stringify(info.siralama).replace('.', ''));
+
+            info.expectingSiralama = parseInt(info.expectingSiralama);
+
+            if(info.siralama > tp.mySiralama && info.expectingSiralama < tp.mySiralama) {
+                div.classList.add('not-expecting');
+
+                if(index % 2) {
+                    div.classList.add('other-expecting');
+                }
+            }
+
+            if(info.siralama < tp.mySiralama) {
+                div.classList.add('nope');
+
+                if(index % 2) {
+                    div.classList.add('other-nope');
+                }
+            }
+
+            tpListAREA.appendChild(div);
+
+            addTercihListesiBTNs = document.querySelectorAll('.add-to-list-btn');
+            removeBTNS = document.querySelectorAll('.remove-from-list-btn');
+
+            removeBTNS.forEach((btn) => {
+                btn.addEventListener('click', tp.removeFromTL);
+            });
+
+            addTercihListesiBTNs.forEach((btn) => {
+                btn.addEventListener('click', tp.addToTL);
+            });
+        // }
+    });
+});
+}).catch((err) => {
+    console.log(err);
+})
 
 
 let texts = [
@@ -4681,118 +4963,7 @@ texts.map((text, textIndex) => {
 
 let titles = [];
 
-tp.tpList.map((item) => {
-    let titles = [];
 
-    item.uniInfos.map((info) => {
-        titles.push(info.title);
-
-        titles.map((title, index) => {
-
-        let letters = [];
-
-        for(let i = 0; i < title.length; i++) {
-            letters.push(title[i]);
-        }
-
-        letters.map((letter, index) => {
-            if(letter == "İ") {
-                letters[index] = "I";
-            }
-
-            if(letter == "Ğ") {
-                letters[index] = "G";
-            }
-
-            if(letter == "Ş") {
-                letters[index] = "S";
-            }
-
-            if(letter == "ş") {
-                letters[index] == "s";
-            }
-
-            if(letter == "-") {
-                letters.splice(index + 1, 0, " ");
-            }
-        });
-
-        let newTitle = letters.join('');
-
-        info.title = newTitle;
-
-        });
-    });
-});
-
-tp.tpList.forEach((tpItem) => {
-    tpItem.uniInfos.forEach((info, index) => {
-        // if(info.title.indexOf('%50') == -1 && info.title.toLowerCase().indexOf('ücretli') == -1) {
-
-            info.index = index + 1;
-
-            if(info.type.toLocaleLowerCase() == 'vakıf') {
-                info.type = "Vakif";
-            }
-
-            let div = document.createElement('div');
-            div.className = "tp-item";
-
-            if(index % 2) {
-                div.classList.add('s2');
-            } else {
-                div.classList.add('s1');
-            }
-
-            div.innerHTML = `
-            <div class="top-side">
-                <div class="tp-item-index">${info.index}</div>
-                <div class="tp-item-title">${info.title}</div>
-                <div class="tp-item-type">${info.type}</div>
-                <div class="tp-item-kont">${info.kont}</div>
-                <div class="tp-item-tp">${info.tp}</div>
-                <div class="tp-item-siralama">
-                    <div class="siralama">${info.siralama}</div> 
-                    <div class="siralama siralama-old">${info.siralama_2021}</div> 
-                    <div class="siralama siralama-old">${info.siralama_2020}</div> 
-                    <div class="siralama siralama-old">${info.siralama_2019}</div> 
-                </div>
-
-                <div class="tp-item-show-more-btn"><i class="fa-solid fa-chevron-down"></i></div>
-            </div>
-
-            <div class="bottom-side">
-                <div class="bottom-top">
-                    <div class="bt-item">TYT Turkce</div>
-                    <div class="bt-item">TYT Sosyal</div>
-                    <div class="bt-item">TYT Matematik</div>
-                    <div class="bt-item">TYT Fen</div>
-
-                    <div class="bt-item">AYT Matematik</div>
-                    <div class="bt-item">AYT Fizik</div>
-                    <div class="bt-item">AYT Kimya</div>
-                    <div class="bt-item">AYT Biyoloji</div>
-                </div>
-
-                <div class="bottom-bottom">
-                    <div class="bb-item">${info.tytTR}</div>
-                    <div class="bb-item">${info.tytSOS}</div>
-                    <div class="bb-item">${info.tytMAT}</div>
-                    <div class="bb-item">${info.tytFEN}</div>
-
-                    <div class="bb-item">${info.aytMAT}</div>
-                    <div class="bb-item">${info.aytFZK}</div>
-                    <div class="bb-item">${info.aytKMY}</div>
-                    <div class="bb-item">${info.aytBYL}</div>
-                </div>
-            </div>
-            `;
-
-            tpListAREA.appendChild(div);
-
-        // }
-    });
-});
 
 let showMoreBTNS = document.querySelectorAll('.tp-item-show-more-btn');
 
@@ -4828,7 +4999,7 @@ const searchArea = document.querySelector('.search-area');
 
 let searchPlaceholders = ["3D Turkiye Geneli 5", "Endemik Turkiye Geneli 4", "TYT Matematik Deneme Onerisi", "AYT Biyoloji Onerileri", "Ders Calisirken Muzik Dinlenir Mi?", "Uclu Kalem Mi Kursun Kalem Mi?", "..."];
 
-changePlaceholder = () => {
+function changePlaceholder() {
     let randomNumber = Math.floor((Math.random() * searchPlaceholders.length));
 
     searchArea.placeholder = searchPlaceholders[randomNumber];
@@ -4842,7 +5013,7 @@ setInterval(changePlaceholder, 60000);
 const uniSearchAREA = document.querySelector('.tabanp-search');
 let rows = document.querySelectorAll('.tp-item');
 
-letterToENG = (l) => {
+function letterToENG(l) {
    if(l == 'ü') {
     return 'u';
    } else if (l == 'ğ') {
@@ -4860,7 +5031,7 @@ letterToENG = (l) => {
    }
 }
 
-searchUni = () => {
+function searchUni() {
     let value = uniSearchAREA.value.toLowerCase();
 
     // let valueLetters = value.split('');
@@ -5007,5 +5178,37 @@ toggleBursBtn.addEventListener("click", (e) => {
 
         e.target.classList.remove('showing-burssuz');
         e.target.classList.add('showing-all');
+    }
+});
+
+const tercihListemBTN = document.querySelector('.tercih-listesi-btn');
+
+tercihListemBTN.addEventListener('click', () => {
+    if(tercihListemBTN.classList.contains('not-showing-tl')) {
+        let rows = document.querySelectorAll('.tp-item');
+
+        rows.forEach((row) => {
+            console.log(row.dataset.tl);
+            if(row.dataset.tl == 'true') {
+                row.style.display = "flex";
+                console.log(row);
+            } else {
+                row.style.display = "none";
+            }
+        });
+
+        tercihListemBTN.textContent = "Universiteleri Goster";
+        tercihListemBTN.classList.remove('not-showing-tl')
+        tercihListemBTN.classList.add('showing-tl')
+    } else {
+        let rows = document.querySelectorAll('.tp-item');
+
+        rows.forEach((row) => {
+            row.style.display = "flex";
+        });
+
+        tercihListemBTN.textContent = "Tercih Listem";
+        tercihListemBTN.classList.remove('showing-tl');
+        tercihListemBTN.classList.add('not-showing-tl');
     }
 });

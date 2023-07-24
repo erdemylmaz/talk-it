@@ -1278,12 +1278,12 @@ a {
     filter: opacity(0.7);
 }
 
-.mobile-navbar-item:nth-child(2), .mobile-navbar-item:nth-child(3) {
+.mobile-navbar-item:nth-child(2) {
     filter: opacity(0.4);
     cursor: not-allowed;
 }
 
-.top-bar-item:nth-child(3), .top-bar-item:nth-child(4) {
+.top-bar-item:nth-child(3) {
     filter: opacity(0.4);
     cursor: not-allowed;
 }
