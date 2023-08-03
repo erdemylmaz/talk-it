@@ -296,7 +296,6 @@ body {
     min-height: 4vh;
     display: flex;
     flex-direction: row;
-    align-items: center;
 }
 
 .entry-pp {
@@ -316,6 +315,7 @@ body {
     margin-left: 16px;
     margin-top: 4px;
     font-size: 20px;
+    white-space: pre-wrap;
     color: #232323;
 }
 
