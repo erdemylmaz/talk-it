@@ -4586,10 +4586,10 @@ get(ref(db, "App/tercihListesiIndexs")).then((snapshot) => {
 
             siralama = parseInt(siralama);
 
-            // expectingSiralama = siralama + (siralama * avrPercentage) / 100;
-            expectingSiralama = `${(siralama + (siralama * percentages[0]) / 100).toFixed(2)} (${percentages[0].toFixed(2)})`;
+            expectingSiralama = siralama + (siralama * avrPercentage) / 100;
+            // expectingSiralama = `${(siralama + (siralama * percentages[0]) / 100).toFixed(2)} (${percentages[0].toFixed(2)})`;
 
-            info.expectingSiralama = expectingSiralama;
+            info.expectingSiralama = expectingSiralama.toFixed(0);
         }
 
         titles.map((title, index) => {
@@ -4712,6 +4712,14 @@ tp.tpList.forEach((tpItem) => {
 
                 if(index % 2) {
                     div.classList.add('other-expecting');
+                }
+            }
+
+            if(info.siralama < tp.mySiralama && info.expectingSiralama < tp.mySiralama) {
+                div.classList.add('nope');
+
+                if(index % 2) {
+                    div.classList.add('nope-v2');
                 }
             }
 
@@ -5043,6 +5051,7 @@ function searchUni() {
     // })
 
     // if(value.length > 2) {
+        rows = document.querySelectorAll('.tp-item');
         for(let x = 0; x < rows.length; x++) {
             let uniTitle = rows[x].querySelector('.tp-item-title').textContent.toLowerCase();
 
@@ -5215,37 +5224,37 @@ tercihListemBTN.addEventListener('click', () => {
 });
 
 // GET EXPECTING SIRALAMALAR INSIDE SITE (basarisiralamalari.com);
-const rows = document.querySelectorAll('tr');
+// const rows = document.querySelectorAll('tr');
 
-rows.forEach((row, index) => {
-    if(index > 1) {
-        let siralamalarDIV = row.querySelectorAll('td')[5];
-        let siralamalar = siralamalarDIV.textContent.split('\n');
+// rows.forEach((row, index) => {
+//     if(index > 1) {
+//         let siralamalarDIV = row.querySelectorAll('td')[5];
+//         let siralamalar = siralamalarDIV.textContent.split('\n');
 
-        let s2022 = parseInt(JSON.parse(JSON.stringify(siralamalar[0]).replace('.', '')));
-        let s2021 = parseInt(JSON.parse(JSON.stringify(siralamalar[1]).replace('.', '')));
-        let s2020 = parseInt(JSON.parse(JSON.stringify(siralamalar[2]).replace('.', '')));
-        let s2019 = parseInt(JSON.parse(JSON.stringify(siralamalar[3]).replace('.', '')));
+//         let s2022 = parseInt(JSON.parse(JSON.stringify(siralamalar[0]).replace('.', '')));
+//         let s2021 = parseInt(JSON.parse(JSON.stringify(siralamalar[1]).replace('.', '')));
+//         let s2020 = parseInt(JSON.parse(JSON.stringify(siralamalar[2]).replace('.', '')));
+//         let s2019 = parseInt(JSON.parse(JSON.stringify(siralamalar[3]).replace('.', '')));
 
-        let p22_21 = (s2022 - s2021) * 100 / s2021;
-        let p21_20 = (s2021 - s2020) * 100 / s2020;
-        let p20_19 = (s2020 - s2019) * 100 / s2019;
+//         let p22_21 = (s2022 - s2021) * 100 / s2021;
+//         let p21_20 = (s2021 - s2020) * 100 / s2020;
+//         let p20_19 = (s2020 - s2019) * 100 / s2019;
 
-        let avrPercentage = 0;
+//         // let avrPercentage = 0;
 
-        // let avrPercentage = p22_21;
+//         let avrPercentage = p22_21;
 
-        avrPercentage += p22_21 * 37 / 100;
-        avrPercentage += p21_20 * 33 / 100;
-        avrPercentage += p20_19 * 30 / 100;
+//         // avrPercentage += p22_21 * 37 / 100;
+//         // avrPercentage += p21_20 * 33 / 100;
+//         // avrPercentage += p20_19 * 30 / 100;
 
-        let expectingSiralama = s2022 + (s2022 * avrPercentage / 100);
+//         let expectingSiralama = s2022 + (s2022 * avrPercentage / 100);
         
-        let td = document.createElement('td');
-        td.style.color = "red";
+//         let td = document.createElement('td');
+//         td.style.color = "red";
 
-        td.textContent = Math.floor(expectingSiralama);
+//         td.textContent = Math.floor(expectingSiralama);
 
-        siralamalarDIV.prepend(td);
-    }
-});
+//         siralamalarDIV.prepend(td);
+//     }
+// });

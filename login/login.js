@@ -220,3 +220,33 @@ document.addEventListener('click', (e) => {
 closeModalBtn.addEventListener('click', () => {
     warningModal.style.display = "none";
 })
+
+const continueBTNs = document.querySelectorAll('.guest-btn');
+
+function continueAsGuest() {
+    let randomNumber = 1000 + Math.floor(Math.random() * 9000);
+    let username = `Guest-${randomNumber}`;
+
+    let user = {
+            username: username,
+            password: 'xxxxxguestxxxxx',
+            degree: 'G',
+            isAdmin: false,
+        }
+
+    users.users.push(user);
+    set(ref(db, "App/Users"), users.users).then(() => {
+        console.log("Successfully inserted user");
+    }).catch((err) => {
+        console.log(err);
+    });
+
+    localStorage.setItem('hasLoggedIn', "true");
+    localStorage.setItem('loggedAccUsername', username);
+
+    location.href = "../index.html";
+}
+
+continueBTNs.forEach((btn) => {
+    btn.addEventListener('click', continueAsGuest);
+})

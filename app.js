@@ -1258,7 +1258,11 @@ get(ref(db, "App/Users"))
     if(localStorage.getItem('hasLoggedIn') == "true") {
         let user;
 
-        user = snapshot.val().find((u) => u.username == localStorage.getItem('loggedAccUsername'));
+        snapshot.val().map((u) => {
+            if(u.username == localStorage.getItem('loggedAccUsername')) {
+                user = u;
+            }
+        });
 
         app.users = snapshot.val();
 

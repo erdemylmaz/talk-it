@@ -370,3 +370,15 @@ background-color: var(--red);
 .tercih-listesi-btn:hover {
     color: var(--blue);
 }
+
+.nope {
+    background-color: #E03132;
+}
+
+.nope .siralama-expecting {
+    color: #fff;
+}
+
+.nope-v2 {
+    background-color: #E03132DD;
+}
