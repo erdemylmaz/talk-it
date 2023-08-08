@@ -223,28 +223,50 @@ closeModalBtn.addEventListener('click', () => {
 
 const continueBTNs = document.querySelectorAll('.guest-btn');
 
-function continueAsGuest() {
-    let randomNumber = 1000 + Math.floor(Math.random() * 9000);
-    let username = `Guest-${randomNumber}`;
+// set(ref(db, "App/GUEST_NUMBERS"), [1177, 2695, 9839, 4786, 2844, 6148, 2903]);
 
-    let user = {
-            username: username,
-            password: 'xxxxxguestxxxxx',
-            degree: 'G',
-            isAdmin: false,
+function continueAsGuest() {
+    let numbers = [];
+
+    get(ref(db, "App/GUEST_NUMBERS")).then((snapshot) => {
+        numbers = snapshot.val();
+
+        let randomNumber = 1000 + Math.floor(Math.random() * 9000);
+
+        while(numbers.find((n) => n == randomNumber)) {
+            randomNumber = 1000 + Math.floor(Math.random() * 9000);
         }
 
-    users.users.push(user);
-    set(ref(db, "App/Users"), users.users).then(() => {
-        console.log("Successfully inserted user");
+        numbers.push(randomNumber);
+
+        set(ref(db, "App/GUEST_NUMBERS"), numbers).catch((err) => {
+        });
+
+        let username = `Guest-${randomNumber}`;
+
+        let user = {
+                username: username,
+                password: 'xxxxxguestxxxxx',
+                degree: 'G',
+                isAdmin: false,
+            }
+
+        users.users.push(user);
+        set(ref(db, "App/Users"), users.users).then(() => {
+            console.log("Successfully inserted user");
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        localStorage.setItem('hasLoggedIn', "true");
+        localStorage.setItem('loggedAccUsername', username);
+
+        location.href = "../index.html";
     }).catch((err) => {
         console.log(err);
     });
 
-    localStorage.setItem('hasLoggedIn', "true");
-    localStorage.setItem('loggedAccUsername', username);
-
-    location.href = "../index.html";
+    
 }
 
 continueBTNs.forEach((btn) => {
